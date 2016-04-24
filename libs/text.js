@@ -1,12 +1,12 @@
 function Text(str, x, y){
 	var text = this;
-	this.string = str;
+	this.string = str || "";
 	this.size = 20;
 	this.height = this.size;
 	this.font = "Courier";
 	this.color = "#000";
-	this.x = x;
-	this.y = y;
+	this.x = x || 0;
+	this.y = y || 0;
 
 	this.tick = function(engine){
 		var font = engine.ctx.font;

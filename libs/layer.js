@@ -3,10 +3,10 @@ function Layer(x, y, width, height){
 	this.objects = {};
 	this.canvas = document.createElement("canvas");
 	this.ctx = this.canvas.getContext("2d");
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
+	this.x = x || 0;
+	this.y = y || 0;
+	this.width = width || 128;
+	this.height = height || 128;
 
 	this.clearOnRender = true;
 

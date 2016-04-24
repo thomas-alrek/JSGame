@@ -1,4 +1,5 @@
 var engine = new Engine("screen");
+engine.debug = true;
 
 var background = new GameObject();
 background.width = engine.width;
@@ -7,50 +8,73 @@ background.render = function(engine){
 	engine.ctx.fillRect(background.x, background.y, background.width, background.height);
 }
 
+var target = {
+    x: 0,
+    y: 0
+}
+
+var ballTarget = {
+    x: 0,
+    y: 0
+}
+
 var backgroundLayer = new Layer(0,0,engine.width,engine.height);
-var foregroundLayer = new Layer(0,0,engine.width,engine.height);
+var foregroundLayer = new Layer(0,0, 640, 480);
+
+var ball = new Particle(0, 0, 50, "#fff", "#fff", 20);
 
 backgroundLayer.add("background", background);
 foregroundLayer.clearOnRender = false;
 
-var fpsMeter0 = new Text(engine.fps() + " FPS", 0, 100);
-var fpsMeter1 = new Text("Yolo" + " FPS", 0, 120);
-var fpsMeter2 = new Text("Nope" + " FPS", 0, 140);
-fpsMeter0.color = "#f00";
-fpsMeter1.color = "#0f0";
-fpsMeter2.color = "#00f";
-fpsMeter0.size = 40;
-fpsMeter1.size = 20;
-fpsMeter2.size = 60;
+var particle1 = new Particle(0, 0, 5, "#f00", "#f22", 20)
+var particle2 = new Particle(0, 0, 5, "#0f0", "#2f2", 20)
+var particle3 = new Particle(0, 0, 5, "#00f", "#22f", 20)
 
-foregroundLayer.add("fpsMeter0", fpsMeter0);
-foregroundLayer.add("fpsMeter1", fpsMeter1);
-foregroundLayer.add("fpsMeter2", fpsMeter2);
-foregroundLayer.add("fpsMeter3", fpsMeter0);
-foregroundLayer.add("fpsMeter4", fpsMeter1);
-foregroundLayer.add("fpsMeter5", fpsMeter2);
-foregroundLayer.add("fpsMeter6", fpsMeter0);
-foregroundLayer.add("fpsMeter7", fpsMeter1);
-foregroundLayer.add("fpsMeter8", fpsMeter2);
-foregroundLayer.add("fpsMeter9", fpsMeter0);
-foregroundLayer.add("fpsMeter10", fpsMeter1);
-foregroundLayer.add("fpsMeter11", fpsMeter2);
+var FPS = new Text("0 FPS", 0, 0);
+
+FPS.color = "yellow";
+FPS.font = "Courier";
+FPS.size = 30;
+
+foregroundLayer.add("particle1", particle1);
+foregroundLayer.add("particle2", particle2);
+foregroundLayer.add("particle3", particle3);
 
 engine.addObject("background", backgroundLayer);
 engine.addObject("foreground", foregroundLayer);
-
-setInterval(function(){
-	fpsMeter0.string = engine.fps() + " FPS";
-	fpsMeter1.string = engine.fps() + " FPS";
-	fpsMeter2.string = engine.fps() + " FPS";
-},10);
+engine.addObject("ball", ball);
+engine.addObject("FPS", FPS);
 
 setInterval(function(){
 	//backgroundLayer.visible = !backgroundLayer.visible;
-	fpsMeter0.x = Math.floor(Math.random() * fpsMeter0.parrent.width - fpsMeter0.width);
-	fpsMeter1.x = Math.floor(Math.random() * fpsMeter1.parrent.width - fpsMeter1.width);
-	fpsMeter2.x = Math.floor(Math.random() * fpsMeter2.parrent.width - fpsMeter2.width);
-	fpsMeter0.y = Math.floor(Math.random() * fpsMeter0.parrent.height - fpsMeter0.height);
-	fpsMeter1.y = Math.floor(Math.random() * fpsMeter1.parrent.height - fpsMeter1.height);
-	fpsMeter2.y = Math.floor(Math.random() * fpsMeter2.parrent.height - fpsMeter2.height);
+	particle1.x = Math.floor(Math.random() * particle1.parrent.width - particle1.width);
+	particle2.x = Math.floor(Math.random() * particle2.parrent.width - particle2.width);
+	particle3.x = Math.floor(Math.random() * particle3.parrent.width - particle3.width);
+	particle1.y = Math.floor(Math.random() * particle1.parrent.height - particle1.height);
+	particle2.y = Math.floor(Math.random() * particle2.parrent.height - particle2.height);
+	particle3.y = Math.floor(Math.random() * particle3.parrent.height - particle3.height);
+}, 0);
+
+setInterval(function(){
+	target.x = Math.random() * (engine.width - foregroundLayer.width);
+	target.y = Math.random() * (engine.height - foregroundLayer.height);
+}, 2500);
+
+setInterval(function(){
+	ballTarget.x = Math.random() * (engine.width - ball.width);
+	ballTarget.y = Math.random() * (engine.height - ball.height);
+}, 1000);
+
+setInterval(function(){
+	ball.x += (ballTarget.x - ball.x) * 0.1;
+	ball.y += (ballTarget.y - ball.y) * 0.1;
+}, 0);
+
+setInterval(function(){
+	foregroundLayer.x += (target.x - foregroundLayer.x) * 0.01;
+	foregroundLayer.y += (target.y - foregroundLayer.y) * 0.01;
+}, 0);
+
+setInterval(function(){
+	FPS.string = Math.floor(engine.fps()) + " FPS";
 }, 0);

@@ -86,29 +86,19 @@ function Engine(container, options){
 				self.objects[key].tick(self);
 			}
 			if(typeof self.objects[key].render === 'function' && self.objects[key].visible){
-				var _fillStyle = self.ctx.fillStyle;
-				var _strokeStyle = self.ctx.strokeStyle;
-				var _font = self.ctx.font;
-				var _globalAlpha = self.ctx.globalAlpha;
+				self.ctx.save();
 
 				self.ctx.globalAlpha = self.objects[key].alpha;
 
 		    	self.objects[key].render(self);
-
-		    	self.ctx.fillStyle = _fillStyle;
-		    	self.ctx.strokeStyle = _strokeStyle;
-		    	self.ctx.font = _font;
-		    	self.ctx.globalAlpha = _globalAlpha;
+		    	self.ctx.restore();
 			}
 		});
 
 		if(self.debug){
 			Object.keys(self.objects).forEach(function(key){
 				if(self.objects[key].visible){
-					var _fillStyle = self.ctx.fillStyle;
-					var _strokeStyle = self.ctx.strokeStyle;
-					var _font = self.ctx.font;
-					var _globalAlpha = self.ctx.globalAlpha;
+					self.ctx.save();
 
 					self.ctx.strokeStyle = "#f00";
 					self.ctx.strokeRect(self.objects[key].x, self.objects[key].y, self.objects[key].width, self.objects[key].height);
@@ -127,10 +117,7 @@ function Engine(container, options){
 						}
 					}
 
-			    	self.ctx.fillStyle = _fillStyle;
-			    	self.ctx.strokeStyle = _strokeStyle;
-			    	self.ctx.font = _font;
-			    	self.ctx.globalAlpha = _globalAlpha;
+					self.ctx.restore();
 				}
 			});
 		}
