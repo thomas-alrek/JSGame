@@ -2,13 +2,16 @@ function Layer(x, y, width, height){
 	var layer = this;
 	this.objects = {};
 	this.canvas = document.createElement("canvas");
-	this.canvas.width = 100;
-	this.canvas.height = 50;
 	this.ctx = this.canvas.getContext("2d");
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
+
+	this.clearOnRender = true;
+
+	this.canvas.width = this.width;
+	this.canvas.height = this.height;
 
 	this.tick = function(engine){
 		Object.keys(layer.objects).forEach(function(key){
@@ -19,6 +22,11 @@ function Layer(x, y, width, height){
 	}
 
 	this.render = function(engine){
+
+		if(this.clearOnRender){
+			this.ctx.clearRect(0, 0, this.width, this.height);
+		}
+
 		Object.keys(layer.objects).forEach(function(key){
 			if(typeof layer.objects[key].render === 'function' && layer.objects[key].visible){
 				var _fillStyle = layer.ctx.fillStyle;
@@ -32,9 +40,7 @@ function Layer(x, y, width, height){
 		    	layer.ctx.font = _font;
 			}
 		});
-		//console.log(layer.canvas);
-		engine.ctx.drawImage(layer.canvas, layer.x, layer.y, layer.width, layer.height);
-		//layer.visible = false;
+		engine.ctx.drawImage(layer.canvas, layer.x, layer.y);
 	}
 }
 
@@ -48,6 +54,8 @@ Layer.prototype.add = function(id, obj){
 	if(typeof obj === 'undefined'){
 		var obj = new GameObject();
 	}
+
+	obj.parrent = this;
 
 	this.objects[id] = obj;
 	return true;

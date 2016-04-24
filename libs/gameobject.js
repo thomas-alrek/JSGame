@@ -7,6 +7,7 @@ function GameObject(){
 	this.visible = true;
 	this.render = function(engine){};
 	this.tick = function(engine){};
+	this.alpha = 1.0;
 }
 
 Engine.prototype.addObject = function(id, obj){
