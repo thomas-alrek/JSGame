@@ -79,6 +79,7 @@ function Engine(container, options){
 		}
 
 		self.fpsMeter();
+		self.clear();
 
 		Object.keys(self.objects).forEach(function(key){
 			if(typeof self.objects[key].tick === 'function'){
