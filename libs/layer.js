@@ -40,7 +40,29 @@ function Layer(x, y, width, height){
 		    	layer.ctx.font = _font;
 			}
 		});
-		engine.ctx.drawImage(layer.canvas, layer.x, layer.y);
+
+/*
+		if(layer.debug){
+			Object.keys(layer.objects).forEach(function(key){
+				if(layer.objects[key].visible){
+					var _fillStyle = layer.ctx.fillStyle;
+					var _strokeStyle = layer.ctx.strokeStyle;
+					var _font = layer.ctx.font;
+					var _globalAlpha = layer.ctx.globalAlpha;
+
+					layer.ctx.strokeStyle = "#f00";
+					layer.ctx.strokeRect(layer.objects[key].x, layer.objects[key].y, layer.objects[key].width, layer.objects[key].height);
+
+			    	layer.ctx.fillStyle = _fillStyle;
+			    	layer.ctx.strokeStyle = _strokeStyle;
+			    	layer.ctx.font = _font;
+			    	layer.ctx.globalAlpha = _globalAlpha;
+				}
+			});
+		};
+*/
+
+		engine.ctx.drawImage(layer.canvas, layer.x, layer.y, layer.width, layer.height);
 	}
 }
 

@@ -9,8 +9,14 @@ function Text(str, x, y){
 	this.y = y;
 
 	this.tick = function(engine){
+		var font = engine.ctx.font;
+		var fillStyle = engine.ctx.fillStyle;
+		engine.ctx.font = text.size + "px " + text.font;
+		engine.ctx.fillStyle = text.color;
 		text.width = engine.ctx.measureText(text.string).width;
 		text.height = text.size;
+		engine.ctx.font = font;
+		engine.ctx.fillStyle = fillStyle;
 	}
 
 	this.render = function(engine){

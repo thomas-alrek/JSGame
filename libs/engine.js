@@ -1,6 +1,8 @@
 function Engine(container, options){
 	self = this;
 
+	var paused = false;
+
 	this.canvas = document.getElementById(container);
 	this.screen = this.canvas;
 	this.ctx = this.canvas.getContext("2d");
@@ -8,6 +10,13 @@ function Engine(container, options){
 	this.height = window.innerHeight;
 
 	this.objects = {};
+
+	this.pause = function(){
+		paused = !paused;
+		if(!paused){
+			self.render();
+		}
+	};
 
 	this.antiAliasing = function(bool){
 		if(typeof bool === 'undefined'){
@@ -65,7 +74,9 @@ function Engine(container, options){
 	}
 
 	this.render = function(){
-		requestAnimationFrame(self.render);
+		if(!paused){
+			requestAnimationFrame(self.render);
+		}
 
 		self.fpsMeter();
 		self.clear();
@@ -81,6 +92,7 @@ function Engine(container, options){
 				var _globalAlpha = self.ctx.globalAlpha;
 
 				self.ctx.globalAlpha = self.objects[key].alpha;
+
 		    	self.objects[key].render(self);
 
 		    	self.ctx.fillStyle = _fillStyle;
@@ -89,6 +101,39 @@ function Engine(container, options){
 		    	self.ctx.globalAlpha = _globalAlpha;
 			}
 		});
+
+		if(self.debug){
+			Object.keys(self.objects).forEach(function(key){
+				if(self.objects[key].visible){
+					var _fillStyle = self.ctx.fillStyle;
+					var _strokeStyle = self.ctx.strokeStyle;
+					var _font = self.ctx.font;
+					var _globalAlpha = self.ctx.globalAlpha;
+
+					self.ctx.strokeStyle = "#f00";
+					self.ctx.strokeRect(self.objects[key].x, self.objects[key].y, self.objects[key].width, self.objects[key].height);
+					self.ctx.fillStyle = self.ctx.strokeStyle;
+					self.ctx.font = "20px Courier";
+
+					var debugText = "[" + key + "]";
+
+					if(self.objects[key].y - 20 - 10 > 0){
+						self.ctx.fillText(debugText, self.objects[key].x, self.objects[key].y - 10);
+					}else{
+						if(self.objects[key].y + 20 > self.height){
+							self.ctx.fillText(debugText, self.objects[key].x, self.height - 10);
+						}else{
+							self.ctx.fillText(debugText, self.objects[key].x, self.objects[key].y + self.objects[key].height + 20);
+						}
+					}
+
+			    	self.ctx.fillStyle = _fillStyle;
+			    	self.ctx.strokeStyle = _strokeStyle;
+			    	self.ctx.font = _font;
+			    	self.ctx.globalAlpha = _globalAlpha;
+				}
+			});
+		}
 
 	}
 
