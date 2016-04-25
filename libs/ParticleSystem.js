@@ -3,7 +3,7 @@ function ParticleSystem(){
 	var particles = [];
 	this.x = 0;
 	this.y = 0;
-	this.count = 100;
+	this.count = 50;
 	this.speed = {
 		x: 0,
 		y: 0

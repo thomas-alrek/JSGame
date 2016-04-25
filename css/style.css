@@ -1,9 +1,11 @@
 html{
 	overflow: hidden;
+	background-color: #666;
 }
 
 #screen{
-
+	width: 100%;
+	height 100%;
 }
 
 .low-graphics{

@@ -29,15 +29,9 @@ function Layer(x, y, width, height){
 
 		Object.keys(layer.objects).forEach(function(key){
 			if(typeof layer.objects[key].render === 'function' && layer.objects[key].visible){
-				var _fillStyle = layer.ctx.fillStyle;
-				var _strokeStyle = layer.ctx.strokeStyle;
-				var _font = layer.ctx.font;
-
+				layer.ctx.save();
 		    	layer.objects[key].render(layer);
-
-		    	layer.ctx.fillStyle = _fillStyle;
-		    	layer.ctx.strokeStyle = _strokeStyle;
-		    	layer.ctx.font = _font;
+				layer.ctx.restore();
 			}
 		});
 
@@ -62,7 +56,7 @@ function Layer(x, y, width, height){
 		};
 */
 
-		engine.ctx.drawImage(layer.canvas, layer.x, layer.y, layer.width, layer.height);
+		engine.ctx.drawImage(this.canvas, this.x, this.y, this.width, this.height);
 	}
 }
 
