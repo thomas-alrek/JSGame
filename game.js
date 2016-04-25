@@ -40,9 +40,30 @@ foregroundLayer.add("particle1", particle1);
 foregroundLayer.add("particle2", particle2);
 foregroundLayer.add("particle3", particle3);
 
+var ps1 = new ParticleSystem();
+ps1.x = 100;
+ps1.y = 400;
+ps1.speed.y = -3;
+ps1.color.r = 32;
+
+var ps2 = new ParticleSystem();
+ps2.x = 200;
+ps2.y = 400;
+ps2.speed.y = -3;
+ps2.color.g = 32;
+
+var ps3 = new ParticleSystem();
+ps3.x = 300;
+ps3.y = 400;
+ps3.speed.y = -3;
+ps3.color.b = 32;
+
 engine.addObject("background", backgroundLayer);
-engine.addObject("foreground", foregroundLayer);
-engine.addObject("ball", ball);
+//engine.addObject("foreground", foregroundLayer);
+//engine.addObject("ball", ball);
+engine.addObject("PS1", ps1);
+engine.addObject("PS2", ps2);
+engine.addObject("PS3", ps3);
 engine.addObject("FPS", FPS);
 
 setInterval(function(){
