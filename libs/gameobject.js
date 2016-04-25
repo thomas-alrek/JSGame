@@ -8,6 +8,13 @@ function GameObject(){
 	this.render = function(engine){};
 	this.tick = function(engine){};
 	this.alpha = 1.0;
+	this.shadow = {
+		enabled: false,
+		color: "#000",
+		x: 1,
+		y: 1,
+		blur: 1
+	}
 }
 
 Engine.prototype.addObject = function(id, obj){

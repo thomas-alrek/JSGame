@@ -90,7 +90,15 @@ function Engine(container, options){
 
 				self.ctx.globalAlpha = self.objects[key].alpha;
 
+				if(self.objects[key].shadow.enabled){
+					self.ctx.shadowColor = self.objects[key].shadow.color;
+					self.ctx.shadowOffsetX = self.objects[key].shadow.x;
+					self.ctx.shadowOffsetY = self.objects[key].shadow.y;
+					self.ctx.shadowBlur = self.objects[key].shadow.blur;
+				}
+				
 		    	self.objects[key].render(self);
+							
 		    	self.ctx.restore();
 			}
 		});
