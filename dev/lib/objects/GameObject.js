@@ -19,6 +19,7 @@ function GameObject(options){
 	}
 	this.render = true;
 	this.rotation = 0.0;
+	this._lastRotation = this.rotation;
 	this.visible = true;
 	this.width = 0;
 
@@ -28,6 +29,7 @@ function GameObject(options){
 	this._loadOptions(options); //Overwrite default options from options object
 
 	function _tick(jsGame){
+		this._lastRotation = this.rotation;
 		return;
 	}
 

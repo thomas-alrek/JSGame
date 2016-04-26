@@ -15,19 +15,22 @@ function _add(obj, name){
 
 	//obj._tick(_this);
 
-
 	//if(obj.isPrototypeOf(GameObject)){
-		if(typeof name === 'undefined'){
-			_this.children[UUID()] = obj;
-		}else{
-			if(typeof _this.children[name] !== 'undefined'){
-				throw Error("'" + name + "' is already exists");
-			}
-			_this.children[name] = obj;
-		}
+	if(typeof name === 'undefined'){
+		var name = UUID();
+	}
+	
+	if(typeof _this.children[name] !== 'undefined'){
+		throw Error("'" + name + "' is already exists");
+	}
+	
+	_this.children[name] = obj;
+	_this.children[name]._tick(_this);
 	/*}else{
 		throw TypeError("Object must be an instance of GameObject");
 	}*/
+	
+	return _this.children[name];
 }
 
 GameObject.prototype.add = _add;

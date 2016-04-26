@@ -8,9 +8,11 @@ function Text(options){
 	this.fontsize = 20;
 	this.height = this.size;
 	this.string = "";
+	this.style = "normal";
+	this.weight = "normal";
 
 	function _setStyle(renderer){
-		renderer.ctx.font = _this.fontsize + "px " + _this.font;
+		renderer.ctx.font = _this.style + " " + _this.weight + " " + _this.fontsize + "px " + _this.font;
 		renderer.ctx.fillStyle = _this.color;
 	}
 

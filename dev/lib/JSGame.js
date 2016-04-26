@@ -22,12 +22,13 @@ function JSGame(options){
 		color: "#f00"
 	};
 	this.debugColor = "#f00";
-	this.deltaTime = 0;
+	this.deltaTime = 0; //placeholder
 	this.fps = 0;
 	this.fpsAccuracy = 10;
 	this.fpsSampleTime = 100;
 	this.height = window.innerHeight;
 	this.width = window.innerWidth;
+	this.preserveContent = true;
 
 	this._loadOptions(options); //Overwrite default options from options object
 
@@ -54,9 +55,11 @@ function JSGame(options){
 		}
 
 		var time = (_currentFrame = new Date) - _lastFrame;
-		_this.deltaTime = time;
+		//_this.deltaTime = time;
 		_frameTime += (time - _frameTime) / _this.fpsAccuracy;
 		_lastFrame = _currentFrame;
+		var fps = 1000 / _frameTime;
+		//_this.deltaTime =  ((1 / _frameTime) * 1000) / 60;
 	}
 
 	/* initialize JSGame instance */
@@ -95,6 +98,12 @@ function JSGame(options){
 		/* start rendering */
 		requestAnimationFrame(_render);
 	}
+	
+	/* should be moved to separate prototype
+	function _lerp(value, target, time){
+        return (target - value) * time + value;
+    }
+	*/
 
 	function _rotate(object, operation){
 		if(object.rotation !== 0.0){
@@ -115,7 +124,7 @@ function JSGame(options){
 	}
 
 	/* render pipeline */
-	function _render(){
+	function _render(delta){
 		
 		requestAnimationFrame(_render);
 
@@ -125,12 +134,20 @@ function JSGame(options){
 		_this.ctx.save();
 
 		Object.keys(_this.children).forEach(function(key){
-
+					
 			_this.children[key]._tick(_this);
 			_this.ctx.restore();
 			_this.ctx.save();
+			
+			Object.keys(_this.children[key].children).forEach(function(_key){
+				_this.ctx.save();
+				_this.ctx.translate(_this.children[key].position.x, _this.children[key].position.y);
+				_this.children[key].children[_key]._tick(_this);
+				_this.children[key].children[_key]._render(_this);
+				_this.ctx.restore();
+			});
 
-			if(_this.children[key].visible && _this.children[key].alpha !== 0.0 && _this.children[key].render){
+			if(_this.children[key].visible && _this.children[key].alpha > 0.0 && _this.children[key].render){
 
 				_this.ctx.globalAlpha = _this.children[key].alpha;
 
@@ -154,6 +171,8 @@ function JSGame(options){
 					_this.ctx.save();
 					_this.ctx.strokeStyle = _this.debugColor;
 					_rotate(_this.children[key], function(){
+						_this.ctx.setLineDash([8]);
+						_this.ctx.lineWidth = 2;
 						_this.ctx.strokeRect(_this.children[key].position.x, _this.children[key].position.y, _this.children[key].width , _this.children[key].height);
 						_this.ctx.fillStyle = _this.debug.color;
 						var fontsize = _this.debug.fontsize;
@@ -165,20 +184,33 @@ function JSGame(options){
 					});
 				}
 			}
+			
+			/* garbage collection */
+			/*
+			if(typeof _this.children[key].radius !== 'undefined'){
+				if(_this.children[key].radius <= 0 || _this.children[key].alpha <= 0){
+					delete _this.children[key];
+				}
+			}
+			*/
 		});
 
 		_this.ctx.restore();
 
 		if(_this.debug.enabled){
 			_this.ctx.save();
-			_this.children.___jsgame_fps_meter___.position.x = _this.width - _this.children.___jsgame_fps_meter___.width;
-			_this.children.___jsgame_fps_meter___.position.y = _this.children.___jsgame_fps_meter___.height;
-			_this.children.___jsgame_fps_meter___.string = _this.fps;
+			_this.children.___jsgame_fps_meter___.font = _this.debug.font;
+			_this.children.___jsgame_fps_meter___.fontsize = _this.debug.fontsize;
+			_this.children.___jsgame_fps_meter___.color = _this.debug.color;
 			_this.children.___jsgame_fps_meter___._tick(_this);
+			_this.children.___jsgame_fps_meter___.position.x = _this.width - _this.children.___jsgame_fps_meter___.width - _this.debug.fontsize / 2;
+			_this.children.___jsgame_fps_meter___.position.y = _this.children.___jsgame_fps_meter___.height - _this.debug.fontsize + 5;
+			_this.children.___jsgame_fps_meter___.string = _this.fps;
 			_this.children.___jsgame_fps_meter___._render(_this);
 			_this.ctx.restore();
 		}
-
+		
+		//_this.deltaTime =  (1/_this.fps) * 1000;
 	}
 
 	_init(); //initialize instance
