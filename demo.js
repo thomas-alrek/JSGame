@@ -141,10 +141,6 @@ var scaleText = setInterval(function(){
 					setInterval(function(){
 						particleTarget += 360;
 					}, 1000);
-					setInterval(function(){
-						particle.speed.x = (Math.random() * (speedX * 2)) - speedX;
-						particle.speed.y = (Math.random() * (speedY * 2)) - speedY;
-					}, 10);
 					clearInterval(shrink);
 					helloWorldTarget += 360;
 					fx1.position.x = -100;
@@ -160,8 +156,6 @@ var scaleText = setInterval(function(){
 						about.rotation += game.lerp(about.rotation, aboutRotationTarget, game.deltaTime / 1000);
 						helloWorld.rotation += game.lerp(helloWorld.rotation, helloWorldTarget, game.deltaTime / 1000);
 						helloWorld.alpha += game.lerp(helloWorld.alpha, alphaTarget, game.deltaTime / 1000);
-						fx1.speed.x = (Math.random() * (5 * 2)) - 5;
-						fx1.speed.y = (Math.random() * (5 * 2)) - 5;
 						if(about.visible && about.x > game.width + about.width && about.y > game.height + about.height){
 							about.visible = false;
 						}
