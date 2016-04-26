@@ -1,3 +1,8 @@
+@font-face{
+	font-family: "QuirkyRobot";
+	src: url('QuirkyRobot.woff') format('woff');
+}
+
 html{
 	overflow: hidden;
 	background-color: #000;

@@ -6,7 +6,7 @@
 var game = new JSGame();
 
 var particle = game.add(new ParticleSystem({
-	count: 300,
+	count: 30,
 	speed: {
 		x: 0,
 		y: 0
@@ -25,6 +25,27 @@ var particle = game.add(new ParticleSystem({
 	},
 }));
 
+var fx1 = game.add(new ParticleSystem({
+	count: 100,
+	speed: {
+		x: 4,
+		y: -8
+	},
+	color: {
+		r: 255,
+		g: 32,
+		b: 64,
+	},
+	glow: true,
+	life: 10,
+	radius: 0,
+	visible: false,
+	position: {
+		x: game.width / 2,
+		y: game.height / 2
+	},
+}));
+
 particle.position.x =  game.width / 2 - particle.width / 2;
 particle.position.y =  game.height / 2 - particle.height / 2;
 
@@ -34,8 +55,8 @@ var helloWorld = game.add(new Text({
 		x: game.width / 2,
 		y: game.height / 2
 	},
-	weight: "bold",
 	color: "yellow",
+	font: "QuirkyRobot",
 	fontsize: 0,
 	shadow: {
 		enabled: true,
@@ -46,27 +67,49 @@ var helloWorld = game.add(new Text({
 	}
 }));
 
+var about = game.add(new Text({
+	string: "Coded by Thomas Alrek",
+	position: {
+		x: -100,
+		y: -100
+	},
+	weight: "bold",
+	color: "red",
+	font: "QuirkyRobot",
+	fontsize: 50,
+	visible: false,
+	shadow: {
+		enabled: true,
+		blur: 10,
+		color: "green",
+		x: -1,
+		y: -1
+	}
+}));
+
 helloWorld.position.x =  game.width / 2 - helloWorld.width / 2;
 helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;
-particle.position.x =  game.width / 2 - particle.width / 2;
-particle.position.y =  game.height / 2 - particle.height / 2;
+
+var alphaTarget = 0;
+var particleTarget = 0;
+var helloWorldTarget = 0;
+var fx1Target = {
+	x: -100,
+	y: -100
+}
+var aboutTarget = {
+	x: game.width + about.width + 100,
+	y: game.height + about.height + 100
+}
+var aboutRotationTarget = 0;
 
 var scaleParticle = setInterval(function(){
 	particle.radius++;
 	particle.position.x =  game.width / 2 - particle.width / 2;
 	particle.position.y =  game.height / 2 - particle.height / 2;
 	if(particle.radius > 50){
+		particle.count = 50;
 		clearInterval(scaleParticle);
-		particle.speed.x = 0.5;
-		particle.speed.y = -4;
-		particle.life = 100;
-		setInterval(function(){
-			particle.rotation -= 0.2;
-		}, 0);
-		setInterval(function(){
-			particle.speed.x = (Math.random() * 8) - 4;
-			particle.speed.y = (Math.random() * 8) - 4;
-		}, 10);
 	}
 }, 0)
 
@@ -79,43 +122,93 @@ var scaleText = setInterval(function(){
 		var rotation = setInterval(function(){
 			helloWorld.rotation += 0.8;
 		}, 0);
-		setInterval(function(){
-			if(helloWorld.fontsize < 1){
-				clearInterval(rotation);
-				helloWorld.string = "Hello World!";
-				helloWorld.color = "red";
-				setInterval(function(){
-					if(helloWorld.fontsize > 140){
-						helloWorld.rotation = 0;
-						return;
-					}
-					helloWorld.fontsize++;
-					helloWorld.position.x =  game.width / 2 - helloWorld.width / 2;
-					helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;
-				})
-			}else{
+		setTimeout(function(){
+			clearInterval(rotation);
+			var shrink = setInterval(function(){
+				var speedX = 4;
+				var speedY = 4;
+				var shrinking = false;
+				if(helloWorld.fontsize <= 30){
+					particle.speed.x = speedX;
+					particle.speed.y = speedY;
+					particle.life = 100;
+					particle.position.x =  game.width / 2 - particle.width / 2;
+					particle.position.y =  game.height / 2 - particle.height / 2;
+					setInterval(function(){
+						particle.rotation += game.lerp(particle.rotation, particleTarget, game.deltaTime / 1000);
+					}, 0);
+					particleTarget += 360;
+					setInterval(function(){
+						particleTarget += 360;
+					}, 1000);
+					setInterval(function(){
+						particle.speed.x = (Math.random() * (speedX * 2)) - speedX;
+						particle.speed.y = (Math.random() * (speedY * 2)) - speedY;
+					}, 10);
+					clearInterval(shrink);
+					helloWorldTarget += 360;
+					fx1.position.x = -100;
+					fx1.position.y = -100;
+					fx1.visible = true;
+					fx1.radius = 20;
+					about.visible = true;
+					setInterval(function(){
+						fx1.position.x += game.lerp(fx1.position.x, fx1Target.x, game.deltaTime / 1000);
+						fx1.position.y += game.lerp(fx1.position.y, fx1Target.y, game.deltaTime / 1000);
+						about.position.x += game.lerp(about.position.x, aboutTarget.x, game.deltaTime / 1000 / 10);
+						about.position.y += game.lerp(about.position.y, aboutTarget.y, game.deltaTime / 1000 / 10);
+						about.rotation += game.lerp(about.rotation, aboutRotationTarget, game.deltaTime / 1000);
+						helloWorld.rotation += game.lerp(helloWorld.rotation, helloWorldTarget, game.deltaTime / 1000);
+						helloWorld.alpha += game.lerp(helloWorld.alpha, alphaTarget, game.deltaTime / 1000);
+						fx1.speed.x = (Math.random() * (5 * 2)) - 5;
+						fx1.speed.y = (Math.random() * (5 * 2)) - 5;
+						if(about.visible && about.x > game.width + about.width && about.y > game.height + about.height){
+							about.visible = false;
+						}
+					}, 0);
+					setInterval(function(){
+						fx1Target.x = Math.random() * game.width;
+						fx1Target.y = Math.random() * game.height;
+					}, 2000);
+					setInterval(function(){
+						alphaTarget = !alphaTarget;
+					}, 3000)
+					setInterval(function(){
+						helloWorldTarget += 360;
+						aboutRotationTarget -= 180;
+					}, 1500);
+					setInterval(function(){
+						helloWorld.position.x =  game.width / 2 - helloWorld.width / 2;
+						helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;
+						if(shrinking && helloWorld.fontsize >= 30){
+							helloWorld.fontsize--;
+						}else{
+							helloWorld.fontsize++;
+						}
+						if(helloWorld.fontsize <= 30){
+							setTimeout(function(){
+								shrinking = false;
+							}, 100);
+						}
+						if(helloWorld.fontsize >= 160){
+							setTimeout(function(){
+								shrinking = true;
+							}, 100);
+						}
+					});
+				}
+				helloWorld.rotation += 1;
 				helloWorld.fontsize--;
 				helloWorld.position.x =  game.width / 2 - helloWorld.width / 2;
-				helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;				
-			}
-		}, 1)
-		/*
-		setInterval(function(){
-			for(var i = 0; i < 10; i++){
-				game.add(new Particle({
-					position: {
-						x: Math.random() * game.width,
-						y: Math.random() * game.height
-					}
-				}));
-			}
-		}, 1000)*/
+				helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;
+			}, 10);
+		}, 2000);
 	}
 }, 1)
 
 setTimeout(function(){
 	game.debug.enabled = true;
-}, 20000);
+}, 60000);
 
 //game.debug.enabled = true;
 
