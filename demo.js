@@ -26,22 +26,22 @@ document.getElementById("graphics").addEventListener("click", function(){
 
 document.getElementById("spawn").addEventListener("click", function(){
 	game.add(new ParticleSystem({
-		count: Math.random() * 100 + 5,
+		count: Math.round(Math.random() * 100 + 5),
 		speed: {
-			x: Math.random() * 5,
-			y: Math.random() * 5
+			x: Math.round(Math.random() * 5),
+			y: Math.round(Math.random() * 5)
 		},
 		color: {
-			r: Math.random() * 255,
-			g: Math.random() * 255,
-			b: Math.random() * 255,
+			r: Math.round(Math.random() * 255),
+			g: Math.round(Math.random() * 255),
+			b: Math.round(Math.random() * 255),
 		},
 		glow: true,
-		life: Math.random() * 100,
-		radius: Math.random() * 50,
+		life: Math.round(Math.random() * 100),
+		radius: Math.round(Math.random() * 50),
 		position: {
-			x: Math.random() * game.width,
-			y: Math.random() * game.height
+			x: Math.round(Math.random() * game.width),
+			y: Math.round(Math.random() * game.height)
 		},
 	}));
 });
