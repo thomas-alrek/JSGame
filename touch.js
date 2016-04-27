@@ -1,5 +1,4 @@
 var game = new JSGame();
-game.debug.enabled = true;
 
 var fingers = [];
 
