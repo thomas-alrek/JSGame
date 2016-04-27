@@ -4,6 +4,51 @@
  ************************/
 
 var game = new JSGame();
+game.debug.color = "yellow";
+
+document.getElementById("debug").addEventListener("click", function(){
+	game.debug.enabled = !game.debug.enabled;
+	if(game.debug.enabled){
+		this.innerHTML = "Disable debugging";
+	}else{
+		this.innerHTML = "Enable debugging";
+	}
+});
+
+document.getElementById("graphics").addEventListener("click", function(){
+	game.antialiasing = !game.antialiasing;
+	if(game.antialiasing){
+		this.innerHTML = "High graphics";
+	}else{
+		this.innerHTML = "Low graphics";
+	}
+});
+
+document.getElementById("spawn").addEventListener("click", function(){
+	game.add(new ParticleSystem({
+		count: Math.random() * 100 + 5,
+		speed: {
+			x: Math.random() * 5,
+			y: Math.random() * 5
+		},
+		color: {
+			r: Math.random() * 255,
+			g: Math.random() * 255,
+			b: Math.random() * 255,
+		},
+		glow: true,
+		life: Math.random() * 100,
+		radius: Math.random() * 50,
+		position: {
+			x: Math.random() * game.width,
+			y: Math.random() * game.height
+		},
+	}));
+});
+
+document.getElementById("delete").addEventListener("click", function(){
+	delete game.children[Object.keys(game.children)[Object.keys(game.children).length - 1]];
+});
 
 var particle = game.add(new ParticleSystem({
 	count: 30,
@@ -160,10 +205,12 @@ var scaleText = setInterval(function(){
 							about.visible = false;
 						}
 					}, 0);
-					setInterval(function(){
-						fx1Target.x = Math.random() * game.width;
-						fx1Target.y = Math.random() * game.height;
-					}, 2000);
+					fx1Target.x = Math.random() * game.width;
+					fx1Target.y = Math.random() * game.height;
+					game.canvas.addEventListener('mousemove', function(e){
+						fx1Target.x = e.clientX;
+						fx1Target.y = e.clientY;
+					});
 					setInterval(function(){
 						alphaTarget = !alphaTarget;
 					}, 3000)
@@ -199,10 +246,6 @@ var scaleText = setInterval(function(){
 		}, 2000);
 	}
 }, 1)
-
-setTimeout(function(){
-	game.debug.enabled = true;
-}, 60000);
 
 //game.debug.enabled = true;
 
