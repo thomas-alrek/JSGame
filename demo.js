@@ -4,7 +4,7 @@
  ************************/
 
 var game = new JSGame();
-game.debug.color = "yellow";
+game.debug.color = "#ff0";
 
 document.getElementById("debug").addEventListener("click", function(){
 	game.debug.enabled = !game.debug.enabled;
@@ -16,7 +16,7 @@ document.getElementById("debug").addEventListener("click", function(){
 });
 
 document.getElementById("graphics").addEventListener("click", function(){
-	game.antialiasing = !game.antialiasing;
+	game.antialiasing(!game.antialiasing());
 	if(game.antialiasing){
 		this.innerHTML = "High graphics";
 	}else{
