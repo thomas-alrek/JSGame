@@ -21,3 +21,9 @@ canvas{
 	image-rendering: pixelated;
 	-ms-interpolation-mode: nearest-neighbor;
 }
+
+.overlay{
+	position: absolute;
+	top: 10px;
+	left: 5px;
+}
