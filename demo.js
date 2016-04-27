@@ -221,6 +221,8 @@ var scaleText = setInterval(function(){
 					setInterval(function(){
 						helloWorld.position.x =  game.width / 2 - helloWorld.width / 2;
 						helloWorld.position.y =  game.height / 2 - helloWorld.height / 2;
+						particle.position.x =  game.width / 2 - particle.width / 2;
+						particle.position.y =  game.height / 2 - particle.height / 2;
 						if(shrinking && helloWorld.fontsize >= 30){
 							helloWorld.fontsize--;
 						}else{
