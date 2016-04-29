@@ -8,3 +8,12 @@ function Transform(options){
 }
 
 Transform.prototype = new JSGamePrimitive();
+
+Transform.prototype.translate = function(vector){
+    if(!(vector instanceof Vector2)){
+        throw TypeError("Vector must be an instance of Vector2");
+    }
+    this.position.x += vector.x;
+    this.position.y += vector.y;
+    return this.position;  
+}
