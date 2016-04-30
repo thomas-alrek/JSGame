@@ -11,4 +11,4 @@ function GameObject(options){
     return this;
 }
 
-GameObject.prototype = new JSGamePrimitive();
+GameObject.prototype = new JSGameComponent();

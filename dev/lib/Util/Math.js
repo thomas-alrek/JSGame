@@ -20,3 +20,7 @@ Math.randomRange = function(min, max, integer){
 Math.invert = function(num){
     return num * -1;
 }
+
+Math.clamp = function(value, min, max){
+    return Math.min(Math.max(value, min), max);
+}

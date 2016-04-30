@@ -1,8 +1,8 @@
 "use strict";
 
-function JSGamePrimitive(){}
+function JSGameComponent(){}
 
-JSGamePrimitive.prototype.__construct = function(options){
+JSGameComponent.prototype.__construct = function(options){
     var self = this;
     if(typeof options === 'undefined'){
         return;
@@ -16,6 +16,6 @@ JSGamePrimitive.prototype.__construct = function(options){
     }
 }
 
-JSGamePrimitive.prototype.toString = function(){
+JSGameComponent.prototype.toString = function(){
     return JSON.stringify(this);
 }

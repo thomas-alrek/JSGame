@@ -6,6 +6,7 @@ function Time(options){
     this.deltaTime = 0;
     this.fixedDeltaTime = 0;
     this.smoothDeltaTime = 0;
+    this.smoothFixedDeltaTime = 0;
     this.maximumDeltaTime = 0;
     this.maximumFixedDeltaTime = 0;
     this.time = this.startupTime;
@@ -16,12 +17,11 @@ function Time(options){
     return this;
 }
 
-Time.prototype = new JSGamePrimitive();
+Time.prototype = new JSGameComponent();
 
 Time.prototype.update = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
-    var oldDeltaTime = self.deltaTime;
     timestamp = timestamp / 1000;
     self.time = timestamp;
     if(self.startupTime === 0){
@@ -29,7 +29,7 @@ Time.prototype.update = function(timestamp){
         self.lastUpdateTime = self.startupTime;
     }
     self.deltaTime = (self.time - self.lastUpdateTime);
-    if(self.deltaTime > oldDeltaTime){
+    if(self.deltaTime > self.maximumDeltaTime){
         self.maximumDeltaTime = self.deltaTime;
     }
     self.smoothDeltaTime = parseFloat(self.deltaTime.toFixed(2));
@@ -40,7 +40,6 @@ Time.prototype.update = function(timestamp){
 Time.prototype.fixedUpdate = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
-    var oldFixedDeltaTime = self.fixedDeltaTime;
     timestamp = timestamp / 1000;
     self.fixedTime = timestamp;
     if(self.startupTime === 0){
@@ -48,7 +47,7 @@ Time.prototype.fixedUpdate = function(timestamp){
         self.lastFixedUpdateTime = self.startupTime;
     }
     self.fixedDeltaTime = (self.fixedTime - self.lastFixedUpdateTime);
-    if(self.fixedDeltaTime > oldFixedDeltaTime){
+    if(self.fixedDeltaTime > self.maximumFixedDeltaTime){
         self.maximumFixedDeltaTime = self.fixedDeltaTime;
     }
     self.smoothFixedDeltaTime = parseFloat(self.fixedDeltaTime.toFixed(2));
@@ -56,5 +55,5 @@ Time.prototype.fixedUpdate = function(timestamp){
 }
 
 Time.prototype.framerateToTime = function(fps){
-    return (1 / fps);
+    return ((1 / fps));
 }
