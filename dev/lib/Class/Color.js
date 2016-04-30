@@ -10,7 +10,8 @@ function Color(options){
         return new Color({
             r: Math.round(Math.clamp(self.r, 0, 255)),
             g: Math.round(Math.clamp(self.g, 0, 255)),
-            b: Math.round(Math.clamp(self.b, 0, 255))
+            b: Math.round(Math.clamp(self.b, 0, 255)),
+            alpha: Math.clamp(self.alpha, 0, 1)
         });
     }
     this.__construct(options);
@@ -36,91 +37,187 @@ Color.prototype.invert = function(invertAlpha){
     })
 }
 
+Color.prototype.red = function(){
+    return new Color({
+        r: 255,
+        g: 0,
+        b: 0
+    });
+}
+
+Color.prototype.green = function(){
+    return new Color({
+        r: 0,
+        g: 255,
+        b: 0
+    });
+}
+
+Color.prototype.blue = function(){
+    return new Color({
+        r: 0,
+        g: 0,
+        b: 255
+    });
+}
+
+Color.prototype.black = function(){
+    return new Color({
+        r: 0,
+        g: 0,
+        b: 0
+    });
+}
+
+Color.prototype.white = function(){
+    return new Color({
+        r: 255,
+        g: 255,
+        b: 255
+    });
+}
+
+Color.prototype.cyan = function(){
+    return new Color({
+        r: 0,
+        g: 255,
+        b: 255
+    });
+}
+
+Color.prototype.magenta = function(){
+    return new Color({
+        r: 255,
+        g: 0,
+        b: 255
+    });
+}
+
+Color.prototype.yellow = function(){
+    return new Color({
+        r: 255,
+        g: 255,
+        b: 0
+    });
+}
+
+Color.prototype.grey = function(){
+    return new Color({
+        r: 128,
+        g: 128,
+        b: 128
+    });
+}
+
 Color.prototype.add = function(color){
-    if(typeof color === 'number'){
-        return new Color({
-            r: this.r + color,
-            g: this.g + color,
-            b: this.b + color
-        });
+    switch(typeof color){
+        case 'object':
+            if(!(color instanceof Color)){
+                throw TypeError("Object not an instance of Color");
+            }
+            return new Color({
+                r: this.r + color.r,
+                g: this.g + color.g,
+                b: this.b + color.b
+            });
+            break;
+        case 'number':
+            return new Color({
+                r: this.r + color,
+                g: this.g + color,
+                b: this.b + color
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(color instanceof Color){
-        return new Color({
-            r: this.r + color.r,
-            g: this.g + color.g,
-            b: this.b + color.b
-        });
-    }
-    throw TypeError("Color can't be added with " + typeof color);
 }
 
 Color.prototype.multiply = function(color){
-    if(typeof color === 'number'){
-        return new Color({
-            r: this.r * color,
-            g: this.g * color,
-            b: this.b * color
-        });
+    switch(typeof color){
+        case 'object':
+            if(!(color instanceof Color)){
+                throw TypeError("Object not an instance of Color");
+            }
+            return new Color({
+                r: this.r * color.r,
+                g: this.g * color.g,
+                b: this.b * color.b
+            });
+            break;
+        case 'number':
+            return new Color({
+                r: this.r * color,
+                g: this.g * color,
+                b: this.b * color
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(color instanceof Color){
-        return new Color({
-            r: this.r * color.r,
-            g: this.g * color.g,
-            b: this.b * color.b
-        });
-    }
-    throw TypeError("Color can't be multiplied with " + typeof color);
 }
 
 Color.prototype.divide = function(color){
-    if(typeof color === 'number'){
-        if(color === 0){
-            throw Error("Division by zero");
-        }else{
-            return new Color({
-                r: this.r / color,
-                g: this.g / color,
-                b: this.b / color
-            });
-        }
-    }
-    if(color instanceof Color){
-        if(color.r === 0 || color.g === 0 || color.b === 0){
-            throw Error("Division by zero");
-        }else{
+    switch(typeof color){
+        case 'object':
+            if(!(color instanceof Color)){
+                throw TypeError("Object not an instance of Color");
+            }
             return new Color({
                 r: this.r / color.r,
                 g: this.g / color.g,
                 b: this.b / color.b
             });
-        }
-    }
-    if(!divideColor){
-        throw TypeError("Color can't be divided with " + typeof color);
+            break;
+        case 'number':
+            return new Color({
+                r: this.r / color,
+                g: this.g / color,
+                b: this.b / color
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
 }
 
 Color.prototype.subtract = function(color){
-    if(typeof color === 'number'){
-        return new Color({
-            r: this.r - color,
-            g: this.g - color,
-            b: this.b - color
-        });
+    switch(typeof color){
+        case 'object':
+            if(!(color instanceof Color)){
+                throw TypeError("Object not an instance of Color");
+            }
+            return new Color({
+                r: this.r - color.r,
+                g: this.g - color.g,
+                b: this.b - color.b
+            });
+            break;
+        case 'number':
+            return new Color({
+                r: this.r - color,
+                g: this.g - color,
+                b: this.b - color
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(color instanceof Color){
-        return new Color({
-            r: this.r - color.r,
-            g: this.g - color.g,
-            b: this.b - color.b
-        });
+}
+
+Color.prototype.equal = function(color){
+    if(!(color instanceof Color)){
+        throw TypeError("Argument not an instance of Color");
     }
-    throw TypeError("Color can't be subtracted with " + typeof color);
+    if(this.r === color.r && this.g === color.g && this.b === color.b){
+        return true;
+    }
+    return false;
 }
 
 Color.prototype.lerp = function(a, b, t){
     if(!(a instanceof Color) || !(b instanceof Color)){
-        throw TypeError("Argument must be an instance of Color");
+        throw TypeError("Argument not an instance of Color");
     }
     if(typeof t !== 'number'){
         throw TypeError("Argument must be a number");

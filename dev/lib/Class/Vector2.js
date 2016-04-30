@@ -52,70 +52,106 @@ Vector2.prototype.zero = function(){
 }
 
 Vector2.prototype.add = function(vector){
-    if(typeof vector === 'number'){
-        this.x += vector;
-        this.y += vector;
-        return this;
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x + vector.x,
+                y: this.y + vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x + vector,
+                y: this.y + vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(vector instanceof Vector2){
-        this.x += vector.x;
-        this.y += vector.y;
-        return this;
-    }
-    throw TypeError("Vector2 can't be added with " + typeof vector);
 }
 
 Vector2.prototype.multiply = function(vector){
-    if(typeof vector === 'number'){
-        this.x *= vector;
-        this.y *= vector;
-        return this;
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x * vector.x,
+                y: this.y * vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x * vector,
+                y: this.y * vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(vector instanceof Vector2){
-        this.x *= vector.x;
-        this.y *= vector.y;
-        return this;
-    }
-    throw TypeError("Vector2 can't be multiplied with " + typeof vector);
 }
 
 Vector2.prototype.divide = function(vector){
-    if(typeof vector === 'number'){
-        this.x /= vector;
-        this.y /= vector;
-        if(isFinite(this.x) && isFinite(this.y)){
-            return this;
-        }
-        throw Error("Division by zero");
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x / vector.x,
+                y: this.y / vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x / vector,
+                y: this.y / vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(vector instanceof Vector2){
-        this.x /= vector.x;
-        this.y /= vector.y;
-        if(isFinite(this.x) && isFinite(this.y)){
-            return this;
-        }
-        throw Error("Division by zero");
-    }
-    throw TypeError("Vector2 can't be divided with " + typeof vector);
 }
 
 Vector2.prototype.subtract = function(vector){
-    if(typeof vector === 'number'){
-        this.x -= vector;
-        this.y -= vector;
-        return this;
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x - vector.x,
+                y: this.y - vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x - vector,
+                y: this.y - vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
     }
-    if(vector instanceof Vector2){
-        this.x -= vector.x;
-        this.y -= vector.y;
-        return this;
+}
+
+Vector2.prototype.equal = function(vector){
+    if(!(vector instanceof Vector2)){
+        throw TypeError("Argument not an instance of Vector2");
     }
-    throw TypeError("Vector2 can't be subtracted with " + typeof vector);
+    if(this.x === vector.r && this.y === vector.y){
+        return true;
+    }
+    return false;
 }
 
 Vector2.prototype.lerp = function(a, b, t){
     if(!(a instanceof Vector2) || !(b instanceof Vector2)){
-        throw TypeError("Argument must be an instance of Vector2");
+        throw TypeError("Argument not an instance of Vector2");
     }
     if(typeof t !== 'number'){
         throw TypeError("Argument must be a number");
