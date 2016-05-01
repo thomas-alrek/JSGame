@@ -6,20 +6,20 @@
 		<meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no"/>
 	</head>
 	<body>
-		<div class="overlay">
-			<button id="debug">Enable debugging</button>
-			<button id="graphics">Low graphics</button>
-			<button id="spawn">Spawn ParticleSystem</button>
-			<button id="delete">Delete GameObject</button>
+		<div id="color">
+			<input id="r" type="range" min="0" max="255" step="1" />
+			<input id="g" type="range" min="0" max="255" step="1" />
+			<input id="b" type="range" min="0" max="255" step="1" />
 		</div>
-		<script src="lib/JSGame.js"></script>
-		<script src="lib/prototypes/JSGame.antialiasing.js"></script>
-		<script src="lib/objects/GameObject.js"></script>
-		<script src="lib/prototypes/Options.js"></script>
-		<script src="lib/objects/Text.js"></script>
-		<script src="lib/objects/Particle.js"></script>
-		<script src="lib/objects/ParticleSystem.js"></script>
-		<script src="lib/prototypes/GameObject.add.js"></script>
-		<script src="demo.js"></script>
+		<canvas id="screen"></canvas>
+		<script src="lib/Util/Math.js"></script>
+		<script src="lib/Class/JSGameComponent.js"></script>
+		<script src="lib/Util/Time.js"></script>
+		<script src="lib/Class/GameObject.js"></script>
+		<script src="lib/Class/Color.js"></script>
+		<script src="lib/Class/Physics2D.js"></script>
+		<script src="lib/Class/Transform.js"></script>
+		<script src="lib/Class/Vector2.js"></script>
+		<script src="main.js"></script>
 	</body>
 </html>
