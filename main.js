@@ -42,7 +42,6 @@ function render(delta){
     ctx.restore();
     var boxCol =  new Color();
     boxCol.alpha = 0.5;
-    console.log(boxCol.toString());
     ctx.save();
     ctx.shadowColor = "black";
     ctx.shadowBlur = 10;
@@ -51,6 +50,7 @@ function render(delta){
     ctx.restore();
     bg = bg.add(new Color().lerp(bg, targetColor, Time.deltaTime * 10)).clamp();
     document.body.style.backgroundColor = bg.toString();
+    //document.getElementById("tree").innerHTML = ObjectTree(a).toString();
 }
 
 function fixedUpdate(){
