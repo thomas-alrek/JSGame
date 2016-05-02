@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="tree.css">
+    </head>
+    <body>
+<ul class="explist"><li data-property="JSGameComponent"><ul><li data-property="width"><input type="text" value="0"></li><li data-property="height"><input type="text" value="0"></li><li data-property="visible"><input type="checkbox"></li><li data-property="transform"><ul><li data-property="rotation"><input type="text" value="0"></li><li data-property="position"><ul><li data-property="x"><input type="text" value="411.2"></li><li data-property="y"><input type="text" value="194"></li></ul></li></ul></li><li data-property="physics"><ul><li data-property="gravity"><ul><li data-property="x"><input type="text" value="0"></li><li data-property="y"><input type="text" value="9.81"></li></ul></li><li data-property="velocity"><ul><li data-property="x"><input type="text" value="0"></li><li data-property="y"><input type="text" value="0"></li></ul></li></ul></li></ul></li></ul>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script>
+            function prepareList() {
+            $('.explist').find('li:has(ul)')
+                .click( function(event) {
+                    if (this == event.target) {
+                        $(this).toggleClass('expanded');
+                        $(this).children('ul').toggle(100);
+                    }
+                    return false;
+                })
+
+                .addClass('expanded')
+                .addClass('collapsed')
+                .children('ul').show();
+            };
+            
+            $(document).ready( function() {
+                prepareList();
+            });
+        </script>
+    </body>
+</html>

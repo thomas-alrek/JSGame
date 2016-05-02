@@ -3,6 +3,7 @@
 		<title>JS Game</title>
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="tree.css">
 		<meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no"/>
 	</head>
 	<body>
@@ -11,7 +12,7 @@
 			<input id="g" type="range" min="0" max="255" step="1" />
 			<input id="b" type="range" min="0" max="255" step="1" />
 		</div>
-		<div id="tree"></div>
+		<div id="inspector"></div>
 		<canvas id="screen"></canvas>
 		<script src="lib/Util/Math.js"></script>
 		<script src="lib/Class/JSGameComponent.js"></script>
@@ -22,6 +23,7 @@
 		<script src="lib/Class/Transform.js"></script>
 		<script src="lib/Class/Vector2.js"></script>
 		<script src="lib/Util/ObjectTree.js"></script>
+		<script src="lib/Util/GUIWindow.js"></script>
 		<script src="main.js"></script>
 	</body>
 </html>

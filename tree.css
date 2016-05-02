@@ -1,0 +1,74 @@
+#inspector{
+    width: 300px;
+    right: 0;
+    position: absolute;
+}
+
+ul.explist{
+    padding-left: 0px!important;
+    font-size: 16px;
+}
+
+.explist ul, li {
+    list-style: none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+}
+
+.explist p {
+    margin:0;
+    display:block;
+}
+.explist p:hover {
+    background-color:#121212;
+}
+
+.explist li {
+    text-indent: 16px;
+    padding-left: 8px;
+    background-repeat: no-repeat;
+    border-left: 1px solid #000;
+    border-left-style: dashed;
+    line-height: 1.5em;
+}
+
+.explist li::before{
+    background-image: url("img/Property.png");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    margin-left: -16px;
+    content: "\00a0\00a0\00a0\00a0\00a0" attr(data-property) "\00a0";
+    text-transform: capitalize;
+ }
+
+.explist .collapsed::before{
+    content: "\00a0\00a0\00a0" attr(data-property) "\00a0";
+    background: none;
+    margin-left: -16px;
+    line-height: 16px;
+ }
+
+.explist .collapsed {
+    background-image: url("img/ClosedFolder.png");
+    background-size: 16px 16px;
+    border: none;
+    background-repeat: no-repeat;
+    line-height: 16px;
+}
+
+.explist .expanded::before{
+    content: "\00a0\00a0\00a0" attr(data-property) "\00a0";
+    background: none;
+    margin-left: -16px;
+    line-height: 16px;
+}
+
+.explist .expanded {
+    background: none;
+    background-image: url("img/OpenFolder.png");
+    background-size: 16px 16px;
+    border: none;
+    background-repeat: no-repeat;
+    line-height: 16px;
+}

@@ -37,6 +37,8 @@ function render(delta){
     ctx.save();
     a.transform.position = a.transform.position.add(new Vector2().lerp(a.transform.position, b.transform.position, Time.smoothDeltaTime * 1));
     ctx.strokeRect(Math.round(a.transform.position.x) + 0.5, Math.round(a.transform.position.y) + 0.5, 100, 100);
+    a.transform.position.x = parseFloat(a.transform.position.x.toFixed(1));
+    a.transform.position.y = parseFloat(a.transform.position.y.toFixed(1));
     ctx.fillText((1.0 / Time.deltaTime).toFixed(1) + " FPS", 5, 20);
     ctx.fillText(timeText, 5, 50);
     ctx.restore();
@@ -64,6 +66,12 @@ function fixedUpdate(){
         fixedUpdate();
     }, Time.framerateToTime(50) * 1000);  
 }
+
+/*
+setInterval(function(){
+    document.getElementById("inspector").innerHTML = "";
+    document.getElementById("inspector").appendChild(ObjectTree(a));
+}, 0);*/
 
 render();
 fixedUpdate();
