@@ -1,0 +1,3 @@
+[submodule "lib/Util/ObjectTree"]
+	path = lib/Util/ObjectTree
+	url = https://github.com/alrek-consulting/ObjectTree
