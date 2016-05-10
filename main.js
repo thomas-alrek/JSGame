@@ -4,14 +4,7 @@ var game = new JSGameEngine({
     canvas: document.getElementById("screen")
 });
 
-var harold = game.addComponent(new Background({
-   image: "https://pbs.twimg.com/profile_images/540223285221277696/Xlk9rNfl.jpeg"
-}));
-
-harold.target = new Transform();
-
 var particles = game.addComponent(new ParticleSystem({
-    radius: 50,
     transform: new Transform({
         position: new Vector2({
             x: game.width / 2 / 2, 
@@ -46,6 +39,7 @@ var helloWorldText = game.addComponent(new Text({
 }));
 
 helloWorldText.target = new Transform();
+var helloWorldTextRotation = 0;
 
 setInterval(function(){
     particles.targetColor = new Color({
@@ -57,21 +51,21 @@ setInterval(function(){
     particles.target.position.y = Math.random() * game.height - particles.height / 2;
     helloWorldText.target.position.x = Math.random() * game.width - helloWorldText.width / 2;
     helloWorldText.target.position.y = Math.random() * game.height - helloWorldText.height / 2;
-    harold.target.position.x = Math.random() * game.width - harold.imageWidth / 2;
-    harold.target.position.y = Math.random() * game.height - harold.imageHeight / 2;
 }, 1500);
 
 helloWorldText.onUpdate = function(game){
     this.color = this.color.add(this.color.lerp(this.color, particles.targetColor, Time.deltaTime));
     this.text = "Hello World!!! " + Time.fps + " FPS";
-    this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
+    //this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
+    this.transform.rotation += Math.lerp(this.transform.rotation, helloWorldTextRotation, Time.deltaTime);
 }
 
 particles.onUpdate = function(){
     this.color = this.color.add(this.color.lerp(this.color, this.targetColor, Time.deltaTime));
     this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
+    this.transform.rotation += Math.lerp(this.transform.rotation, 1080, Time.deltaTime / 10);
 }
 
-harold.onUpdate = function(){
-    this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
-}
+setInterval(function(){
+    helloWorldTextRotation += 10;
+}, 500);
