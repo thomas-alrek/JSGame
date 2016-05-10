@@ -5,6 +5,7 @@ var game = new JSGameEngine({
 });
 
 var particles = game.addComponent(new ParticleSystem({
+    radius: 40,
     transform: new Transform({
         position: new Vector2({
             x: game.width / 2 / 2, 
@@ -56,14 +57,13 @@ setInterval(function(){
 helloWorldText.onUpdate = function(game){
     this.color = this.color.add(this.color.lerp(this.color, particles.targetColor, Time.deltaTime));
     this.text = "Hello World!!! " + Time.fps + " FPS";
-    //this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
+    this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
     this.transform.rotation += Math.lerp(this.transform.rotation, helloWorldTextRotation, Time.deltaTime);
 }
 
 particles.onUpdate = function(){
     this.color = this.color.add(this.color.lerp(this.color, this.targetColor, Time.deltaTime));
     this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
-    this.transform.rotation += Math.lerp(this.transform.rotation, 1080, Time.deltaTime / 10);
 }
 
 setInterval(function(){
