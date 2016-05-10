@@ -40,6 +40,7 @@ var helloWorldText = game.addComponent(new Text({
 }));
 
 helloWorldText.target = new Transform();
+helloWorldText.addComponent(new Shadow());
 var helloWorldTextRotation = 0;
 
 setInterval(function(){
