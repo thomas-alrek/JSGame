@@ -36,11 +36,14 @@ var instructions = game.addComponent(new Text({
     })
 }));
 
-particles.targetColor = new Color({
-    r: Math.random() * 255,
-    g: Math.random() * 255,
-    b: Math.random() * 255
-});
+var fps = game.addComponent(new Text({
+    size: 40,
+    text: "0 fps",
+    color: new Color().yellow()
+}));
+
+fps.transform.position.y = 50;
+fps.transform.position.x = 10;
 
 //we use a target instead of directly manipulating the transform, because then we can lerp the transform to the target for framerate independent movement
 particles.target = new Transform(particles.transform);
@@ -161,9 +164,12 @@ setInterval(function(){
 
 helloWorldText.onUpdate = function(game){
     this.color = this.color.add(this.color.lerp(this.color, particles.targetColor, Time.deltaTime));
-    this.text = "Hello World!!! " + Time.fps + " FPS";
     this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
     this.transform.rotation += Math.lerp(this.transform.rotation, helloWorldTextRotation, Time.deltaTime);
+}
+
+fps.onUpdate = function(){
+    this.text = Time.fps + " fps";
 }
 
 setInterval(function(){
