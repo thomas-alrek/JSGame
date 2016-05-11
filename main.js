@@ -41,6 +41,7 @@ var helloWorldText = game.addComponent(new Text({
 
 helloWorldText.target = new Transform();
 helloWorldText.addComponent(new Shadow());
+helloWorldText.addComponent(new Input(), "input");
 var helloWorldTextRotation = 0;
 
 setInterval(function(){
@@ -55,11 +56,37 @@ setInterval(function(){
     helloWorldText.target.position.y = Math.random() * game.height - helloWorldText.height / 2;
 }, 1500);
 
+
+helloWorldText.components.input.onKeyDown = function(key){
+     switch(key){
+         case this.keyA:
+            this.parent.transform.position.x -= 10;
+         break;
+         case this.keyW:
+             this.parent.transform.position.y -= 10;
+         break;
+         case this.keyD:
+             this.parent.transform.position.x += 10;
+         break;
+         case this.keyS:
+            this.parent.transform.position.y += 10;
+         break;
+         default:
+             console.log(key);
+            return;
+     }
+}
+
+helloWorldText.components.input.onKeyUp = function(key){
+ 
+}
+
+
 helloWorldText.onUpdate = function(game){
     this.color = this.color.add(this.color.lerp(this.color, particles.targetColor, Time.deltaTime));
     this.text = "Hello World!!! " + Time.fps + " FPS";
-    this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
-    this.transform.rotation += Math.lerp(this.transform.rotation, helloWorldTextRotation, Time.deltaTime);
+    //this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
+    //this.transform.rotation += Math.lerp(this.transform.rotation, helloWorldTextRotation, Time.deltaTime);
 }
 
 particles.onUpdate = function(){
