@@ -5,12 +5,18 @@ var game = new JSGameEngine({
 });
 
 var particles = game.addComponent(new ParticleSystem({
-    radius: 20,
-    count: 100,
+    radius: 16,
+    count: 50,
+    life: 50,
+    radial: false,
+    speed: new Vector2({
+        x: 0.4,
+        y: -2.5
+    }),
     transform: new Transform({
         position: new Vector2({
-            x: game.width / 2 / 2, 
-            y: game.height / 2 / 2
+            x: game.width / 2, 
+            y: game.height / 2
         })
     })
 }));
@@ -42,25 +48,38 @@ particles.addComponent(new Input(), "input");   //add input handler
 
 //handle multiple inputs
 particles.components.input.onUpdate = function(JSGameEngine){
+    var speed = 50;
     for(var key in this.keys){
         key = parseInt(key);
         if(this.keys[key]){
             switch(key){
                 case this.keyA:
-                    console.log("A");
-                    this.parent.target.position.x -= 30;
+                    if(this.parent.transform.position.x > this.parent.width){
+                        this.parent.target.position.x -= speed;
+                    }else{
+                        this.parent.target.position.x = this.parent.transform.position.x;
+                    }
                 break;
                 case this.keyW:
-                    console.log("W");
-                    this.parent.target.position.y -= 30;
+                    if(this.parent.transform.position.y > this.parent.height){
+                        this.parent.target.position.y -= speed;
+                    }else{
+                        this.parent.target.position.y = this.parent.transform.position.y;
+                    }
                 break;
                 case this.keyD:
-                    console.log("D");
-                    this.parent.target.position.x += 30;
+                    if(this.parent.transform.position.x < game.width - this.parent.width){
+                        this.parent.target.position.x += speed;
+                    }else{
+                        this.parent.target.position.x = this.parent.transform.position.x;
+                    }
                 break;
                 case this.keyS:
-                    console.log("S");
-                    this.parent.target.position.y += 30;
+                    if(this.parent.transform.position.y < game.height - this.parent.height){
+                        this.parent.target.position.y += speed;
+                    }else{
+                        this.parent.target.position.y = this.parent.transform.position.y;
+                    }
                 break;
             }
         }
@@ -92,7 +111,18 @@ particles.components.input.onKeyDown = function(key){
 
 //apply movement
 particles.onUpdate = function(){
-    this.color = this.color.add(this.color.lerp(this.color, this.targetColor, Time.deltaTime));
+    if(this.transform.position.x < this.width){
+        this.transform.position.x = this.width;
+    }
+    if(this.transform.position.x > game.width - this.width){
+        this.transform.position.x = game.width - this.width;
+    }
+    if(this.transform.position.y < this.height){
+        this.transform.position.y = this.height;
+    }
+    if(this.transform.position.y > game.height - this.height){
+        this.transform.position.y = game.height - this.height;
+    }
     this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
     instructions.transform.position.x = this.transform.position.x + this.width + 40;
     instructions.transform.position.y = this.transform.position.y - this.height - 40;
