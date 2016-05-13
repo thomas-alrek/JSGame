@@ -1,6 +1,44 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global){
 "use strict";
 
+global.Constructor = require("./lib/Class/Constructor.js");
+global.JSGameEngine = require("./lib/Class/JSGameEngine");
+global.Math = require("./lib/Util/Math.js");
+global.Component = require("./lib/Class/Component.js");
+global.Time = require("./lib/Util/Time.js");
+global.Physics2D = require("./lib/Components/Physics2D.js");
+global.Vector2 = require("./lib/Components/Vector2.js");
+global.Transform = require("./lib/Components/Transform.js");
+global.Shadow = require("./lib/Components/Shadow.js");
+global.Input = require("./lib/Components/Input.js");
+global.GameObject = require("./lib/Class/GameObject.js");
+global.Color = require("./lib/Components/Color.js");
+global.Text = require("./lib/GameObjects/Text.js");
+global.Sprite = require("./lib/GameObjects/Sprite.js");
+global.Particle = require("./lib/GameObjects/Particle.js");
+global.ParticleSystem = require("./lib/GameObjects/ParticleSystem.js");
+global.AudioClip = require("./lib/GameObjects/AudioClip.js");
+global.Background = require("./lib/GameObjects/Background.js");
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2.js":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Math.js":18,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
+/**
+ * @file JSGame Component class.
+ * @author Thomas Alrek
+ */
+
+"use strict";
+
+/**
+ * Creates a new instance of Component.
+ * <p><i>All Components extends from this class</i></p>
+ *
+ * @constructor
+ * @param {Object} options An object containing construct options
+ * @property {Object} parent The GameOjects parent
+ * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
+ * @property {function} onUpdate A callback function to called after rendering the GameObject
+ */
 function Component(options){
     var self = this;
     this.parent = undefined;
@@ -23,9 +61,69 @@ Component.prototype = new Constructor();
 Component.prototype.constructor = Component;
 
 module.exports = Component;
-},{}],2:[function(require,module,exports){
+
+/**
+ * Constructs the Component with the parameters called in the constructor options object
+ * <p><i>This method is called automatically on construction, and should not be used directly</i></p>
+ * 
+ * @method
+ * @name Component#__construct
+ * @param {Object} obj A reference to this Component
+ * @param {Object} options Options to construct from
+ * @throws {TypeError} If the passed parameters is not Objects.
+ */
+
+/**
+ * Instances of Component can use this method to extend Component
+ * <p><i>This method should only be used in new classes that should extend Component</i></p>
+ * 
+ * @method
+ * @name Component#__extend
+ * @param {Class} from The base class to extend from
+ * @param {Object} to The instance that should be extended
+ * @param {Object} options Options to pass on to the base class' constructor
+ */
+
+/**
+ * The Component update method.
+ * <p><i>This method only calls the Component onUpdate callback. Classes that extends from Component will put their own rendering code here.</i></p>
+ * 
+ * @method
+ * @name Component#__update
+ * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+ */
+
+/**
+ * The Component fixedUpdate method.
+ * <p><i>This method only calls the Component onFixedUpdate callback. Classes that extends from Component will put their own fixed update code here.</i></p>
+ * 
+ * @method
+ * @name Component#__fixedUpdate
+ * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+ */
+
+/**
+ * Serialize the Component as JSON
+ * 
+ * @method
+ * @name Component#toString
+ * @returns {JSON}
+ */
+},{}],3:[function(require,module,exports){
+/**
+ * @file JSGame Constructor class.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * Creates a new instance of Constructor.
+ * <p><i>This class provides methods to extend and construct classes with inheritance. It should not be used directly, but as a prototype of a class that needs it's methods</i></p>
+ *
+ * @constructor
+ * @param {bool} onlyConstruct If true, only the __extend and __construct methods will be exposed
+ */
 function Constructor(onlyConstruct){
     if(onlyConstruct){
         delete this.createUUID;
@@ -33,6 +131,16 @@ function Constructor(onlyConstruct){
     }
 }
 
+/**
+ * Extend a class with inheritance
+ * <p><i>This function breaks the prototype chain, and adds all prototypes as a property of the class</i></p>
+ * 
+ * @method
+ * @name Constructor#__extend
+ * @param {Class} from The base class to extend from
+ * @param {Object} to The instance that should be extended
+ * @param {Object} options Options to pass on to the base class' constructor
+ */
 Constructor.prototype.__extend = function(from, to, options){
     var proto = new from(options || undefined);
     Object.keys(proto).forEach(function(key){
@@ -40,6 +148,16 @@ Constructor.prototype.__extend = function(from, to, options){
     });
 }
 
+/**
+ * Constructs the class with the parameters passed
+ * <p><i>Properties that isn't defined in the class will be ignored</i></p>
+ * 
+ * @method
+ * @name Constructor#__construct
+ * @param {Object} obj A reference to this class
+ * @param {Object} options Options to construct from
+ * @throws {TypeError} If the passed parameters is not Objects.
+ */
 Constructor.prototype.__construct = function(obj, options){
     if(typeof options === 'undefined'){
         return;
@@ -53,6 +171,14 @@ Constructor.prototype.__construct = function(obj, options){
     }
 }
 
+/**
+ * Creates an UUID
+ * 
+ * @method
+ * @name Constructor#createUUID
+ * @param {string} [delim] Delimiter
+ * @returns {string} UUID
+ */
 Constructor.prototype.createUUID = function (delim) {
     var delim = delim || "-";
     function rnd() {
@@ -61,6 +187,16 @@ Constructor.prototype.createUUID = function (delim) {
     return (rnd() + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + rnd() + rnd());
 };
 
+/**
+ * Adds a Component or GameObject to the components property
+ * 
+ * @method
+ * @name Constructor#addComponent
+ * @param {GameObject|Component} obj Object to add
+ * @param {String} [id] The id used to reference this object. If non is specified, an UUID is assigned 
+ * @throws Error If id already exists in another Object
+ * @throws TypeError if Object is not an instance of GameObject or Component
+ */
 Constructor.prototype.addComponent = function(obj, id){
     var id = id || this.createUUID();
     obj.parent = this;
@@ -92,9 +228,30 @@ Constructor.prototype.addComponent = function(obj, id){
 }
 
 module.exports = Constructor;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+/**
+ * @file JSGame GameObject class.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * Creates a new instance of GameObject.
+ * <p><i>All GameObjects extends from this class</i></p>
+ *
+ * @constructor
+ * @param {Object} options An object containing construct options
+ * @property {Object<Component>} components An object containing attached components
+ * @property {boolean} enabled Enables or disbles the GameObject
+ * @property {number} height The height of the GameObject (optional)
+ * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
+ * @property {function} onUpdate A callback function to called after rendering the GameObject
+ * @property {Object} parent The GameOjects parent (optional)
+ * @property {Transform} transform The GameObjects Transform
+ * @property {boolean} visible Enables or disables rendering on the GameObject
+ * @property {number} width The width of the GameObject (optional)
+ */
 function GameObject(options){
     var self = this;
     this.components = new Object();
@@ -124,7 +281,75 @@ GameObject.prototype.toString = function(){
 }
 
 module.exports = GameObject;
-},{}],4:[function(require,module,exports){
+
+/**
+ * Constructs the GameObject with the parameters called in the constructor options object
+ * <p><i>This method is called automatically on construction, and should not be used directly</i></p>
+ * 
+ * @method
+ * @name GameObject#__construct
+ * @param {Object} obj A reference to this GameObject
+ * @param {Object} options Options to construct from
+ * @throws {TypeError} If the passed parameters is not Objects.
+ */
+
+/**
+ * Instances of GameObject can use this method to extend GameObject
+ * <p><i>This method should only be used in new classes that should extend GameObject</i></p>
+ * 
+ * @method
+ * @name GameObject#__extend
+ * @param {Class} from The base class to extend from
+ * @param {Object} to The instance that should be extended
+ * @param {Object} options Options to pass on to the base class' constructor
+ */
+
+/**
+ * The GameObjects update method.
+ * <p><i>This method only calls the GameObjects onUpdate callback. Classes that extends from GameObject will put their own rendering code here.</i></p>
+ * 
+ * @method
+ * @name GameObject#__update
+ * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+ */
+
+/**
+ * The GameObjects fixedUpdate method.
+ * <p><i>This method only calls the GameObjects onFixedUpdate callback. Classes that extends from GameObject will put their own fixed update code here.</i></p>
+ * 
+ * @method
+ * @name GameObject#__fixedUpdate
+ * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+ */
+
+/**
+ * Serialize the GameObject as JSON
+ * 
+ * @method
+ * @name GameObject#toString
+ * @returns {JSON}
+ */
+},{}],5:[function(require,module,exports){
+/**
+ * @file JSGameEngine class.
+ * @author Thomas Alrek
+ */
+
+"use strict";
+
+/**
+ * Creates a new instance of JSGameEngine.
+ * <p><i>This is the "entrypoint" for all JSGame projects</i></p>
+ *
+ * @constructor
+ * @param {Object} options An object containing construct options
+ * @property {Object<GameObject>} components An object containing attached GameObjects
+ * @property {HTMLCanvasElement} canvas The canvas to draw to. If no canvas is provided, a new canvas will automatically be inserted into the DOM
+ * @property {number} width The width of the canvas (optional)
+ * @property {number} height The height of the canvas (optional)
+ * @property {Time} time The globally shared instance of Time
+ * @property {CanvasRenderingContext2D} ctx The rendering context
+ */
 function JSGameEngine(options){
     var self = this;
     this.components = {};
@@ -141,16 +366,24 @@ function JSGameEngine(options){
     
     Time = this.time;
     
-    this.render = function(delta){
-        requestAnimationFrame(self.render);
+    /**
+     * Renders all enabled GameObjects in the components property.
+     * <p><i>This method is called automatically every frame. It automatically calls each attached GameObjects __update method</i></p>
+     * 
+     * @method
+     * @name JSGameEngine#update
+     * @param {number} delta The timestamp at the start of the frame
+     */
+    this.update = function(delta){
+        requestAnimationFrame(self.update);
         self.time.update(delta);
         var canvas = self.canvas;
         var ctx = self.ctx;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var Time = self.time;
-        for(index in self.components){
+        for(var index in self.components){
             var gameObject = self.components[index];
-            for(component in gameObject.components){
+            for(var component in gameObject.components){
                 if(!gameObject.components[component].parent){
                     gameObject.components[component].parent = gameObject;
                 }
@@ -165,7 +398,7 @@ function JSGameEngine(options){
                 ctx.translate(position.x + gameObject.width / 2, position.y + gameObject.height / 2);
                 ctx.rotate((rotation * Math.PI) / 180);
                 ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
-                for(childComponent in gameObject.components){
+                for(var childComponent in gameObject.components){
                     gameObject.components[childComponent].__update(self);
                 }
                 gameObject.__update(self);
@@ -174,12 +407,21 @@ function JSGameEngine(options){
         }
     }
     
+    /**
+     * Calls __fixedUpdate on each enabled GameObject in the components property.
+     * <p><i>This method is called automatically every fixedUpdate tick which runs at a fixed rate of ~50 fps.</i></p>
+     * <p><i>Fixed update should only be used for things that doesn't need to have an per frame accuracy</i></p>
+     * 
+     * @method
+     * @name JSGameEngine#fixedUpdate
+     * @param {number} delta The timestamp at the start of the frame
+     */
     this.fixedUpdate = function(delta){
         self.time.fixedUpdate(delta);
         var Time = self.time;
-        for(index in self.components){
+        for(var index in self.components){
             var gameObject = self.components[index];
-            for(component in gameObject.components){
+            for(var component in gameObject.components){
                 if(!gameObject.components[component].parent){
                     gameObject.components[component].parent = gameObject;
                 }
@@ -187,7 +429,7 @@ function JSGameEngine(options){
             if(!gameObject.enabled){
                 continue;
             }
-            for(childComponent in gameObject.components){
+            for(var childComponent in gameObject.components){
                 gameObject.components[childComponent].__update(self);
             }
             gameObject.__fixedUpdate(self);
@@ -198,7 +440,7 @@ function JSGameEngine(options){
     }
     
     /* init */
-    requestAnimationFrame(this.render);
+    requestAnimationFrame(this.update);
     this.fixedUpdate(performance.now);
 }
 
@@ -206,7 +448,18 @@ JSGameEngine.prototype = new Constructor();
 JSGameEngine.prototype.constructor = JSGameEngine;
 
 module.exports = JSGameEngine;
-},{}],5:[function(require,module,exports){
+
+/**
+ * Adds a GameObject as a component to JSGameEngine.components
+ * <p><i>Use this method to add elements to your game.</i></p>
+ * 
+ * @method
+ * @name JSGameEngine#addComponent
+ * @param {Object} obj The GameObject to add.
+ * @param {String} [id] An id to assign to the object. Must be unique. If none is specified, an UUID is generated
+ * @throws {TypeError} If obj not is an instance of GameObject
+ */
+},{}],6:[function(require,module,exports){
 "use strict";
 
 function Color(options){
@@ -436,7 +689,7 @@ Color.prototype.lerp = function(a, b, t){
 }
 
 module.exports = Color;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 function Input(options){
@@ -467,7 +720,7 @@ Input.prototype.keyW = 87;
 Input.prototype.keyD = 68;
 
 module.exports = Input;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 function Physics2D(options){
@@ -492,7 +745,7 @@ Physics2D.prototype = new Component();
 Physics2D.prototype.constructor = Physics2D;
 
 module.exports = Physics2D;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 function Shadow(options){
@@ -512,7 +765,7 @@ Shadow.prototype = new Component();
 Shadow.prototype.constructor = Shadow;
 
 module.exports = Shadow;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 function Transform(options){
@@ -602,7 +855,7 @@ Transform.prototype.lerp = function(a, b, t){
 }
 
 module.exports = Transform;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 function Vector2(options){
@@ -767,7 +1020,7 @@ Vector2.prototype.lerp = function(a, b, t){
 }
 
 module.exports = Vector2;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 function AudioClip(options){
@@ -816,7 +1069,7 @@ AudioClip.prototype = new GameObject();
 AudioClip.prototype.constructor = AudioClip;
 
 module.exports = AudioClip;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 function Background(options){
@@ -877,7 +1130,7 @@ Background.prototype = new GameObject();
 Background.prototype.constructor = Background;
 
 module.exports = Background;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 
 function Particle(options){
@@ -900,7 +1153,7 @@ Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
 module.exports = Particle;
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 function ParticleSystem(options){
@@ -1026,7 +1279,7 @@ ParticleSystem.prototype = new GameObject();
 ParticleSystem.prototype.constructor = ParticleSystem;
 
 module.exports = ParticleSystem;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 
 function Sprite(options){
@@ -1046,7 +1299,7 @@ Sprite.prototype = new GameObject();
 Sprite.prototype.constructor = Sprite;
 
 module.exports = Sprite;
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 function Text(options){
@@ -1100,9 +1353,27 @@ Text.prototype = new GameObject();
 Text.prototype.constructor = Text;
 
 module.exports = Text;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
+/**
+ * @file JSGame extended Math library
+ * @author Thomas Alrek
+ * @namespace
+ * @name Math
+ */
+
+
 "use strict";
 
+/**
+ * Flips a number, given a value and a max value.
+ * E.g Math.flip(10, 255) === 245
+ *
+ * @function
+ * @static
+ * @param {number} value The value to flip
+ * @param {number} max The maximum value
+ * @return {number}
+ */
 Math.flip = function(value, max){
     if(typeof value !== 'number' && typeof max !== 'number'){
         return NaN;
@@ -1110,6 +1381,16 @@ Math.flip = function(value, max){
     return Math.abs(max - parseInt(value));
 }
 
+/**
+ * Generates a random number in range
+ *
+ * @function
+ * @static
+ * @param {number} min Minimum range value
+ * @param {number} max Maximum range value
+ * @param {boolean} integer Only return integer
+ * @return {number}
+ */
 Math.randomRange = function(min, max, integer){
     if(typeof min !== 'number' && typeof max !== 'number'){
         return NaN;
@@ -1120,24 +1401,85 @@ Math.randomRange = function(min, max, integer){
     return Math.random() * (max - min) + min;
 }
 
+/**
+ * Inverts the sign of a number
+ * E.g Math.invert(99.5) === -99.5;
+ *
+ * @function
+ * @static
+ * @param {number} num Number to invert
+ * @return {number}
+ */
 Math.invert = function(num){
     return num * -1;
 }
 
+/**
+ * Clamps a number into a range
+ * If the input value is bigger than max, the number is truncated to max.
+ * If the input value is smaller than min, the number is truncated to min.
+ * 
+ * E.g Math.clamp(370, 0, 360) === 360;
+ *
+ * @function
+ * @static
+ * @param {number} value Number to clamp in range
+ * @param {number} min Minimum range value
+ * @param {number} max Maximum range value
+ * @return {number}
+ */
 Math.clamp = function(value, min, max){
     return Math.min(Math.max(value, min), max);
 }
 
+/**
+ * Linear interpolation (lerp) between two numbers over interval
+ * E.g Math.lerp(2.5, 20, Time.deltaTime) === 0.28; (in this example, deltaTime === 0.016)
+ *
+ * @function
+ * @static
+ * @param {number} a Number to interpolate from
+ * @param {number} b Number to interpolate to
+ * @param {number} t Interval to interpolate over
+ * @return {number}
+ */
 Math.lerp = function(a, b, t){
     return (b - a) * t;
 }
 
 module.exports = Math;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+/**
+ * @file JSGame Time class.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * Creates an instance of Time.
+ * <p><i>
+ * JSGame automatically creates a shared Time class that can be used globally,
+ * so there generally is not needed to instantiate it manually.
+ * </i></p>
+ * @constructor
+ * @param {Object} options An object containing construct options
+ * @property {number} deltaTime The time elapsed since the last update (frame)
+ * @property {number} fixedDeltaTime The time elapsed since the last fixedUpdate
+ * @property {number} fixedTime The total elapsed fixedUpdate time
+ * @property {number} fps The current framerate in frames per second
+ * @property {number} frameCount The total amount of frames drawn
+ * @property {number} lastFixedUpdateTime Timestamp since last fixedUpdate call
+ * @property {number} lastUpdateTime Timestamp since last update call
+ * @property {number} maximumDeltaTime The highest deltaTime that has occured
+ * @property {number} maximumFixedDeltaTime The highest fixedDeltaTime that has occured
+ * @property {number} smoothDeltaTime A rounded deltaTime
+ * @property {number} smoothFixedDeltaTime A rounded fixedDeltaTime
+ * @property {number} startupTime Timestamp of game startup
+ * @property {number} time Timestamp of current game time
+ */
 function Time(options){
-    this.__construct(options);
+    /** @private */ this.__construct(options);
     this.startupTime = 0;
     this.frameCount = 0;
     this.deltaTime = 0;
@@ -1156,6 +1498,12 @@ function Time(options){
 
 Time.prototype = new Constructor(true);
 
+/**
+ * Updates the interal framerate clock.
+ * Automatically called every update (frame)
+ * 
+ * @param {number} timestamp A timestamp to update to
+ */
 Time.prototype.update = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
@@ -1175,6 +1523,12 @@ Time.prototype.update = function(timestamp){
     self.frameCount++;
 }
 
+/**
+ * Updates the interal fixed clock.
+ * Automatically called every fixedUpdate
+ * 
+ * @param {number} timestamp A timestamp to update to
+ */
 Time.prototype.fixedUpdate = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
@@ -1192,30 +1546,15 @@ Time.prototype.fixedUpdate = function(timestamp){
     self.lastFixedUpdateTime = self.fixedTime;
 }
 
+/**
+ * Returns the given framerate as time
+ *
+ * @param {number} fps The framerate to convert, E.g 60
+ * @return {number} time
+ */
 Time.prototype.framerateToTime = function(fps){
     return ((1 / fps));
 }
 
 module.exports = Time;
-},{}],19:[function(require,module,exports){
-(function (global){
-global.Constructor = require("./lib/Class/Constructor.js");
-global.JSGameEngine = require("./lib/Class/JSGameEngine");
-global.Math = require("./lib/Util/Math.js");
-global.Component = require("./lib/Class/Component.js");
-global.Time = require("./lib/Util/Time.js");
-global.Physics2D = require("./lib/Components/Physics2D.js");
-global.Vector2 = require("./lib/Components/Vector2.js");
-global.Transform = require("./lib/Components/Transform.js");
-global.Shadow = require("./lib/Components/Shadow.js");
-global.Input = require("./lib/Components/Input.js");
-global.GameObject = require("./lib/Class/GameObject.js");
-global.Color = require("./lib/Components/Color.js");
-global.Text = require("./lib/GameObjects/Text.js");
-global.Sprite = require("./lib/GameObjects/Sprite.js");
-global.Particle = require("./lib/GameObjects/Particle.js");
-global.ParticleSystem = require("./lib/GameObjects/ParticleSystem.js");
-global.AudioClip = require("./lib/GameObjects/AudioClip.js");
-global.Background = require("./lib/GameObjects/Background.js");
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/Class/Component.js":1,"./lib/Class/Constructor.js":2,"./lib/Class/GameObject.js":3,"./lib/Class/JSGameEngine":4,"./lib/Components/Color.js":5,"./lib/Components/Input.js":6,"./lib/Components/Physics2D.js":7,"./lib/Components/Shadow.js":8,"./lib/Components/Transform.js":9,"./lib/Components/Vector2.js":10,"./lib/GameObjects/AudioClip.js":11,"./lib/GameObjects/Background.js":12,"./lib/GameObjects/Particle.js":13,"./lib/GameObjects/ParticleSystem.js":14,"./lib/GameObjects/Sprite.js":15,"./lib/GameObjects/Text.js":16,"./lib/Util/Math.js":17,"./lib/Util/Time.js":18}]},{},[19]);
+},{}]},{},[1]);

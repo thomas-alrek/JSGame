@@ -1,3 +1,5 @@
+"use strict";
+
 global.Constructor = require("./lib/Class/Constructor.js");
 global.JSGameEngine = require("./lib/Class/JSGameEngine");
 global.Math = require("./lib/Util/Math.js");

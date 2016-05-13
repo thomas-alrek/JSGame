@@ -1,7 +1,34 @@
+/**
+ * @file JSGame Time class.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * Creates an instance of Time.
+ * <p><i>
+ * JSGame automatically creates a shared Time class that can be used globally,
+ * so there generally is not needed to instantiate it manually.
+ * </i></p>
+ * @constructor
+ * @param {Object} options An object containing construct options
+ * @property {number} deltaTime The time elapsed since the last update (frame)
+ * @property {number} fixedDeltaTime The time elapsed since the last fixedUpdate
+ * @property {number} fixedTime The total elapsed fixedUpdate time
+ * @property {number} fps The current framerate in frames per second
+ * @property {number} frameCount The total amount of frames drawn
+ * @property {number} lastFixedUpdateTime Timestamp since last fixedUpdate call
+ * @property {number} lastUpdateTime Timestamp since last update call
+ * @property {number} maximumDeltaTime The highest deltaTime that has occured
+ * @property {number} maximumFixedDeltaTime The highest fixedDeltaTime that has occured
+ * @property {number} smoothDeltaTime A rounded deltaTime
+ * @property {number} smoothFixedDeltaTime A rounded fixedDeltaTime
+ * @property {number} startupTime Timestamp of game startup
+ * @property {number} time Timestamp of current game time
+ */
 function Time(options){
-    this.__construct(options);
+    /** @private */ this.__construct(options);
     this.startupTime = 0;
     this.frameCount = 0;
     this.deltaTime = 0;
@@ -20,6 +47,12 @@ function Time(options){
 
 Time.prototype = new Constructor(true);
 
+/**
+ * Updates the interal framerate clock.
+ * Automatically called every update (frame)
+ * 
+ * @param {number} timestamp A timestamp to update to
+ */
 Time.prototype.update = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
@@ -39,6 +72,12 @@ Time.prototype.update = function(timestamp){
     self.frameCount++;
 }
 
+/**
+ * Updates the interal fixed clock.
+ * Automatically called every fixedUpdate
+ * 
+ * @param {number} timestamp A timestamp to update to
+ */
 Time.prototype.fixedUpdate = function(timestamp){
     var self = this;
     var timestamp = timestamp || 0;
@@ -56,6 +95,12 @@ Time.prototype.fixedUpdate = function(timestamp){
     self.lastFixedUpdateTime = self.fixedTime;
 }
 
+/**
+ * Returns the given framerate as time
+ *
+ * @param {number} fps The framerate to convert, E.g 60
+ * @return {number} time
+ */
 Time.prototype.framerateToTime = function(fps){
     return ((1 / fps));
 }

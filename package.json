@@ -2,12 +2,12 @@
   "name": "jsgame",
   "version": "0.0.3",
   "description": "JS Game is a 2D game engine written in JavaScript. It provides built-in objects and functions, to make it easier to write HTML5 games.",
-  "main": "src/main.js",
+  "main": "src/jsgame.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node script/build",
     "prepublish": "npm run-script build",
-    "postinstall": "npm run-script build"
+    "postinstall": "npm run-script build && node ./node_modules/.bin/jsdoc -d doc -r src"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/alrek-consulting/JSGame#readme",
   "dependencies": {
     "browserify": "^13.0.1",
+    "jsdoc": "^3.4.0",
     "uglify-js": "^2.6.2"
   }
 }

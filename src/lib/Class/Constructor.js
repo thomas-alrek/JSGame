@@ -1,5 +1,17 @@
+/**
+ * @file JSGame Constructor class.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * Creates a new instance of Constructor.
+ * <p><i>This class provides methods to extend and construct classes with inheritance. It should not be used directly, but as a prototype of a class that needs it's methods</i></p>
+ *
+ * @constructor
+ * @param {bool} onlyConstruct If true, only the __extend and __construct methods will be exposed
+ */
 function Constructor(onlyConstruct){
     if(onlyConstruct){
         delete this.createUUID;
@@ -7,6 +19,16 @@ function Constructor(onlyConstruct){
     }
 }
 
+/**
+ * Extend a class with inheritance
+ * <p><i>This function breaks the prototype chain, and adds all prototypes as a property of the class</i></p>
+ * 
+ * @method
+ * @name Constructor#__extend
+ * @param {Class} from The base class to extend from
+ * @param {Object} to The instance that should be extended
+ * @param {Object} options Options to pass on to the base class' constructor
+ */
 Constructor.prototype.__extend = function(from, to, options){
     var proto = new from(options || undefined);
     Object.keys(proto).forEach(function(key){
@@ -14,6 +36,16 @@ Constructor.prototype.__extend = function(from, to, options){
     });
 }
 
+/**
+ * Constructs the class with the parameters passed
+ * <p><i>Properties that isn't defined in the class will be ignored</i></p>
+ * 
+ * @method
+ * @name Constructor#__construct
+ * @param {Object} obj A reference to this class
+ * @param {Object} options Options to construct from
+ * @throws {TypeError} If the passed parameters is not Objects.
+ */
 Constructor.prototype.__construct = function(obj, options){
     if(typeof options === 'undefined'){
         return;
@@ -27,6 +59,14 @@ Constructor.prototype.__construct = function(obj, options){
     }
 }
 
+/**
+ * Creates an UUID
+ * 
+ * @method
+ * @name Constructor#createUUID
+ * @param {string} [delim] Delimiter
+ * @returns {string} UUID
+ */
 Constructor.prototype.createUUID = function (delim) {
     var delim = delim || "-";
     function rnd() {
@@ -35,6 +75,16 @@ Constructor.prototype.createUUID = function (delim) {
     return (rnd() + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + rnd() + rnd());
 };
 
+/**
+ * Adds a Component or GameObject to the components property
+ * 
+ * @method
+ * @name Constructor#addComponent
+ * @param {GameObject|Component} obj Object to add
+ * @param {String} [id] The id used to reference this object. If non is specified, an UUID is assigned 
+ * @throws Error If id already exists in another Object
+ * @throws TypeError if Object is not an instance of GameObject or Component
+ */
 Constructor.prototype.addComponent = function(obj, id){
     var id = id || this.createUUID();
     obj.parent = this;
