@@ -44,3 +44,5 @@ function AudioClip(options){
 
 AudioClip.prototype = new GameObject();
 AudioClip.prototype.constructor = AudioClip;
+
+module.exports = AudioClip;

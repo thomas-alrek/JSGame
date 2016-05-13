@@ -85,3 +85,5 @@ Transform.prototype.lerp = function(a, b, t){
     }
     return (new Transform(b).subtract(a)).multiply(t);
 }
+
+module.exports = Transform;

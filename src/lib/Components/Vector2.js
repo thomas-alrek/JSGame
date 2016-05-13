@@ -160,3 +160,5 @@ Vector2.prototype.lerp = function(a, b, t){
     t = Math.ceil(t * 1000) / 1000;
     return (new Vector2(b).subtract(a)).multiply(t);
 }
+
+module.exports = Vector2;

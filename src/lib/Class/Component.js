@@ -20,3 +20,5 @@ Component.prototype.toString = function(){
 
 Component.prototype = new Constructor();
 Component.prototype.constructor = Component;
+
+module.exports = Component;

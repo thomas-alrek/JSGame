@@ -18,3 +18,5 @@ function Particle(options){
 
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
+
+module.exports = Particle;

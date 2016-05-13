@@ -28,3 +28,5 @@ Math.clamp = function(value, min, max){
 Math.lerp = function(a, b, t){
     return (b - a) * t;
 }
+
+module.exports = Math;

@@ -64,3 +64,5 @@ Constructor.prototype.addComponent = function(obj, id){
     }   
     return this.components[id];
 }
+
+module.exports = Constructor;

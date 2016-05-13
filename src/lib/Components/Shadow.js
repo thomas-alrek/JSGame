@@ -15,3 +15,5 @@ function Shadow(options){
 
 Shadow.prototype = new Component();
 Shadow.prototype.constructor = Shadow;
+
+module.exports = Shadow;

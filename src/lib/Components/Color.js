@@ -225,3 +225,5 @@ Color.prototype.lerp = function(a, b, t){
     }
     return (new Color(b).subtract(a)).multiply(t);
 }
+
+module.exports = Color;

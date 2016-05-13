@@ -15,6 +15,7 @@ function ParticleSystem(options){
 		b: 255,
         parent: self
 	});
+	this.loop = false;
 	this.blendMode = "lighter";
 	this.glow = true;
 	this.life = 100;
@@ -93,7 +94,11 @@ function ParticleSystem(options){
 			p.transform.position = p.transform.position.add(p.speed);
 
 			if(p.remainingLife < 0 || p.radius < 0){
-				addParticle(i);
+				if(self.loop){
+					addParticle(i);
+				}else{
+					self.particles.splice(i, 1);
+				}
 			}
 		}
         self.onUpdate(JSGameEngine);
@@ -116,3 +121,5 @@ function ParticleSystem(options){
 
 ParticleSystem.prototype = new GameObject();
 ParticleSystem.prototype.constructor = ParticleSystem;
+
+module.exports = ParticleSystem;

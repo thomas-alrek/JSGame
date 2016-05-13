@@ -20,3 +20,5 @@ function Physics2D(options){
 
 Physics2D.prototype = new Component();
 Physics2D.prototype.constructor = Physics2D;
+
+module.exports = Physics2D;

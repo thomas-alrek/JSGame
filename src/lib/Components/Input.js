@@ -27,5 +27,4 @@ Input.prototype.keyS = 83;
 Input.prototype.keyW = 87;
 Input.prototype.keyD = 68;
 
-
-
+module.exports = Input;

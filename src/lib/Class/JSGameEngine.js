@@ -77,3 +77,5 @@ function JSGameEngine(options){
 
 JSGameEngine.prototype = new Constructor();
 JSGameEngine.prototype.constructor = JSGameEngine;
+
+module.exports = JSGameEngine;

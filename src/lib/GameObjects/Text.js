@@ -49,3 +49,5 @@ function Text(options){
 
 Text.prototype = new GameObject();
 Text.prototype.constructor = Text;
+
+module.exports = Text;

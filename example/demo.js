@@ -49,6 +49,12 @@ fps.transform.position.x = 10;
 particles.target = new Transform(particles.transform);
 particles.addComponent(new Input(), "input");   //add input handler
 
+particles.targetColor = new Color({
+    r: Math.random() * 255,
+    g: Math.random() * 255,
+    b: Math.random() * 255
+});
+
 //handle multiple inputs
 particles.components.input.onUpdate = function(JSGameEngine){
     var speed = 50;

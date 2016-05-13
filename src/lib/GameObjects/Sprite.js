@@ -15,3 +15,5 @@ function Sprite(options){
 
 Sprite.prototype = new GameObject();
 Sprite.prototype.constructor = Sprite;
+
+module.exports = Sprite;

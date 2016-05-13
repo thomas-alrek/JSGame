@@ -27,3 +27,5 @@ GameObject.prototype.constructor = GameObject;
 GameObject.prototype.toString = function(){
     return JSON.stringify(this);
 }
+
+module.exports = GameObject;

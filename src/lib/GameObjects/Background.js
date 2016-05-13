@@ -56,3 +56,5 @@ function Background(options){
 
 Background.prototype = new GameObject();
 Background.prototype.constructor = Background;
+
+module.exports = Background;

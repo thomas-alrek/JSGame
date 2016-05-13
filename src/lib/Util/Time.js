@@ -59,3 +59,5 @@ Time.prototype.fixedUpdate = function(timestamp){
 Time.prototype.framerateToTime = function(fps){
     return ((1 / fps));
 }
+
+module.exports = Time;

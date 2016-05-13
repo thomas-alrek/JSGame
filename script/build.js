@@ -8,7 +8,7 @@
  
 "use strict";
 
-var buildpackage = require("./package.json");
+var buildpackage = require("../package.json");
 var buildpath = "./dist/";
 var bundlename = buildpackage.name + "-" + buildpackage.version;
 var bundler = require('browserify')();
@@ -28,7 +28,7 @@ stream.on('finish', function () {
 	});
 	var minified = result.code;
 	var sourcemap = result.map;
-	fs.writeFileSync(buildpath + bundlename + ".js.min" , minified, 'utf8');
+	fs.writeFileSync(buildpath + bundlename + ".min.js" , minified, 'utf8');
 	console.log("Creating " + buildpath + bundlename + ".js.map");
 	fs.writeFileSync(buildpath + JSON.parse(sourcemap).file, sourcemap, 'utf8');
 	console.log("Done");
