@@ -10,7 +10,8 @@
 
 var buildpackage = require("../package.json");
 var buildpath = "./dist/";
-var bundlename = buildpackage.name + "-" + buildpackage.version;
+//var bundlename = buildpackage.name + "-" + buildpackage.version;
+var bundlename = buildpackage.name;
 var bundler = require('browserify')();
 var compressor = require("uglify-js");
 var fs = require("fs");
