@@ -25,13 +25,15 @@ var stream = fs.createWriteStream(buildpath + bundlename + ".js");
 stream.on('finish', function () {
 	console.log("Building " + buildpath + bundlename + ".min.js");
 	var result = compressor.minify("./" + buildpath + bundlename + ".js", {
-		outSourceMap: bundlename + ".js.map"
+		outSourceMap: bundlename + ".min.js.map",
 	});
 	var minified = result.code;
-	var sourcemap = result.map;
+	var sourcemap = JSON.parse(result.map);
+	sourcemap.sources = ["jsgame.js"];
+	sourcemap = JSON.stringify(sourcemap);
 	fs.writeFileSync(buildpath + bundlename + ".min.js" , minified, 'utf8');
-	console.log("Creating " + buildpath + bundlename + ".js.map");
-	fs.writeFileSync(buildpath + JSON.parse(sourcemap).file, sourcemap, 'utf8');
+	console.log("Creating " + buildpath + bundlename + ".min.js.map");
+	fs.writeFileSync(buildpath + bundlename + ".min.js.map", sourcemap, 'utf8');
 	console.log("Done");
 });
 
