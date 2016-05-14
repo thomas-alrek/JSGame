@@ -34,7 +34,6 @@ stream.on('finish', function () {
 	fs.writeFileSync(buildpath + bundlename + ".min.js" , minified, 'utf8');
 	console.log("Creating " + buildpath + bundlename + ".min.js.map");
 	fs.writeFileSync(buildpath + bundlename + ".min.js.map", sourcemap, 'utf8');
-	console.log("Creating ./doc");
 });
 
 console.log("Buidling " + buildpackage.name + " " + buildpackage.version);

@@ -1,6 +1,6 @@
 {
   "name": "jsgame",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JS Game is a 2D game engine written in JavaScript. It provides built-in objects and functions, to make it easier to write HTML5 games.",
   "main": "src/jsgame.js",
   "scripts": {
