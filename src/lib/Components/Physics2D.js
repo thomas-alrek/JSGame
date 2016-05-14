@@ -1,5 +1,18 @@
+/**
+ * @file JSGame Physics2D Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Physics2D
+ * Creates a new instance of Physics2D.
+ * <p><i>Input is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Physics2D(options){
     var self = this;
     this.__extend(Component, this, options);

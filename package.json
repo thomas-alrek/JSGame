@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node script/build",
+    "jsdoc": "node node_modules/jsdoc/jsdoc.js -r src -d doc",
     "prepublish": "npm run-script build",
-    "postinstall": "npm run-script build && node ./node_modules/.bin/jsdoc -d doc -r src"
+    "postinstall": "npm run-script build && npm run-script jsdoc"
   },
   "repository": {
     "type": "git",

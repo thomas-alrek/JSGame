@@ -6,11 +6,12 @@
 "use strict";
 
 /**
+ * @class Component
  * Creates a new instance of Component.
  * <p><i>All Components extends from this class</i></p>
  *
  * @constructor
- * @param {Object} options An object containing construct options
+ * @param {options} options An object containing construct options
  * @property {Object} parent The GameOjects parent
  * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
  * @property {function} onUpdate A callback function to called after rendering the GameObject

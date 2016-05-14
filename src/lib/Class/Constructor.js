@@ -6,6 +6,7 @@
 "use strict";
 
 /**
+ * @class Constructor
  * Creates a new instance of Constructor.
  * <p><i>This class provides methods to extend and construct classes with inheritance. It should not be used directly, but as a prototype of a class that needs it's methods</i></p>
  *
@@ -27,7 +28,7 @@ function Constructor(onlyConstruct){
  * @name Constructor#__extend
  * @param {Class} from The base class to extend from
  * @param {Object} to The instance that should be extended
- * @param {Object} options Options to pass on to the base class' constructor
+ * @param {options} options Options to pass on to the base class' constructor
  */
 Constructor.prototype.__extend = function(from, to, options){
     var proto = new from(options || undefined);
@@ -43,7 +44,7 @@ Constructor.prototype.__extend = function(from, to, options){
  * @method
  * @name Constructor#__construct
  * @param {Object} obj A reference to this class
- * @param {Object} options Options to construct from
+ * @param {options} options Options to construct from
  * @throws {TypeError} If the passed parameters is not Objects.
  */
 Constructor.prototype.__construct = function(obj, options){

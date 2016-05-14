@@ -1,5 +1,18 @@
+/**
+ * @file JSGame Background GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Background
+ * Creates a new instance of Background.
+ * <p><i>Background is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Background(options){
     var self = this;
     this.__extend(GameObject, this, options);

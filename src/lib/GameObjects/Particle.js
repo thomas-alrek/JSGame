@@ -1,5 +1,18 @@
+/**
+ * @file JSGame Particle GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Particle
+ * Creates a new instance of Particle.
+ * <p><i>Particle is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Particle(options){
     this.__extend(GameObject, this, options);
     this.speed = new Vector2();

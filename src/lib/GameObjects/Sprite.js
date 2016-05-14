@@ -1,5 +1,18 @@
+/**
+ * @file JSGame Sprite GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Sprite
+ * Creates a new instance of Sprite.
+ * <p><i>Sprite is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Sprite(options){
     var self = this;
     this.__extend(GameObject, this, options);

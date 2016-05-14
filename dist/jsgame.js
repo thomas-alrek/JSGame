@@ -261,9 +261,27 @@ function GameObject(options){
     this.visible = true;
     this.onUpdate = function(){}
     this.onFixedUpdate = function(){};
+    
+    /**
+     * The GameObjects update method.
+     * <p><i>This method only calls the GameObjects onUpdate callback. Classes that extends from GameObject will put their own rendering code here.</i></p>
+     * 
+     * @method
+     * @name GameObject#__update
+     * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+     */
     this.__update = function(JSGameEngine){
         this.onUpdate(JSGameEngine);
     };
+        
+    /**
+     * The GameObjects fixedUpdate method.
+     * <p><i>This method only calls the GameObjects onFixedUpdate callback. Classes that extends from GameObject will put their own fixed update code here.</i></p>
+     * 
+     * @method
+     * @name GameObject#__fixedUpdate
+     * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+     */
     this.__fixedUpdate = function(JSGameEngine){
         this.onFixedUpdate(JSGameEngine);
     };
@@ -276,11 +294,42 @@ function GameObject(options){
 GameObject.prototype = new Constructor();
 GameObject.prototype.constructor = GameObject;
 
+/**
+ * Serialize the GameObject as JSON
+ * 
+ * @method
+ * @name GameObject#toString
+ * @returns {JSON}
+ */
 GameObject.prototype.toString = function(){
     return JSON.stringify(this);
 }
 
+/**
+ * Returns the Component of type if the GameObject has one attached, null if it doesn't.
+ * 
+ * @method
+ * @name GameObject#getComponent
+ * @param {Type} type
+ * @returns {Component|null}
+ */
+GameObject.prototype.getComponent = function(type){
+    for(var prop in this){
+        if(this[prop] instanceof type){
+            return this[prop];
+        }
+    }
+    for(var prop in this.components){
+        if(this.components[prop] instanceof type){
+            return this.components[prop];
+        }
+    }
+    return null;
+}
+
 module.exports = GameObject;
+
+/* additional JSDoc for methods inherited for the prototype */
 
 /**
  * Constructs the GameObject with the parameters called in the constructor options object
@@ -302,32 +351,6 @@ module.exports = GameObject;
  * @param {Class} from The base class to extend from
  * @param {Object} to The instance that should be extended
  * @param {Object} options Options to pass on to the base class' constructor
- */
-
-/**
- * The GameObjects update method.
- * <p><i>This method only calls the GameObjects onUpdate callback. Classes that extends from GameObject will put their own rendering code here.</i></p>
- * 
- * @method
- * @name GameObject#__update
- * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
- */
-
-/**
- * The GameObjects fixedUpdate method.
- * <p><i>This method only calls the GameObjects onFixedUpdate callback. Classes that extends from GameObject will put their own fixed update code here.</i></p>
- * 
- * @method
- * @name GameObject#__fixedUpdate
- * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
- */
-
-/**
- * Serialize the GameObject as JSON
- * 
- * @method
- * @name GameObject#toString
- * @returns {JSON}
  */
 },{}],5:[function(require,module,exports){
 /**

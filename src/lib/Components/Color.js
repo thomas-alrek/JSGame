@@ -1,5 +1,22 @@
+/**
+ * @file JSGame Color Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Color
+ * Creates a new instance of Color.
+ * <p><i>Color is a instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} alpha A number between 0 and 1 representing the colors alpha channel
+ * @property {number} r A number between 0 and 255 representing the colors red channel
+ * @property {number} g A number between 0 and 255 representing the colors green channel
+ * @property {number} b A number between 0 and 255 representing the colors blue channel
+ */
 function Color(options){
     var self = this;
     this.__extend(Component, this, options);
@@ -7,6 +24,14 @@ function Color(options){
     this.r = 0;
     this.g = 0;
     this.b = 0;
+    
+    /**
+     * Clamps r,g,b, and alpha in the range 0-255
+     * 
+     * @method
+     * @name Color#clamp
+     * @returns {Color}
+     */
     this.clamp = function(){
         return new Color({
             r: Math.round(Math.clamp(self.r, 0, 255)),
@@ -15,7 +40,16 @@ function Color(options){
             alpha: Math.clamp(self.alpha, 0, 1)
         });
     }
+    
     this.__construct(this, options);
+    
+    /**
+     * Outputs the color value as an CSS rgba() string
+     * 
+     * @method
+     * @name Color#toString
+     * @returns {String}
+     */
     this.toString = function(){
         var stringColor = new Color(this).clamp();
         return "rgba(" + stringColor.r + "," + stringColor.g + "," + stringColor.b + "," + stringColor.alpha + ")";
@@ -25,6 +59,13 @@ function Color(options){
 Color.prototype = new Component();
 Color.prototype.constructor = Color;
 
+/**
+ * Returns the inverse color
+ * 
+ * @method
+ * @name Color#invert
+ * @returns {Color}
+ */
 Color.prototype.invert = function(invertAlpha){
     var alpha = this.alpha;
     if(invertAlpha){
@@ -38,6 +79,13 @@ Color.prototype.invert = function(invertAlpha){
     })
 }
 
+/**
+ * Returns a new red Color
+ * 
+ * @method
+ * @name Color#red
+ * @returns {Color}
+ */
 Color.prototype.red = function(){
     return new Color({
         r: 255,
@@ -46,6 +94,13 @@ Color.prototype.red = function(){
     });
 }
 
+/**
+ * Returns a new green Color
+ * 
+ * @method
+ * @name Color#green
+ * @returns {Color}
+ */
 Color.prototype.green = function(){
     return new Color({
         r: 0,
@@ -54,6 +109,13 @@ Color.prototype.green = function(){
     });
 }
 
+/**
+ * Returns a new blue Color
+ * 
+ * @method
+ * @name Color#blue
+ * @returns {Color}
+ */
 Color.prototype.blue = function(){
     return new Color({
         r: 0,
@@ -62,6 +124,13 @@ Color.prototype.blue = function(){
     });
 }
 
+/**
+ * Returns a new black Color
+ * 
+ * @method
+ * @name Color#black
+ * @returns {Color}
+ */
 Color.prototype.black = function(){
     return new Color({
         r: 0,
@@ -70,6 +139,13 @@ Color.prototype.black = function(){
     });
 }
 
+/**
+ * Returns a new white Color
+ * 
+ * @method
+ * @name Color#white
+ * @returns {Color}
+ */
 Color.prototype.white = function(){
     return new Color({
         r: 255,
@@ -78,6 +154,13 @@ Color.prototype.white = function(){
     });
 }
 
+/**
+ * Returns a new cyan Color
+ * 
+ * @method
+ * @name Color#cyan
+ * @returns {Color}
+ */
 Color.prototype.cyan = function(){
     return new Color({
         r: 0,
@@ -86,6 +169,13 @@ Color.prototype.cyan = function(){
     });
 }
 
+/**
+ * Returns a new magenta Color
+ * 
+ * @method
+ * @name Color#magenta
+ * @returns {Color}
+ */
 Color.prototype.magenta = function(){
     return new Color({
         r: 255,
@@ -94,6 +184,13 @@ Color.prototype.magenta = function(){
     });
 }
 
+/**
+ * Returns a new yellow Color
+ * 
+ * @method
+ * @name Color#yellow
+ * @returns {Color}
+ */
 Color.prototype.yellow = function(){
     return new Color({
         r: 255,
@@ -102,6 +199,13 @@ Color.prototype.yellow = function(){
     });
 }
 
+/**
+ * Returns a new grey Color
+ * 
+ * @method
+ * @name Color#grey
+ * @returns {Color}
+ */
 Color.prototype.grey = function(){
     return new Color({
         r: 128,
@@ -110,6 +214,15 @@ Color.prototype.grey = function(){
     });
 }
 
+/**
+ * Returns a new color that is the Color added with another Color, or the Color values added with a number
+ * 
+ * @method
+ * @name Color#add
+ * @param {Color|number} color The value to add
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.add = function(color){
     switch(typeof color){
         case 'object':
@@ -134,6 +247,15 @@ Color.prototype.add = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color multiplied with another Color, or the Color values multiplied with a number
+ * 
+ * @method
+ * @name Color#multiply
+ * @param {Color|number} color The value to multiply
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.multiply = function(color){
     switch(typeof color){
         case 'object':
@@ -158,6 +280,15 @@ Color.prototype.multiply = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color divided by another Color, or the Color values divided by a number
+ * 
+ * @method
+ * @name Color#divide
+ * @param {Color|number} color The value to divide by
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.divide = function(color){
     switch(typeof color){
         case 'object':
@@ -182,6 +313,15 @@ Color.prototype.divide = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color subtracted from another Color, or the Color values subtract from a number
+ * 
+ * @method
+ * @name Color#subtract
+ * @param {Color|number} color The value to subtract from
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.subtract = function(color){
     switch(typeof color){
         case 'object':
@@ -206,6 +346,15 @@ Color.prototype.subtract = function(color){
     }
 }
 
+/**
+ * Compare the Color with another instance of Color
+ * 
+ * @method
+ * @name Color#equal
+ * @param {Color} color An instance of Color to compare
+ * @returns {boolean}
+ * @throws TypeError If color is not an instance of Color
+ */
 Color.prototype.equal = function(color){
     if(!(color instanceof Color)){
         throw TypeError("Argument not an instance of Color");
@@ -216,6 +365,17 @@ Color.prototype.equal = function(color){
     return false;
 }
 
+/**
+ * Return a new Color that is linear interpolated between two instances of Color over a specified interval
+ * 
+ * @method
+ * @name Color#lerp
+ * @param {Color} a The Color instance to interpolate from
+ * @param {Color} b The Color instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Color}
+ * @throws TypeError If a or b is not an instance of Color, or t is not a number
+ */
 Color.prototype.lerp = function(a, b, t){
     if(!(a instanceof Color) || !(b instanceof Color)){
         throw TypeError("Argument not an instance of Color");

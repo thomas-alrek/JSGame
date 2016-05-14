@@ -18,3 +18,10 @@ global.Particle = require("./lib/GameObjects/Particle.js");
 global.ParticleSystem = require("./lib/GameObjects/ParticleSystem.js");
 global.AudioClip = require("./lib/GameObjects/AudioClip.js");
 global.Background = require("./lib/GameObjects/Background.js");
+
+/**
+ * @file An Object that can override every public property of a GameObject or Component
+ * @author Thomas Alrek
+ * @namespace
+ * @name options
+ */

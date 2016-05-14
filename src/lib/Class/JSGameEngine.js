@@ -6,11 +6,12 @@
 "use strict";
 
 /**
+ * @class JSGameEngine
  * Creates a new instance of JSGameEngine.
  * <p><i>This is the "entrypoint" for all JSGame projects</i></p>
  *
  * @constructor
- * @param {Object} options An object containing construct options
+ * @param {options} options An object containing construct options
  * @property {Object<GameObject>} components An object containing attached GameObjects
  * @property {HTMLCanvasElement} canvas The canvas to draw to. If no canvas is provided, a new canvas will automatically be inserted into the DOM
  * @property {number} width The width of the canvas (optional)

@@ -1,5 +1,18 @@
+/**
+ * @file JSGame Input Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Input
+ * Creates a new instance of Input.
+ * <p><i>Input is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Input(options){
     var self = this;
     this.__extend(Component, this, options);

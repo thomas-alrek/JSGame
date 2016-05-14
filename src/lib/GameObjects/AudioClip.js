@@ -1,5 +1,23 @@
+/**
+ * @file JSGame AudioClip GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class AudioClip
+ * Creates a new instance of AudioClip.
+ * <p><i>AudioClip is an instance of GameObject</i></p>
+  *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {string} file The url of the Audio file
+ * @property {number} volume A number between 0 and 1 representing audio volume
+ * @property {HTMLAudioElement} audio The audio DOM object
+ * @property {number} time The current playback position of the audio
+ * @property {number} duration The total playback length of the audio
+ */
 function AudioClip(options){
     var self = this;
     this.__extend(GameObject, this, options);
@@ -7,16 +25,31 @@ function AudioClip(options){
     this.volume = 1.0;
     this.__construct(this, options);
     this.audio = new Audio(this.file);
+    
+    /**
+     * Starts playback
+     * 
+     * @method
+     * @name AudioClip#play
+     */
     this.play = function(){
         if(self.enabled){
             self.audio.play();
         }
     }
+    
+    /**
+     * Pause or unpause playback
+     * 
+     * @method
+     * @name AudioClip#pause
+     */
     this.pause = function(){
         if(self.enabled){
-            self.audio.oause();
+            self.audio.pause();
         }
     }
+    
     this.time = 0;
     this.duration = 0;
     this.__init = function(){

@@ -6,6 +6,7 @@
 "use strict";
 
 /**
+ * @class Time
  * Creates an instance of Time.
  * <p><i>
  * JSGame automatically creates a shared Time class that can be used globally,

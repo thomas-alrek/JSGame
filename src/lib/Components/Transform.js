@@ -1,5 +1,20 @@
+/**
+ * @file JSGame Transform Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Transform
+ * Creates a new instance of Transform.
+ * <p><i>Transform is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} rotation A number representing the Transforms rotation in degrees
+ * @property {Vector2} position A Vector2 instance, representing the Transforms position
+ */
 function Transform(options){
     this.rotation = 0;
     this.__extend(Component, this, options);
@@ -11,6 +26,14 @@ function Transform(options){
 Transform.prototype = new Component();
 Transform.prototype.constructor = Transform;
 
+/**
+ * Translates this Transforms properties to another by adding them together Transform or Vector2
+ * 
+ * @method
+ * @name Transform#translate
+ * @prop {Transform|Vector2} vector The Transform or Vector2 to Translate with
+ * @throws {TypeError} If vector is not an instance of Transform or Vector2
+ */
 Transform.prototype.translate = function(vector){
     if(!(vector instanceof Vector2) && !(vector instanceof Transform)){
         throw TypeError("Vector must be an instance of Vector2 or Transform");
@@ -26,6 +49,15 @@ Transform.prototype.translate = function(vector){
     }
 }
 
+/**
+ * Returns a new Transform that is this Transforms added together with another Transform
+ * 
+ * @method
+ * @name Transform#add
+ * @prop {Transform} transform The Transform to add with this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.add = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -36,6 +68,15 @@ Transform.prototype.add = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms multiplied with with another Transform
+ * 
+ * @method
+ * @name Transform#multiply
+ * @prop {Transform} transform The Transform to multiply with this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.multiply = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -46,6 +87,15 @@ Transform.prototype.multiply = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms divided by another Transform
+ * 
+ * @method
+ * @name Transform#divide
+ * @prop {Transform} transform The Transform to divide by this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.divide = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -56,6 +106,15 @@ Transform.prototype.divide = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms subtracted from another Transform
+ * 
+ * @method
+ * @name Transform#subtract
+ * @prop {Transform} transform The Transform to subtract from this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.subtract = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -66,6 +125,15 @@ Transform.prototype.subtract = function(transform){
     });
 }
 
+/**
+ * Comapres this Transform with another Transform
+ * 
+ * @method
+ * @name Transform#equal
+ * @prop {Transform} transform The Transform to compare
+ * @returns {boolean}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.equal = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Argument not an instance of Transform");
@@ -76,6 +144,17 @@ Transform.prototype.equal = function(transform){
     return false;
 }
 
+/**
+ * Return a new Transform that is linear interpolated between two instances of Transform over a specified interval
+ * 
+ * @method
+ * @name Transform#lerp
+ * @param {Transform} a The Transform instance to interpolate from
+ * @param {Transform} b The Transform instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Transform}
+ * @throws TypeError If a or b is not an instance of Transform, or t is not a number
+ */
 Transform.prototype.lerp = function(a, b, t){
     if(!(a instanceof Transform) || !(b instanceof Transform)){
         throw TypeError("Argument not an instance of Transform");

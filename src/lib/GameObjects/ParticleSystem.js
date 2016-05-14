@@ -1,5 +1,28 @@
+/**
+ * @file JSGame ParticleSystem GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class ParticleSystem
+ * Creates a new instance of ParticleSystem.
+ * <p><i>ParticleSystem is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} count A number representing the number of particles
+ * @property {Vector2} speed A Vector2 representing the velocity of the particles
+ * @property {Color} color A Color instance representing the particles color
+ * @property {boolean} loop If false, this ParticleSystem will not loop
+ * @property {String} blendMode CanvasRenderingContext2D.globalCompositeOperation
+ * @property {boolean} glow If false, the particles will have an hard edge
+ * @property {number} life The maxmimum life of a particle
+ * @property {number} radius The initial radius of a particle
+ * @property {boolean} radial If true the particles will be emitted spherical
+ * @property {Particle[]} particles An array containing all Particles
+ */
 function ParticleSystem(options){
     var self = this;
     this.__extend(GameObject, this, options);

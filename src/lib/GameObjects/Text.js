@@ -1,9 +1,29 @@
+/**
+ * @file JSGame Text GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Text
+ * Creates a new instance of Text.
+ * <p><i>Text is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {Color} color The Color of this Text
+ * @property {String} text The text value of this Text
+ * @property {String} font The name of this Text's font
+ * @property {number} size The font size of this Text
+ * @property {boolean} bold If true this Text will be rendered bold
+ * @property {boolean} italic If true this Text will be rendered italic
+ * @property {boolean} underline If true this Text will be rendered with an underline 
+ */
 function Text(options){
     var self = this;
     this.__extend(GameObject, this, options);
-    this.color = new Color({parent: this});
+    this.color = new Color();
     this.text = "";
     this.font = "Helvetica";
     this.size = 20;
