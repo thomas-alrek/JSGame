@@ -20,6 +20,13 @@ global.Particle = require("./lib/GameObjects/Particle.js");
 global.ParticleSystem = require("./lib/GameObjects/ParticleSystem.js");
 global.AudioClip = require("./lib/GameObjects/AudioClip.js");
 global.Background = require("./lib/GameObjects/Background.js");
+
+/**
+ * @file An Object that can override every public property of a GameObject or Component
+ * @author Thomas Alrek
+ * @namespace
+ * @name options
+ */
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2.js":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Math.js":18,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
 /**
@@ -30,11 +37,12 @@ global.Background = require("./lib/GameObjects/Background.js");
 "use strict";
 
 /**
+ * @class Component
  * Creates a new instance of Component.
  * <p><i>All Components extends from this class</i></p>
  *
  * @constructor
- * @param {Object} options An object containing construct options
+ * @param {options} options An object containing construct options
  * @property {Object} parent The GameOjects parent
  * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
  * @property {function} onUpdate A callback function to called after rendering the GameObject
@@ -118,6 +126,7 @@ module.exports = Component;
 "use strict";
 
 /**
+ * @class Constructor
  * Creates a new instance of Constructor.
  * <p><i>This class provides methods to extend and construct classes with inheritance. It should not be used directly, but as a prototype of a class that needs it's methods</i></p>
  *
@@ -139,7 +148,7 @@ function Constructor(onlyConstruct){
  * @name Constructor#__extend
  * @param {Class} from The base class to extend from
  * @param {Object} to The instance that should be extended
- * @param {Object} options Options to pass on to the base class' constructor
+ * @param {options} options Options to pass on to the base class' constructor
  */
 Constructor.prototype.__extend = function(from, to, options){
     var proto = new from(options || undefined);
@@ -155,7 +164,7 @@ Constructor.prototype.__extend = function(from, to, options){
  * @method
  * @name Constructor#__construct
  * @param {Object} obj A reference to this class
- * @param {Object} options Options to construct from
+ * @param {options} options Options to construct from
  * @throws {TypeError} If the passed parameters is not Objects.
  */
 Constructor.prototype.__construct = function(obj, options){
@@ -237,11 +246,12 @@ module.exports = Constructor;
 "use strict";
 
 /**
+ * @class GameObject
  * Creates a new instance of GameObject.
  * <p><i>All GameObjects extends from this class</i></p>
  *
  * @constructor
- * @param {Object} options An object containing construct options
+ * @param {options} options An object containing construct options
  * @property {Object<Component>} components An object containing attached components
  * @property {boolean} enabled Enables or disbles the GameObject
  * @property {number} height The height of the GameObject (optional)
@@ -310,7 +320,7 @@ GameObject.prototype.toString = function(){
  * 
  * @method
  * @name GameObject#getComponent
- * @param {Type} type
+ * @param {Type} type The Type of Component to get
  * @returns {Component|null}
  */
 GameObject.prototype.getComponent = function(type){
@@ -338,7 +348,7 @@ module.exports = GameObject;
  * @method
  * @name GameObject#__construct
  * @param {Object} obj A reference to this GameObject
- * @param {Object} options Options to construct from
+ * @param {options} options Options to construct from
  * @throws {TypeError} If the passed parameters is not Objects.
  */
 
@@ -350,7 +360,16 @@ module.exports = GameObject;
  * @name GameObject#__extend
  * @param {Class} from The base class to extend from
  * @param {Object} to The instance that should be extended
- * @param {Object} options Options to pass on to the base class' constructor
+ * @param {options} options Options to pass on to the base class' constructor
+ */
+
+/**
+ * Initialize the GameObject
+ * <p><i>This method basically runs one frame of fixedUpdate, so initial values like width and height can be calculated. Generally it is not needed to call this class manually, as it is called automatically when you call JSGameEngine.addComponent.</i></p>
+ * 
+ * @method
+ * @name GameObject#__init
+ * @param {JSGameEngine} JSGameEngine A reference to JSGameEngine
  */
 },{}],5:[function(require,module,exports){
 /**
@@ -361,11 +380,12 @@ module.exports = GameObject;
 "use strict";
 
 /**
+ * @class JSGameEngine
  * Creates a new instance of JSGameEngine.
  * <p><i>This is the "entrypoint" for all JSGame projects</i></p>
  *
  * @constructor
- * @param {Object} options An object containing construct options
+ * @param {options} options An object containing construct options
  * @property {Object<GameObject>} components An object containing attached GameObjects
  * @property {HTMLCanvasElement} canvas The canvas to draw to. If no canvas is provided, a new canvas will automatically be inserted into the DOM
  * @property {number} width The width of the canvas (optional)
@@ -483,8 +503,25 @@ module.exports = JSGameEngine;
  * @throws {TypeError} If obj not is an instance of GameObject
  */
 },{}],6:[function(require,module,exports){
+/**
+ * @file JSGame Color Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Color
+ * Creates a new instance of Color.
+ * <p><i>Color is a instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} alpha A number between 0 and 1 representing the colors alpha channel
+ * @property {number} r A number between 0 and 255 representing the colors red channel
+ * @property {number} g A number between 0 and 255 representing the colors green channel
+ * @property {number} b A number between 0 and 255 representing the colors blue channel
+ */
 function Color(options){
     var self = this;
     this.__extend(Component, this, options);
@@ -492,6 +529,14 @@ function Color(options){
     this.r = 0;
     this.g = 0;
     this.b = 0;
+    
+    /**
+     * Clamps r,g,b, and alpha in the range 0-255
+     * 
+     * @method
+     * @name Color#clamp
+     * @returns {Color}
+     */
     this.clamp = function(){
         return new Color({
             r: Math.round(Math.clamp(self.r, 0, 255)),
@@ -500,7 +545,16 @@ function Color(options){
             alpha: Math.clamp(self.alpha, 0, 1)
         });
     }
+    
     this.__construct(this, options);
+    
+    /**
+     * Outputs the color value as an CSS rgba() string
+     * 
+     * @method
+     * @name Color#toString
+     * @returns {String}
+     */
     this.toString = function(){
         var stringColor = new Color(this).clamp();
         return "rgba(" + stringColor.r + "," + stringColor.g + "," + stringColor.b + "," + stringColor.alpha + ")";
@@ -510,6 +564,13 @@ function Color(options){
 Color.prototype = new Component();
 Color.prototype.constructor = Color;
 
+/**
+ * Returns the inverse color
+ * 
+ * @method
+ * @name Color#invert
+ * @returns {Color}
+ */
 Color.prototype.invert = function(invertAlpha){
     var alpha = this.alpha;
     if(invertAlpha){
@@ -523,6 +584,13 @@ Color.prototype.invert = function(invertAlpha){
     })
 }
 
+/**
+ * Returns a new red Color
+ * 
+ * @method
+ * @name Color#red
+ * @returns {Color}
+ */
 Color.prototype.red = function(){
     return new Color({
         r: 255,
@@ -531,6 +599,13 @@ Color.prototype.red = function(){
     });
 }
 
+/**
+ * Returns a new green Color
+ * 
+ * @method
+ * @name Color#green
+ * @returns {Color}
+ */
 Color.prototype.green = function(){
     return new Color({
         r: 0,
@@ -539,6 +614,13 @@ Color.prototype.green = function(){
     });
 }
 
+/**
+ * Returns a new blue Color
+ * 
+ * @method
+ * @name Color#blue
+ * @returns {Color}
+ */
 Color.prototype.blue = function(){
     return new Color({
         r: 0,
@@ -547,6 +629,13 @@ Color.prototype.blue = function(){
     });
 }
 
+/**
+ * Returns a new black Color
+ * 
+ * @method
+ * @name Color#black
+ * @returns {Color}
+ */
 Color.prototype.black = function(){
     return new Color({
         r: 0,
@@ -555,6 +644,13 @@ Color.prototype.black = function(){
     });
 }
 
+/**
+ * Returns a new white Color
+ * 
+ * @method
+ * @name Color#white
+ * @returns {Color}
+ */
 Color.prototype.white = function(){
     return new Color({
         r: 255,
@@ -563,6 +659,13 @@ Color.prototype.white = function(){
     });
 }
 
+/**
+ * Returns a new cyan Color
+ * 
+ * @method
+ * @name Color#cyan
+ * @returns {Color}
+ */
 Color.prototype.cyan = function(){
     return new Color({
         r: 0,
@@ -571,6 +674,13 @@ Color.prototype.cyan = function(){
     });
 }
 
+/**
+ * Returns a new magenta Color
+ * 
+ * @method
+ * @name Color#magenta
+ * @returns {Color}
+ */
 Color.prototype.magenta = function(){
     return new Color({
         r: 255,
@@ -579,6 +689,13 @@ Color.prototype.magenta = function(){
     });
 }
 
+/**
+ * Returns a new yellow Color
+ * 
+ * @method
+ * @name Color#yellow
+ * @returns {Color}
+ */
 Color.prototype.yellow = function(){
     return new Color({
         r: 255,
@@ -587,6 +704,13 @@ Color.prototype.yellow = function(){
     });
 }
 
+/**
+ * Returns a new grey Color
+ * 
+ * @method
+ * @name Color#grey
+ * @returns {Color}
+ */
 Color.prototype.grey = function(){
     return new Color({
         r: 128,
@@ -595,6 +719,15 @@ Color.prototype.grey = function(){
     });
 }
 
+/**
+ * Returns a new color that is the Color added with another Color, or the Color values added with a number
+ * 
+ * @method
+ * @name Color#add
+ * @param {Color|number} color The value to add
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.add = function(color){
     switch(typeof color){
         case 'object':
@@ -619,6 +752,15 @@ Color.prototype.add = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color multiplied with another Color, or the Color values multiplied with a number
+ * 
+ * @method
+ * @name Color#multiply
+ * @param {Color|number} color The value to multiply
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.multiply = function(color){
     switch(typeof color){
         case 'object':
@@ -643,6 +785,15 @@ Color.prototype.multiply = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color divided by another Color, or the Color values divided by a number
+ * 
+ * @method
+ * @name Color#divide
+ * @param {Color|number} color The value to divide by
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.divide = function(color){
     switch(typeof color){
         case 'object':
@@ -667,6 +818,15 @@ Color.prototype.divide = function(color){
     }
 }
 
+/**
+ * Returns a new color that is the Color subtracted from another Color, or the Color values subtract from a number
+ * 
+ * @method
+ * @name Color#subtract
+ * @param {Color|number} color The value to subtract from
+ * @returns {Color}
+ * @throws TypeError If color is not an instance of Color or a number
+ */
 Color.prototype.subtract = function(color){
     switch(typeof color){
         case 'object':
@@ -691,6 +851,15 @@ Color.prototype.subtract = function(color){
     }
 }
 
+/**
+ * Compare the Color with another instance of Color
+ * 
+ * @method
+ * @name Color#equal
+ * @param {Color} color An instance of Color to compare
+ * @returns {boolean}
+ * @throws TypeError If color is not an instance of Color
+ */
 Color.prototype.equal = function(color){
     if(!(color instanceof Color)){
         throw TypeError("Argument not an instance of Color");
@@ -701,6 +870,17 @@ Color.prototype.equal = function(color){
     return false;
 }
 
+/**
+ * Return a new Color that is linear interpolated between two instances of Color over a specified interval
+ * 
+ * @method
+ * @name Color#lerp
+ * @param {Color} a The Color instance to interpolate from
+ * @param {Color} b The Color instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Color}
+ * @throws TypeError If a or b is not an instance of Color, or t is not a number
+ */
 Color.prototype.lerp = function(a, b, t){
     if(!(a instanceof Color) || !(b instanceof Color)){
         throw TypeError("Argument not an instance of Color");
@@ -713,8 +893,21 @@ Color.prototype.lerp = function(a, b, t){
 
 module.exports = Color;
 },{}],7:[function(require,module,exports){
+/**
+ * @file JSGame Input Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Input
+ * Creates a new instance of Input.
+ * <p><i>Input is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Input(options){
     var self = this;
     this.__extend(Component, this, options);
@@ -744,8 +937,21 @@ Input.prototype.keyD = 68;
 
 module.exports = Input;
 },{}],8:[function(require,module,exports){
+/**
+ * @file JSGame Physics2D Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Physics2D
+ * Creates a new instance of Physics2D.
+ * <p><i>Input is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Physics2D(options){
     var self = this;
     this.__extend(Component, this, options);
@@ -769,8 +975,24 @@ Physics2D.prototype.constructor = Physics2D;
 
 module.exports = Physics2D;
 },{}],9:[function(require,module,exports){
+/**
+ * @file JSGame Shadow Component. Adds a shadow to the parent GameObject
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Shadow
+ * Creates a new instance of Shadow.
+ * <p><i>Shadow is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {Color} color An instance of Color representing the Shadows color
+ * @property {number} blur A number representing the Shadows blur radius
+ * @property {GameObject} parent A reference to the Shadows parent
+ */
 function Shadow(options){
     var self = this;
     this.__extend(Component, this, options);
@@ -789,8 +1011,23 @@ Shadow.prototype.constructor = Shadow;
 
 module.exports = Shadow;
 },{}],10:[function(require,module,exports){
+/**
+ * @file JSGame Transform Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Transform
+ * Creates a new instance of Transform.
+ * <p><i>Transform is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} rotation A number representing the Transforms rotation in degrees
+ * @property {Vector2} position A Vector2 instance, representing the Transforms position
+ */
 function Transform(options){
     this.rotation = 0;
     this.__extend(Component, this, options);
@@ -802,6 +1039,14 @@ function Transform(options){
 Transform.prototype = new Component();
 Transform.prototype.constructor = Transform;
 
+/**
+ * Translates this Transforms properties to another by adding them together Transform or Vector2
+ * 
+ * @method
+ * @name Transform#translate
+ * @prop {Transform|Vector2} vector The Transform or Vector2 to Translate with
+ * @throws {TypeError} If vector is not an instance of Transform or Vector2
+ */
 Transform.prototype.translate = function(vector){
     if(!(vector instanceof Vector2) && !(vector instanceof Transform)){
         throw TypeError("Vector must be an instance of Vector2 or Transform");
@@ -817,6 +1062,15 @@ Transform.prototype.translate = function(vector){
     }
 }
 
+/**
+ * Returns a new Transform that is this Transforms added together with another Transform
+ * 
+ * @method
+ * @name Transform#add
+ * @prop {Transform} transform The Transform to add with this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.add = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -827,6 +1081,15 @@ Transform.prototype.add = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms multiplied with with another Transform
+ * 
+ * @method
+ * @name Transform#multiply
+ * @prop {Transform} transform The Transform to multiply with this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.multiply = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -837,6 +1100,15 @@ Transform.prototype.multiply = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms divided by another Transform
+ * 
+ * @method
+ * @name Transform#divide
+ * @prop {Transform} transform The Transform to divide by this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.divide = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -847,6 +1119,15 @@ Transform.prototype.divide = function(transform){
     });
 }
 
+/**
+ * Returns a new Transform that is this Transforms subtracted from another Transform
+ * 
+ * @method
+ * @name Transform#subtract
+ * @prop {Transform} transform The Transform to subtract from this Transform
+ * @returns {Transform}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.subtract = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Object not an instance of Transform");
@@ -857,6 +1138,15 @@ Transform.prototype.subtract = function(transform){
     });
 }
 
+/**
+ * Comapres this Transform with another Transform
+ * 
+ * @method
+ * @name Transform#equal
+ * @prop {Transform} transform The Transform to compare
+ * @returns {boolean}
+ * @throws {TypeError} If transform is not an instance of Transform
+ */
 Transform.prototype.equal = function(transform){
     if(!(transform instanceof Transform)){
         throw TypeError("Argument not an instance of Transform");
@@ -867,6 +1157,17 @@ Transform.prototype.equal = function(transform){
     return false;
 }
 
+/**
+ * Return a new Transform that is linear interpolated between two instances of Transform over a specified interval
+ * 
+ * @method
+ * @name Transform#lerp
+ * @param {Transform} a The Transform instance to interpolate from
+ * @param {Transform} b The Transform instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Transform}
+ * @throws TypeError If a or b is not an instance of Transform, or t is not a number
+ */
 Transform.prototype.lerp = function(a, b, t){
     if(!(a instanceof Transform) || !(b instanceof Transform)){
         throw TypeError("Argument not an instance of Transform");
@@ -879,8 +1180,23 @@ Transform.prototype.lerp = function(a, b, t){
 
 module.exports = Transform;
 },{}],11:[function(require,module,exports){
+/**
+ * @file JSGame Vector2 Component.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Vector2
+ * Creates a new instance of Vector2.
+ * <p><i>Vector2 is an instance of Component</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} x A number representing horizontal position within the game area
+ * @property {number} y A number representing vertical position within the game area
+ */
 function Vector2(options){
     this.__extend(Component, this, options);
     this.x = 0;
@@ -891,6 +1207,13 @@ function Vector2(options){
 Vector2.prototype = new Component();
 Vector2.prototype.constructor = Vector2;
 
+/**
+ * Returns a new Vector2 representing upwards movement
+ * 
+ * @method
+ * @name Vector2#up
+ * @returns {Vector2}
+ */
 Vector2.prototype.up = function(){
     return new Vector2({
         x: 0,
@@ -898,6 +1221,13 @@ Vector2.prototype.up = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 representing movement to the left
+ * 
+ * @method
+ * @name Vector2#left
+ * @returns {Vector2}
+ */
 Vector2.prototype.left = function(){
     return new Vector2({
         x: -1,
@@ -905,6 +1235,13 @@ Vector2.prototype.left = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 representing x and y incremented by 1
+ * 
+ * @method
+ * @name Vector2#one
+ * @returns {Vector2}
+ */
 Vector2.prototype.one = function(){
     return new Vector2({
         x: 1,
@@ -912,6 +1249,13 @@ Vector2.prototype.one = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 representing movement to the right
+ * 
+ * @method
+ * @name Vector2#right
+ * @returns {Vector2}
+ */
 Vector2.prototype.right = function(){
     return new Vector2({
         x: 1,
@@ -919,6 +1263,13 @@ Vector2.prototype.right = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 representing downwards movement
+ * 
+ * @method
+ * @name Vector2#down
+ * @returns {Vector2}
+ */
 Vector2.prototype.down = function(){
     return new Vector2({
         x: 0,
@@ -926,6 +1277,13 @@ Vector2.prototype.down = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 representing zero movement
+ * 
+ * @method
+ * @name Vector2#zero
+ * @returns {Vector2}
+ */
 Vector2.prototype.zero = function(){
     return new Vector2({
         x: 0,
@@ -933,6 +1291,15 @@ Vector2.prototype.zero = function(){
     });
 }
 
+/**
+ * Returns a new Vector2 with the values of this Vector2 added with another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#add
+ * @prop {Vector2|number} vector The Vector2 or number to add with this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
 Vector2.prototype.add = function(vector){
     switch(typeof vector){
         case 'object':
@@ -955,6 +1322,15 @@ Vector2.prototype.add = function(vector){
     }
 }
 
+/**
+ * Returns a new Vector2 with the values of this Vector2 multiplied with another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#multiply
+ * @prop {Vector2|number} vector The Vector2 or number to multiply with this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
 Vector2.prototype.multiply = function(vector){
     switch(typeof vector){
         case 'object':
@@ -977,6 +1353,15 @@ Vector2.prototype.multiply = function(vector){
     }
 }
 
+/**
+ * Returns a new Vector2 with the values of this Vector2 divided by another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#divide
+ * @prop {Vector2|number} vector The Vector2 or number to divide this Vector2 by
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
 Vector2.prototype.divide = function(vector){
     switch(typeof vector){
         case 'object':
@@ -999,6 +1384,15 @@ Vector2.prototype.divide = function(vector){
     }
 }
 
+/**
+ * Returns a new Vector2 with the values of this Vector2 subtracted from another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#subtract
+ * @prop {Vector2|number} vector The Vector2 or number to subtract from this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
 Vector2.prototype.subtract = function(vector){
     switch(typeof vector){
         case 'object':
@@ -1021,6 +1415,15 @@ Vector2.prototype.subtract = function(vector){
     }
 }
 
+/**
+ * Compares another Vector2 with this Vector2
+ * 
+ * @method
+ * @name Vector2#equal
+ * @prop {Vector2} vector The Vector2 to compare to this Vector2
+ * @returns {boolean}
+ * @throws {TypeError} If vector is not an instance of Vector2
+ */
 Vector2.prototype.equal = function(vector){
     if(!(vector instanceof Vector2)){
         throw TypeError("Argument not an instance of Vector2");
@@ -1031,6 +1434,17 @@ Vector2.prototype.equal = function(vector){
     return false;
 }
 
+/**
+ * Return a new Vector2 that is linear interpolated between two instances of Vector2 over a specified interval
+ * 
+ * @method
+ * @name Vector2#lerp
+ * @param {Vector2} a The Vector2 instance to interpolate from
+ * @param {Vector2} b The Vector2 instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Vector2}
+ * @throws TypeError If a or b is not an instance of Vector2, or t is not a number
+ */
 Vector2.prototype.lerp = function(a, b, t){
     if(!(a instanceof Vector2) || !(b instanceof Vector2)){
         throw TypeError("Argument not an instance of Vector2");
@@ -1044,8 +1458,26 @@ Vector2.prototype.lerp = function(a, b, t){
 
 module.exports = Vector2;
 },{}],12:[function(require,module,exports){
+/**
+ * @file JSGame AudioClip GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class AudioClip
+ * Creates a new instance of AudioClip.
+ * <p><i>AudioClip is an instance of GameObject</i></p>
+  *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {string} file The url of the Audio file
+ * @property {number} volume A number between 0 and 1 representing audio volume
+ * @property {HTMLAudioElement} audio The audio DOM object
+ * @property {number} time The current playback position of the audio
+ * @property {number} duration The total playback length of the audio
+ */
 function AudioClip(options){
     var self = this;
     this.__extend(GameObject, this, options);
@@ -1053,16 +1485,31 @@ function AudioClip(options){
     this.volume = 1.0;
     this.__construct(this, options);
     this.audio = new Audio(this.file);
+    
+    /**
+     * Starts playback
+     * 
+     * @method
+     * @name AudioClip#play
+     */
     this.play = function(){
         if(self.enabled){
             self.audio.play();
         }
     }
+    
+    /**
+     * Pause or unpause playback
+     * 
+     * @method
+     * @name AudioClip#pause
+     */
     this.pause = function(){
         if(self.enabled){
-            self.audio.oause();
+            self.audio.pause();
         }
     }
+    
     this.time = 0;
     this.duration = 0;
     this.__init = function(){
@@ -1093,8 +1540,21 @@ AudioClip.prototype.constructor = AudioClip;
 
 module.exports = AudioClip;
 },{}],13:[function(require,module,exports){
+/**
+ * @file JSGame Background GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Background
+ * Creates a new instance of Background.
+ * <p><i>Background is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Background(options){
     var self = this;
     this.__extend(GameObject, this, options);
@@ -1154,8 +1614,21 @@ Background.prototype.constructor = Background;
 
 module.exports = Background;
 },{}],14:[function(require,module,exports){
+/**
+ * @file JSGame Particle GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Particle
+ * Creates a new instance of Particle.
+ * <p><i>Particle is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Particle(options){
     this.__extend(GameObject, this, options);
     this.speed = new Vector2();
@@ -1177,8 +1650,31 @@ Particle.prototype.constructor = Particle;
 
 module.exports = Particle;
 },{}],15:[function(require,module,exports){
+/**
+ * @file JSGame ParticleSystem GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class ParticleSystem
+ * Creates a new instance of ParticleSystem.
+ * <p><i>ParticleSystem is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} count A number representing the number of particles
+ * @property {Vector2} speed A Vector2 representing the velocity of the particles
+ * @property {Color} color A Color instance representing the particles color
+ * @property {boolean} loop If false, this ParticleSystem will not loop
+ * @property {String} blendMode CanvasRenderingContext2D.globalCompositeOperation
+ * @property {boolean} glow If false, the particles will have an hard edge
+ * @property {number} life The maxmimum life of a particle
+ * @property {number} radius The initial radius of a particle
+ * @property {boolean} radial If true the particles will be emitted spherical
+ * @property {Particle[]} particles An array containing all Particles
+ */
 function ParticleSystem(options){
     var self = this;
     this.__extend(GameObject, this, options);
@@ -1303,8 +1799,21 @@ ParticleSystem.prototype.constructor = ParticleSystem;
 
 module.exports = ParticleSystem;
 },{}],16:[function(require,module,exports){
+/**
+ * @file JSGame Sprite GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Sprite
+ * Creates a new instance of Sprite.
+ * <p><i>Sprite is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
 function Sprite(options){
     var self = this;
     this.__extend(GameObject, this, options);
@@ -1323,12 +1832,32 @@ Sprite.prototype.constructor = Sprite;
 
 module.exports = Sprite;
 },{}],17:[function(require,module,exports){
+/**
+ * @file JSGame Text GameObject.
+ * @author Thomas Alrek
+ */
+
 "use strict";
 
+/**
+ * @class Text
+ * Creates a new instance of Text.
+ * <p><i>Text is an instance of GameObject</i></p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {Color} color The Color of this Text
+ * @property {String} text The text value of this Text
+ * @property {String} font The name of this Text's font
+ * @property {number} size The font size of this Text
+ * @property {boolean} bold If true this Text will be rendered bold
+ * @property {boolean} italic If true this Text will be rendered italic
+ * @property {boolean} underline If true this Text will be rendered with an underline 
+ */
 function Text(options){
     var self = this;
     this.__extend(GameObject, this, options);
-    this.color = new Color({parent: this});
+    this.color = new Color();
     this.text = "";
     this.font = "Helvetica";
     this.size = 20;
@@ -1480,6 +2009,7 @@ module.exports = Math;
 "use strict";
 
 /**
+ * @class Time
  * Creates an instance of Time.
  * <p><i>
  * JSGame automatically creates a shared Time class that can be used globally,
