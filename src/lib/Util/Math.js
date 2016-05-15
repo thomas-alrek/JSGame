@@ -5,7 +5,6 @@
  * @name Math
  */
 
-
 "use strict";
 
 /**
