@@ -8,10 +8,16 @@
 /**
  * @class Sprite
  * Creates a new instance of Sprite.
- * <p><i>Sprite is aen instance of GameObject</i></p>
+ * <p><i>Sprite is an instance of GameObject</i></p>
  *
  * @constructor
  * @param {options} options An object containing construct options
+ * @property {String} image The url of the image or spritesheet to load
+ * @property {boolean} flipHorizontal If true, mirrors the Sprite in the horizontal axis
+ * @property {boolean} flipVertical If true, mirrors the Sprite in the vertical axis
+ * @property {number} index The current sprite to display. (If loaded from a spritesheet)
+ * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
+ * @property {Image[]} sprites An array containing an array of all pre calculated sprites
  */
 function Sprite(options){
     var self = this;
