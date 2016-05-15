@@ -27,7 +27,7 @@ function Background(options){
     this.imageWidth = 0;
     this.imageHeight = 0;
     this.__construct(this, options);
-    var image = document.createElement("img");
+    var image = new Image();
     var loaded = false;
     var pattern;
     this.__update = function(JSGameEngine){
@@ -59,6 +59,7 @@ function Background(options){
         image.onload = function(){
             self.imageWidth = image.width;
             self.imageHeight = image.height;
+            console.log("loaded");
             loaded = true;
         }
         image.src = self.image;
