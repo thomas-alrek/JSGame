@@ -32,6 +32,7 @@ function Sprite(options){
     var lastPosition = this.transform.position;
     this.sprites = [];
     var srcImage = new Image();
+    srcImage.setAttribute('crossOrigin','anonymous');
     var loaded = false;
     function createSprites(){ 
         function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
@@ -40,6 +41,7 @@ function Sprite(options){
             ctx.scale(xScale, yScale);
             ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
             var img = new Image();
+            img.setAttribute('crossOrigin','anonymous');
             img.src = canvas.toDataURL();
             ctx.restore();
             return img;
