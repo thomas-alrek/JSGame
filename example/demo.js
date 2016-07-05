@@ -5,7 +5,7 @@ var game = new JSGameEngine({
 });
 
 var sprite = game.addComponent(new Sprite({
-    image: "https://cdn.tutsplus.com/mobile/uploads/legacy/Corona-SDK_Side-Scroller/3/monsterSpriteSheet.png",
+    image: "assets/sprite.png",
     size: new Vector2({
         x: 100,
         y: 100
@@ -40,7 +40,7 @@ sprite.components.input.onUpdate = function(JSGameEngine){
         key = parseInt(key);
         if(this.keys[key]){
             switch(key){
-                case this.keyA:
+                case this.A:
                     if(this.parent.transform.position.x > this.parent.width){
                         this.parent.target.position.x -= speed;
                     }else{
@@ -48,7 +48,7 @@ sprite.components.input.onUpdate = function(JSGameEngine){
                     }
                     this.parent.flipHorizontal = true;
                 break;
-                case this.keyD:
+                case this.D:
                     if(this.parent.transform.position.x < game.width - this.parent.width){
                         this.parent.target.position.x += speed;
                     }else{
