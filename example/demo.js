@@ -5,13 +5,17 @@ var game = new JSGameEngine({
 });
 
 var sprite = game.addComponent(new Sprite({
-    image: "assets/sprite.png",
+    image: "https://cdn.tutsplus.com/mobile/uploads/legacy/Corona-SDK_Side-Scroller/3/monsterSpriteSheet.png",
     size: new Vector2({
-        x: 64,
-        y: 96
+        x: 100,
+        y: 100
     }),
     visible: false
 }));
+
+var particles = game.addComponent(new ParticleSystem());
+particles.transform.position.x = (game.width / 2) - particles.width / 2;
+particles.transform.position.y = (game.height / 2) - particles.height / 2;
 
 sprite.transform.position.y = game.height - sprite.height;
 sprite.visible = true;
@@ -59,6 +63,9 @@ sprite.components.input.onUpdate = function(JSGameEngine){
 
 //apply movement
 sprite.onUpdate = function(){
+    if(Time.frameCount % 4 == 0){
+        this.index++;
+    }
     if(this.transform.position.x < 0){
         this.transform.position.x = 0;
     }

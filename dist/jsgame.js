@@ -929,11 +929,42 @@ function Input(options){
 
 Input.prototype = new Component();
 Input.prototype.constructor = Input;
-Input.prototype.keyShift = 16;
-Input.prototype.keyA = 65;
-Input.prototype.keyS = 83;
-Input.prototype.keyW = 87;
-Input.prototype.keyD = 68;
+
+/* key definitions */
+Input.prototype.Enter =     13;
+Input.prototype.Shift =     16;
+Input.prototype.Ctrl =      17;
+Input.prototype.Esc =       27;
+Input.prototype.Left =      37;
+Input.prototype.Up =        38;
+Input.prototype.Right =     39;
+Input.prototype.Down =      40;
+Input.prototype.A =         65;
+Input.prototype.B =         66;
+Input.prototype.C =         67;
+Input.prototype.D =         68;
+Input.prototype.E =         69;
+Input.prototype.F =         70;
+Input.prototype.G =         71;
+Input.prototype.H =         72;
+Input.prototype.I =         73;
+Input.prototype.J =         74;
+Input.prototype.K =         75;
+Input.prototype.L =         76;
+Input.prototype.M =         77;
+Input.prototype.N =         78;
+Input.prototype.O =         79;
+Input.prototype.P =         80;
+Input.prototype.Q =         81;
+Input.prototype.R =         82;
+Input.prototype.S =         83;
+Input.prototype.T =         84;
+Input.prototype.U =         85;
+Input.prototype.V =         86;
+Input.prototype.W =         87;
+Input.prototype.X =         88;
+Input.prototype.Y =         89;
+Input.prototype.Z =         90;
 
 module.exports = Input;
 },{}],8:[function(require,module,exports){
@@ -1810,10 +1841,16 @@ module.exports = ParticleSystem;
 /**
  * @class Sprite
  * Creates a new instance of Sprite.
- * <p><i>Sprite is aen instance of GameObject</i></p>
+ * <p><i>Sprite is an instance of GameObject</i></p>
  *
  * @constructor
  * @param {options} options An object containing construct options
+ * @property {String} image The url of the image or spritesheet to load
+ * @property {boolean} flipHorizontal If true, mirrors the Sprite in the horizontal axis
+ * @property {boolean} flipVertical If true, mirrors the Sprite in the vertical axis
+ * @property {number} index The current sprite to display. (If loaded from a spritesheet)
+ * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
+ * @property {Image[]} sprites An array containing an array of all pre calculated sprites
  */
 function Sprite(options){
     var self = this;
@@ -1828,6 +1865,7 @@ function Sprite(options){
     var lastPosition = this.transform.position;
     this.sprites = [];
     var srcImage = new Image();
+    srcImage.setAttribute('crossOrigin','anonymous');
     var loaded = false;
     function createSprites(){ 
         function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
@@ -1836,6 +1874,7 @@ function Sprite(options){
             ctx.scale(xScale, yScale);
             ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
             var img = new Image();
+            img.setAttribute('crossOrigin','anonymous');
             img.src = canvas.toDataURL();
             ctx.restore();
             return img;
@@ -1995,7 +2034,6 @@ module.exports = Text;
  * @namespace
  * @name Math
  */
-
 
 "use strict";
 
