@@ -1,6 +1,6 @@
 # Contributing
 
-node-php-password is intended to be a public project that anyone can participate in. If you would like to add support for new algorithms, fix a bug, do security auditing etc. please read this guide.
+JSGame is intended to be a public project that anyone can participate in. If you would like to add support for new functions, fix a bug, do performance optimization etc. please read this guide.
 
 Fork, then clone the repo:
 
