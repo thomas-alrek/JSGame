@@ -1,6 +1,8 @@
 /**
  * @file JSGame Shadow Component. Adds a shadow to the parent GameObject
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";

@@ -1,9 +1,12 @@
-/* NPM build scripts
- * COPYRIGHT THOMAS ALREK 
+/**
+ * Build script
  *
  * This script automatically bundles and minifies package.json
  * into a single file, located under ./dist
- *
+ * 
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
  
 "use strict";

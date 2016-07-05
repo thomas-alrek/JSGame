@@ -1,5 +1,12 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
+/**
+ * @file JSGame
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
+ */
+
 "use strict";
 
 global.Constructor = require("./lib/Class/Constructor.js");
@@ -31,7 +38,9 @@ global.Background = require("./lib/GameObjects/Background.js");
 },{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2.js":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Math.js":18,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
 /**
  * @file JSGame Component class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -120,7 +129,9 @@ module.exports = Component;
 },{}],3:[function(require,module,exports){
 /**
  * @file JSGame Constructor class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -240,7 +251,9 @@ module.exports = Constructor;
 },{}],4:[function(require,module,exports){
 /**
  * @file JSGame GameObject class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -374,7 +387,9 @@ module.exports = GameObject;
 },{}],5:[function(require,module,exports){
 /**
  * @file JSGameEngine class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -505,7 +520,9 @@ module.exports = JSGameEngine;
 },{}],6:[function(require,module,exports){
 /**
  * @file JSGame Color Component.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -895,7 +912,9 @@ module.exports = Color;
 },{}],7:[function(require,module,exports){
 /**
  * @file JSGame Input Component.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -970,7 +989,9 @@ module.exports = Input;
 },{}],8:[function(require,module,exports){
 /**
  * @file JSGame Physics2D Component.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1008,7 +1029,9 @@ module.exports = Physics2D;
 },{}],9:[function(require,module,exports){
 /**
  * @file JSGame Shadow Component. Adds a shadow to the parent GameObject
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1044,7 +1067,9 @@ module.exports = Shadow;
 },{}],10:[function(require,module,exports){
 /**
  * @file JSGame Transform Component.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1213,7 +1238,9 @@ module.exports = Transform;
 },{}],11:[function(require,module,exports){
 /**
  * @file JSGame Vector2 Component.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1491,7 +1518,9 @@ module.exports = Vector2;
 },{}],12:[function(require,module,exports){
 /**
  * @file JSGame AudioClip GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1573,7 +1602,9 @@ module.exports = AudioClip;
 },{}],13:[function(require,module,exports){
 /**
  * @file JSGame Background GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1648,7 +1679,9 @@ module.exports = Background;
 },{}],14:[function(require,module,exports){
 /**
  * @file JSGame Particle GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1684,7 +1717,9 @@ module.exports = Particle;
 },{}],15:[function(require,module,exports){
 /**
  * @file JSGame ParticleSystem GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1833,7 +1868,9 @@ module.exports = ParticleSystem;
 },{}],16:[function(require,module,exports){
 /**
  * @file JSGame Sprite GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -1956,7 +1993,9 @@ module.exports = Sprite;
 },{}],17:[function(require,module,exports){
 /**
  * @file JSGame Text GameObject.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -2030,9 +2069,9 @@ module.exports = Text;
 },{}],18:[function(require,module,exports){
 /**
  * @file JSGame extended Math library
- * @author Thomas Alrek
- * @namespace
- * @name Math
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";
@@ -2124,7 +2163,9 @@ module.exports = Math;
 },{}],19:[function(require,module,exports){
 /**
  * @file JSGame Time class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";

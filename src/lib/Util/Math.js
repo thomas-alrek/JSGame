@@ -1,8 +1,8 @@
 /**
  * @file JSGame extended Math library
- * @author Thomas Alrek
- * @namespace
- * @name Math
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";

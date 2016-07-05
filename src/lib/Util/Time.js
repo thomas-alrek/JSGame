@@ -1,6 +1,8 @@
 /**
  * @file JSGame Time class.
- * @author Thomas Alrek
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
  */
 
 "use strict";

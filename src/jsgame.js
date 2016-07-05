@@ -1,3 +1,10 @@
+/**
+ * @file JSGame
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
+ */
+
 "use strict";
 
 global.Constructor = require("./lib/Class/Constructor.js");

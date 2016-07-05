@@ -4,7 +4,7 @@
   "description": "JS Game is a 2D game engine written in JavaScript. It provides built-in objects and functions, to make it easier to write HTML5 games.",
   "main": "src/jsgame.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --reporter spec test",
     "build": "node script/build",
     "jsdoc": "node node_modules/jsdoc/jsdoc.js -r src -d doc",
     "prepublish": "npm run-script build",
@@ -25,7 +25,7 @@
     "physics"
   ],
   "author": "Thomas Alrek <thomas@alrek.no>",
-  "license": "ISC",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/alrek-consulting/JSGame/issues"
   },
@@ -34,5 +34,9 @@
     "browserify": "^13.0.1",
     "jsdoc": "^3.4.0",
     "uglify-js": "^2.6.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "chai": "^3.5.0"
   }
 }
