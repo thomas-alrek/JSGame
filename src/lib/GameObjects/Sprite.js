@@ -34,8 +34,38 @@ function Sprite(options){
     var lastPosition = this.transform.position;
     this.sprites = [];
     var srcImage = new Image();
-    srcImage.setAttribute('crossOrigin','anonymous');
+    //srcImage.setAttribute('crossOrigin','anonymous');
     var loaded = false;
+
+    function b64toBlob(b64Data) {
+        var expression = /data:([a-zA-Z0-9]+\/[a-zA-Z0-9]+);base64,(.+)/g;
+        if(!(expression.test(b64Data))){
+            throw TypeError("Not a valid base64 string");
+        }
+        var match = expression.exec(b64Data);
+        contentType = match[1];
+        //sliceSize = sliceSize || 512;
+        sliceSize = 512;
+        var byteCharacters = atob(match[2]);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+        var blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
     function createSprites(){ 
         function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
             ctx.save();
@@ -43,10 +73,9 @@ function Sprite(options){
             ctx.scale(xScale, yScale);
             ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
             var img = new Image();
-            img.setAttribute('crossOrigin','anonymous');
-            img.src = canvas.toDataURL();
+            //img.setAttribute('crossOrigin','anonymous');
             ctx.restore();
-            return img;
+            return URL.createObjectURL(b64toBlob(canvas.toDataURL(), "image/png"));
         }
         var index = 0;
         var canvas = document.createElement("canvas");
