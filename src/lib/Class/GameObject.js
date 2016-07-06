@@ -99,6 +99,22 @@ GameObject.prototype.getComponent = function(type){
     return null;
 }
 
+/* work in progress 
+GameObject.prototype.clone = function(obj){
+    if(typeof obj == 'undefined'){
+        obj = this;
+    }
+    var clone, option, _key;
+    clone = Array.isArray(obj) ? [] : {};
+    for (_key in obj) {
+        option = obj[_key];
+        clone[_key] = (typeof option === "object") ? this.clone(option) : option;
+    }
+    clone.__proto__ = obj.__proto__;
+    return clone;
+}
+*/
+
 module.exports = GameObject;
 
 /* additional JSDoc for methods inherited for the prototype */
