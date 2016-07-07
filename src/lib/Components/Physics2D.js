@@ -18,17 +18,27 @@
 function Physics2D(options){
     var self = this;
     this.__extend(Component, this, options);
-    this.gravity = new Vector2({y: 9.81, parent: this});
+    this.gravity = new Vector2({x: 0, y: 0.981});
     this.velocity = new Vector2({parent: this});
-    this.fixedUpdate = function(timestamp){
-        return self.addForce(self.gravity.multiply(timestamp * 10));
+    this.update = function(JSGameEngine){
+        return;
+    }
+    this.fixedUpdate = function(JSGameEngine){
     }
     this.addForce = function(force){
         if(!(force instanceof Vector2)){
             throw TypeError("Force must be an instance of Vector2");
         }
-        self.velocity.add(force);
+        self.velocity= self.velocity.add(force);
         return self.velocity;
+    }
+    this.__fixedUpdate = function(JSGameEngine){
+        self.addForce(self.gravity);
+        this.parent.transform.position = this.parent.transform.position.add(this.velocity);
+        this.fixedUpdate(JSGameEngine);
+    }
+    this.__update = function(JSGameEngine){
+        tihs.update(JSGameEngine);
     }
     this.__construct(this, options);
 }
