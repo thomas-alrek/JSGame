@@ -13,11 +13,21 @@ var sprite = game.addComponent(new Sprite({
     visible: false
 }));
 
-var particles = game.addComponent(new ParticleSystem());
+var particles = game.addComponent(new ParticleSystem({
+    speed: new Vector2({
+        x: 0.0,
+        y: -2
+    }),
+    radius: 20,
+    radial: false,
+    color: new Color().yellow().add(new Color().red())
+}
+));
+
 particles.transform.position.x = (game.width / 2) - particles.width / 2;
 particles.transform.position.y = (game.height / 2) - particles.height / 2;
 
-sprite.transform.position.y = game.height - sprite.height;
+//sprite.transform.position.y = game.height - sprite.height;
 sprite.visible = true;
 
 var fps = game.addComponent(new Text({
@@ -32,6 +42,7 @@ fps.transform.position.x = 10;
 //we use a target instead of directly manipulating the transform, because then we can lerp the transform to the target for framerate independent movement
 sprite.target = new Transform(sprite.transform);
 sprite.addComponent(new Input(), "input");   //add input handler
+sprite.addComponent(new Physics2D(), "physics");
 
 //handle multiple inputs
 sprite.components.input.onUpdate = function(JSGameEngine){
@@ -56,6 +67,9 @@ sprite.components.input.onUpdate = function(JSGameEngine){
                     }
                     this.parent.flipHorizontal = false;
                 break;
+                case this.Space:
+                    this.parent.components.physics.addForce(new Vector2().up().multiply(6));
+                    break;
             }
         }
     }
@@ -76,6 +90,7 @@ sprite.onUpdate = function(){
         this.transform.position.y = 0;
     }
     if(this.transform.position.y > game.height - this.height){
+        //this.components.physics.enabled = false;
         this.transform.position.y = game.height - this.height;
     }
     this.transform.position = this.transform.position.add(this.transform.position.lerp(this.transform.position, this.target.position, Time.deltaTime));
