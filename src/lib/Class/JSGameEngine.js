@@ -70,12 +70,15 @@ function JSGameEngine(options){
                 ctx.rotate((rotation * Math.PI) / 180);
                 ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
                 for(var childComponent in gameObject.components){
-                    gameObject.components[childComponent].__update(self);
+                    if(gameObject.components[childComponent].enabled){
+                        gameObject.components[childComponent].__update(self);
+                    }
                 }
                 gameObject.__update(self);
                 ctx.restore();
             }
         }
+        self.fixedUpdate(delta);
     }
     
     /**
@@ -101,18 +104,21 @@ function JSGameEngine(options){
                 continue;
             }
             for(var childComponent in gameObject.components){
-                gameObject.components[childComponent].__update(self);
+                if(gameObject.components[childComponent].enabled){
+                    gameObject.components[childComponent].__fixedUpdate(self);
+                }
             }
             gameObject.__fixedUpdate(self);
         }
+        /*
         setTimeout(function(){
             self.fixedUpdate(performance.now);
-        }, Time.framerateToTime(50) * 1000);
+        }, Time.framerateToTime(50) * 1000);*/
     }
     
     /* init */
     requestAnimationFrame(this.update);
-    this.fixedUpdate(performance.now);
+    //this.fixedUpdate(performance.now);
 }
 
 JSGameEngine.prototype = new Constructor();

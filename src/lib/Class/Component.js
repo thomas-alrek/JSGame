@@ -21,6 +21,7 @@
 function Component(options){
     var self = this;
     this.parent = undefined;
+    this.enabled = true;
     this.__construct(this, options);
     this.onUpdate = function(){}
     this.onFixedUpdate = function(){};
