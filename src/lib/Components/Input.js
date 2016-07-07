@@ -22,15 +22,47 @@ function Input(options){
     this.onKeyDown = function(){};
     this.onKeyUp = function(){};
     this.keys = {};
+    this.touches = [];
+
+    function keydownHandler(e){
+        self.keys[e.keyCode] = true;
+        self.onKeyDown(e.keyCode);
+    };
+
+    function keyupHandler(e){
+        self.keys[e.keyCode] = false;
+        self.onKeyUp(e.keyCode);
+    };
+
+    /* stubs */
+    function touchstartHandler(){};
+    function touchendHandler(){};
+    function touchcancelHandler(){};
+    function touchmoveHandler(){};
+    function mousedownHandler(){};
+    function mouseupHandler(){};
+    function mouseoverHandler(){};
+    function mouseoutHandler(){};
+    function mousemoveHandler(){};
+    function clickHandler(){};
+    function contextmenuHandler(){};
+    function dblclickHandler(){};
+
     this.__init = function(JSGameEngine){
-        document.addEventListener("keydown", function(e){
-            self.keys[e.keyCode] = true;
-            self.onKeyDown(e.keyCode);
-        }, false);
-        document.addEventListener("keyup", function(e){
-            self.keys[e.keyCode] = false;
-            self.onKeyUp(e.keyCode);
-        }, false);
+        JSGameEngine.canvas.addEventListener("touchstart", touchstartHandler, false);
+        JSGameEngine.canvas.addEventListener("touchend", touchendHandler, false);
+        JSGameEngine.canvas.addEventListener("touchcancel", touchcancelHandler, false);
+        JSGameEngine.canvas.addEventListener("touchmove", touchmoveHandler, false);
+        JSGameEngine.canvas.addEventListener("mousedown", mousedownHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseup", mouseupHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseover", mouseoverHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseout", mouseoutHandler, false);
+        JSGameEngine.canvas.addEventListener("mousemove", mousemoveHandler, false);
+        JSGameEngine.canvas.addEventListener("click", clickHandler, false);
+        JSGameEngine.canvas.addEventListener("contextmenu", contextmenuHandler, false);
+        JSGameEngine.canvas.addEventListener("dblclick", dblclickHandler, false);
+        document.addEventListener("keydown", keydownHandler, false);
+        document.addEventListener("keyup", keyupHandler, false);
     }
 }
 
@@ -42,6 +74,7 @@ Input.prototype.Enter =     13;
 Input.prototype.Shift =     16;
 Input.prototype.Ctrl =      17;
 Input.prototype.Esc =       27;
+Input.prototype.Space =     32;
 Input.prototype.Left =      37;
 Input.prototype.Up =        38;
 Input.prototype.Right =     39;
