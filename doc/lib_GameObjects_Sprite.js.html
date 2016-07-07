@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/GameObjects/Sprite.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/GameObjects/Sprite.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file JSGame Sprite GameObject.
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek &lt;thomas@alrek.no>
+ */
+
+"use strict";
+
+/**
+ * @class Sprite
+ * Creates a new instance of Sprite.
+ * &lt;p>&lt;i>Sprite is an instance of GameObject&lt;/i>&lt;/p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {String} image The url of the image or spritesheet to load
+ * @property {boolean} flipHorizontal If true, mirrors the Sprite in the horizontal axis
+ * @property {boolean} flipVertical If true, mirrors the Sprite in the vertical axis
+ * @property {number} index The current sprite to display. (If loaded from a spritesheet)
+ * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
+ * @property {Image[]} sprites An array containing an array of all pre calculated sprites
+ */
+function Sprite(options){
+    var self = this;
+    this.__extend(GameObject, this, options);
+    this.image = "";
+    this.flipHorizontal = false;
+    this.flipVertical = false;
+    this.index = 0;
+    this.size = new Vector2();
+    this.__construct(this, options);
+    this.velocity = new Vector2();
+    var lastPosition = this.transform.position;
+    this.sprites = [];
+    var srcImage = new Image();
+    srcImage.setAttribute('crossOrigin','anonymous');
+    var loaded = false;
+    function createSprites(){ 
+        function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.scale(xScale, yScale);
+            ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
+            var img = new Image();
+            img.setAttribute('crossOrigin','anonymous');
+            img.src = canvas.toDataURL();
+            ctx.restore();
+            return img;
+        }
+        var index = 0;
+        var canvas = document.createElement("canvas");
+        canvas.width = self.width;
+        canvas.height = self.height;
+        var ctx = canvas.getContext('2d');
+        for(var x = 0; x &lt; srcImage.width; x += self.size.x){
+            for(var y = 0; y &lt; srcImage.height; y += self.size.y){
+                ctx.save();
+                self.sprites[index] = [];
+                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
+                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, 1));
+                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, -1));
+                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, -1));
+                ctx.restore();
+                index++;
+            }
+        }
+        console.log(index + " sprites generated");
+    };
+    this.__update = function(JSGameEngine){
+        if(loaded){
+            if(self.index > self.sprites.length - 1){
+                self.index = 0;
+            }
+            if(self.index &lt; 0){
+                self.index = self.sprites.length - 1;
+            }
+            var flipIndex = 0;
+            if(self.flipHorizontal &amp;&amp; self.flipVertical){
+                flipIndex = 3;
+            }else{
+                if(self.flipHorizontal){
+                    flipIndex = 1;
+                }
+                if(self.flipVertical){
+                    flipIndex = 2;
+                }
+            }
+            if(self.sprites.length > 0){
+                JSGameEngine.ctx.drawImage(self.sprites[self.index][flipIndex], self.transform.position.x, self.transform.position.y);
+            }
+        }
+        var velocityX = (this.transform.position.x - lastPosition.x) / Time.deltaTime;
+        if(velocityX &lt; 0){
+            velocityX = Math.invert(velocityX);
+        }
+        this.velocity.x = Math.round(velocityX);
+        var velocityY = (this.transform.position.y - lastPosition.y) / Time.deltaTime;
+        if(velocityY &lt; 0){
+            velocityY = Math.invert(velocityY);
+        }
+        this.velocity.y = Math.round(velocityY);
+        lastPosition = this.transform.position;
+        self.onUpdate(JSGameEngine);
+    };
+    this.__init = function(JSGameEngine){
+        srcImage.onload = function(){
+            if(self.size.x === 0 &amp;&amp; self.size.y === 0){
+                self.size.x = srcImage.width;
+                self.size.y = srcImage.height;
+            }
+            self.width = self.size.x;
+            self.height = self.size.y;
+            createSprites();
+            loaded = true;
+        }
+        srcImage.src = self.image;
+    };
+}
+
+Sprite.prototype = new GameObject();
+Sprite.prototype.constructor = Sprite;
+
+module.exports = Sprite;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioClip.html">AudioClip</a></li><li><a href="Background.html">Background</a></li><li><a href="Color.html">Color</a></li><li><a href="Component.html">Component</a></li><li><a href="Constructor.html">Constructor</a></li><li><a href="GameObject.html">GameObject</a></li><li><a href="Input.html">Input</a></li><li><a href="JSGameEngine.html">JSGameEngine</a></li><li><a href="Particle.html">Particle</a></li><li><a href="ParticleSystem.html">ParticleSystem</a></li><li><a href="Physics2D.html">Physics2D</a></li><li><a href="Script.html">Script</a></li><li><a href="Shadow.html">Shadow</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Time.html">Time</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2.html">Vector2</a></li></ul><h3>Namespaces</h3><ul><li><a href="options.html">options</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jul 07 2016 22:43:28 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

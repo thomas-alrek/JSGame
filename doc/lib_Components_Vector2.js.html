@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/Components/Vector2.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/Components/Vector2.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file JSGame Vector2 Component.
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek &lt;thomas@alrek.no>
+ */
+
+"use strict";
+
+/**
+ * @class Vector2
+ * Creates a new instance of Vector2.
+ * &lt;p>&lt;i>Vector2 is an instance of Component&lt;/i>&lt;/p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {number} x A number representing horizontal position within the game area
+ * @property {number} y A number representing vertical position within the game area
+ */
+function Vector2(options){
+    this.__extend(Component, this, options);
+    this.x = 0;
+    this.y = 0;
+    this.__construct(this, options);
+}
+
+Vector2.prototype = new Component();
+Vector2.prototype.constructor = Vector2;
+
+/**
+ * Returns a new Vector2 representing upwards movement
+ * 
+ * @method
+ * @name Vector2#up
+ * @returns {Vector2}
+ */
+Vector2.prototype.up = function(){
+    return new Vector2({
+        x: 0,
+        y: -1
+    });
+}
+
+/**
+ * Returns a new Vector2 representing movement to the left
+ * 
+ * @method
+ * @name Vector2#left
+ * @returns {Vector2}
+ */
+Vector2.prototype.left = function(){
+    return new Vector2({
+        x: -1,
+        y: 0
+    });
+}
+
+/**
+ * Returns a new Vector2 representing x and y incremented by 1
+ * 
+ * @method
+ * @name Vector2#one
+ * @returns {Vector2}
+ */
+Vector2.prototype.one = function(){
+    return new Vector2({
+        x: 1,
+        y: 1
+    });
+}
+
+/**
+ * Returns a new Vector2 representing movement to the right
+ * 
+ * @method
+ * @name Vector2#right
+ * @returns {Vector2}
+ */
+Vector2.prototype.right = function(){
+    return new Vector2({
+        x: 1,
+        y: 0
+    });
+}
+
+/**
+ * Returns a new Vector2 representing downwards movement
+ * 
+ * @method
+ * @name Vector2#down
+ * @returns {Vector2}
+ */
+Vector2.prototype.down = function(){
+    return new Vector2({
+        x: 0,
+        y: 1
+    });
+}
+
+/**
+ * Returns a new Vector2 representing zero movement
+ * 
+ * @method
+ * @name Vector2#zero
+ * @returns {Vector2}
+ */
+Vector2.prototype.zero = function(){
+    return new Vector2({
+        x: 0,
+        y: 0
+    });
+}
+
+/**
+ * Returns a new Vector2 with the values of this Vector2 added with another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#add
+ * @prop {Vector2|number} vector The Vector2 or number to add with this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
+Vector2.prototype.add = function(vector){
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x + vector.x,
+                y: this.y + vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x + vector,
+                y: this.y + vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
+    }
+}
+
+/**
+ * Returns a new Vector2 with the values of this Vector2 multiplied with another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#multiply
+ * @prop {Vector2|number} vector The Vector2 or number to multiply with this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
+Vector2.prototype.multiply = function(vector){
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x * vector.x,
+                y: this.y * vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x * vector,
+                y: this.y * vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
+    }
+}
+
+/**
+ * Returns a new Vector2 with the values of this Vector2 divided by another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#divide
+ * @prop {Vector2|number} vector The Vector2 or number to divide this Vector2 by
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
+Vector2.prototype.divide = function(vector){
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x / vector.x,
+                y: this.y / vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x / vector,
+                y: this.y / vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
+    }
+}
+
+/**
+ * Returns a new Vector2 with the values of this Vector2 subtracted from another Vector2 or a number
+ * 
+ * @method
+ * @name Vector2#subtract
+ * @prop {Vector2|number} vector The Vector2 or number to subtract from this Vector2
+ * @returns {Vector2}
+ * @throws {TypeError} If vector is not an instance of Vector2 or a number
+ */
+Vector2.prototype.subtract = function(vector){
+    switch(typeof vector){
+        case 'object':
+            if(!(vector instanceof Vector2)){
+                throw TypeError("Object not an instance of Vector2");
+            }
+            return new Vector2({
+                x: this.x - vector.x,
+                y: this.y - vector.y
+            });
+            break;
+        case 'number':
+            return new Vector2({
+                x: this.x - vector,
+                y: this.y - vector
+            });
+            break;
+        default:
+            throw TypeError("Argument not a object or a number");        
+    }
+}
+
+/**
+ * Compares another Vector2 with this Vector2
+ * 
+ * @method
+ * @name Vector2#equal
+ * @prop {Vector2} vector The Vector2 to compare to this Vector2
+ * @returns {boolean}
+ * @throws {TypeError} If vector is not an instance of Vector2
+ */
+Vector2.prototype.equal = function(vector){
+    if(!(vector instanceof Vector2)){
+        throw TypeError("Argument not an instance of Vector2");
+    }
+    if(this.x === vector.r &amp;&amp; this.y === vector.y){
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Return a new Vector2 that is linear interpolated between two instances of Vector2 over a specified interval
+ * 
+ * @method
+ * @name Vector2#lerp
+ * @param {Vector2} a The Vector2 instance to interpolate from
+ * @param {Vector2} b The Vector2 instance to interpolate to
+ * @param {number} t The interval to interpolate over
+ * @returns {Vector2}
+ * @throws TypeError If a or b is not an instance of Vector2, or t is not a number
+ */
+Vector2.prototype.lerp = function(a, b, t){
+    if(!(a instanceof Vector2) || !(b instanceof Vector2)){
+        throw TypeError("Argument not an instance of Vector2");
+    }
+    if(typeof t !== 'number'){
+        throw TypeError("Argument must be a number");
+    }
+    t = Math.ceil(t * 1000) / 1000;
+    return (new Vector2(b).subtract(a)).multiply(t);
+}
+
+module.exports = Vector2;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioClip.html">AudioClip</a></li><li><a href="Background.html">Background</a></li><li><a href="Color.html">Color</a></li><li><a href="Component.html">Component</a></li><li><a href="Constructor.html">Constructor</a></li><li><a href="GameObject.html">GameObject</a></li><li><a href="Input.html">Input</a></li><li><a href="JSGameEngine.html">JSGameEngine</a></li><li><a href="Particle.html">Particle</a></li><li><a href="ParticleSystem.html">ParticleSystem</a></li><li><a href="Physics2D.html">Physics2D</a></li><li><a href="Script.html">Script</a></li><li><a href="Shadow.html">Shadow</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Time.html">Time</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2.html">Vector2</a></li></ul><h3>Namespaces</h3><ul><li><a href="options.html">options</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jul 07 2016 22:43:28 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/Components/Input.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/Components/Input.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file JSGame Input Component.
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek &lt;thomas@alrek.no>
+ */
+
+"use strict";
+
+/**
+ * @class Input
+ * Creates a new instance of Input.
+ * &lt;p>&lt;i>Input is an instance of Component&lt;/i>&lt;/p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ */
+function Input(options){
+    var self = this;
+    this.__extend(Component, this, options);
+    this.__construct(this, options);
+    this.onKeyDown = function(){};
+    this.onKeyUp = function(){};
+    this.keys = {};
+    this.touches = [];
+
+    function keydownHandler(e){
+        self.keys[e.keyCode] = true;
+        self.onKeyDown(e.keyCode);
+    };
+
+    function keyupHandler(e){
+        self.keys[e.keyCode] = false;
+        self.onKeyUp(e.keyCode);
+    };
+
+    /* stubs */
+    function touchstartHandler(){};
+    function touchendHandler(){};
+    function touchcancelHandler(){};
+    function touchmoveHandler(){};
+    function mousedownHandler(){};
+    function mouseupHandler(){};
+    function mouseoverHandler(){};
+    function mouseoutHandler(){};
+    function mousemoveHandler(){};
+    function clickHandler(){};
+    function contextmenuHandler(){};
+    function dblclickHandler(){};
+
+    this.__init = function(JSGameEngine){
+        JSGameEngine.canvas.addEventListener("touchstart", touchstartHandler, false);
+        JSGameEngine.canvas.addEventListener("touchend", touchendHandler, false);
+        JSGameEngine.canvas.addEventListener("touchcancel", touchcancelHandler, false);
+        JSGameEngine.canvas.addEventListener("touchmove", touchmoveHandler, false);
+        JSGameEngine.canvas.addEventListener("mousedown", mousedownHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseup", mouseupHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseover", mouseoverHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseout", mouseoutHandler, false);
+        JSGameEngine.canvas.addEventListener("mousemove", mousemoveHandler, false);
+        JSGameEngine.canvas.addEventListener("click", clickHandler, false);
+        JSGameEngine.canvas.addEventListener("contextmenu", contextmenuHandler, false);
+        JSGameEngine.canvas.addEventListener("dblclick", dblclickHandler, false);
+        document.addEventListener("keydown", keydownHandler, false);
+        document.addEventListener("keyup", keyupHandler, false);
+    }
+}
+
+Input.prototype = new Component();
+Input.prototype.constructor = Input;
+
+/* key definitions */
+Input.prototype.Enter =     13;
+Input.prototype.Shift =     16;
+Input.prototype.Ctrl =      17;
+Input.prototype.Esc =       27;
+Input.prototype.Space =     32;
+Input.prototype.Left =      37;
+Input.prototype.Up =        38;
+Input.prototype.Right =     39;
+Input.prototype.Down =      40;
+Input.prototype.A =         65;
+Input.prototype.B =         66;
+Input.prototype.C =         67;
+Input.prototype.D =         68;
+Input.prototype.E =         69;
+Input.prototype.F =         70;
+Input.prototype.G =         71;
+Input.prototype.H =         72;
+Input.prototype.I =         73;
+Input.prototype.J =         74;
+Input.prototype.K =         75;
+Input.prototype.L =         76;
+Input.prototype.M =         77;
+Input.prototype.N =         78;
+Input.prototype.O =         79;
+Input.prototype.P =         80;
+Input.prototype.Q =         81;
+Input.prototype.R =         82;
+Input.prototype.S =         83;
+Input.prototype.T =         84;
+Input.prototype.U =         85;
+Input.prototype.V =         86;
+Input.prototype.W =         87;
+Input.prototype.X =         88;
+Input.prototype.Y =         89;
+Input.prototype.Z =         90;
+
+module.exports = Input;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioClip.html">AudioClip</a></li><li><a href="Background.html">Background</a></li><li><a href="Color.html">Color</a></li><li><a href="Component.html">Component</a></li><li><a href="Constructor.html">Constructor</a></li><li><a href="GameObject.html">GameObject</a></li><li><a href="Input.html">Input</a></li><li><a href="JSGameEngine.html">JSGameEngine</a></li><li><a href="Particle.html">Particle</a></li><li><a href="ParticleSystem.html">ParticleSystem</a></li><li><a href="Physics2D.html">Physics2D</a></li><li><a href="Script.html">Script</a></li><li><a href="Shadow.html">Shadow</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Time.html">Time</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2.html">Vector2</a></li></ul><h3>Namespaces</h3><ul><li><a href="options.html">options</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jul 07 2016 22:43:28 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

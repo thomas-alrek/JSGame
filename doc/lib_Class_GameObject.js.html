@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/Class/GameObject.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/Class/GameObject.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file JSGame GameObject class.
+ * @package jsgame
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek &lt;thomas@alrek.no>
+ */
+
+"use strict";
+
+/**
+ * @class GameObject
+ * Creates a new instance of GameObject.
+ * &lt;p>&lt;i>All GameObjects extends from this class&lt;/i>&lt;/p>
+ *
+ * @constructor
+ * @param {options} options An object containing construct options
+ * @property {Object&lt;Component>} components An object containing attached components
+ * @property {boolean} enabled Enables or disbles the GameObject
+ * @property {number} height The height of the GameObject (optional)
+ * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
+ * @property {function} onUpdate A callback function to called after rendering the GameObject
+ * @property {Object} parent The GameOjects parent (optional)
+ * @property {Transform} transform The GameObjects Transform
+ * @property {boolean} visible Enables or disables rendering on the GameObject
+ * @property {number} width The width of the GameObject (optional)
+ */
+function GameObject(options){
+    var self = this;
+    this.components = new Object();
+    this.enabled = true;
+    this.width = 0;
+    this.height = 0;
+    this.visible = true;
+    this.onUpdate = function(){}
+    this.onFixedUpdate = function(){};
+    
+    /**
+     * The GameObjects update method.
+     * &lt;p>&lt;i>This method only calls the GameObjects onUpdate callback. Classes that extends from GameObject will put their own rendering code here.&lt;/i>&lt;/p>
+     * 
+     * @method
+     * @name GameObject#__update
+     * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+     */
+    this.__update = function(JSGameEngine){
+        this.onUpdate(JSGameEngine);
+    };
+        
+    /**
+     * The GameObjects fixedUpdate method.
+     * &lt;p>&lt;i>This method only calls the GameObjects onFixedUpdate callback. Classes that extends from GameObject will put their own fixed update code here.&lt;/i>&lt;/p>
+     * 
+     * @method
+     * @name GameObject#__fixedUpdate
+     * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
+     */
+    this.__fixedUpdate = function(JSGameEngine){
+        this.onFixedUpdate(JSGameEngine);
+    };
+    this.__init = function(){};
+    this.parent = undefined;
+    this.transform = new Transform({parent: this});
+    this.__construct(this, options);
+}
+
+GameObject.prototype = new Constructor();
+GameObject.prototype.constructor = GameObject;
+
+/**
+ * Serialize the GameObject as JSON
+ * 
+ * @method
+ * @name GameObject#toString
+ * @returns {JSON}
+ */
+GameObject.prototype.toString = function(){
+    return JSON.stringify(this);
+}
+
+/**
+ * Returns the Component of type if the GameObject has one attached, null if it doesn't.
+ * 
+ * @method
+ * @name GameObject#getComponent
+ * @param {Type} type The Type of Component to get
+ * @returns {Component|null}
+ */
+GameObject.prototype.getComponent = function(type){
+    for(var prop in this){
+        if(this[prop] instanceof type){
+            return this[prop];
+        }
+    }
+    for(var prop in this.components){
+        if(this.components[prop] instanceof type){
+            return this.components[prop];
+        }
+    }
+    return null;
+}
+
+/* work in progress 
+GameObject.prototype.clone = function(obj){
+    if(typeof obj == 'undefined'){
+        obj = this;
+    }
+    var clone, option, _key;
+    clone = Array.isArray(obj) ? [] : {};
+    for (_key in obj) {
+        option = obj[_key];
+        clone[_key] = (typeof option === "object") ? this.clone(option) : option;
+    }
+    clone.__proto__ = obj.__proto__;
+    return clone;
+}
+*/
+
+module.exports = GameObject;
+
+/* additional JSDoc for methods inherited for the prototype */
+
+/**
+ * Constructs the GameObject with the parameters called in the constructor options object
+ * &lt;p>&lt;i>This method is called automatically on construction, and should not be used directly&lt;/i>&lt;/p>
+ * 
+ * @method
+ * @name GameObject#__construct
+ * @param {Object} obj A reference to this GameObject
+ * @param {options} options Options to construct from
+ * @throws {TypeError} If the passed parameters is not Objects.
+ */
+
+/**
+ * Instances of GameObject can use this method to extend GameObject
+ * &lt;p>&lt;i>This method should only be used in new classes that should extend GameObject&lt;/i>&lt;/p>
+ * 
+ * @method
+ * @name GameObject#__extend
+ * @param {Class} from The base class to extend from
+ * @param {Object} to The instance that should be extended
+ * @param {options} options Options to pass on to the base class' constructor
+ */
+
+/**
+ * Initialize the GameObject
+ * &lt;p>&lt;i>This method basically runs one frame of fixedUpdate, so initial values like width and height can be calculated. Generally it is not needed to call this class manually, as it is called automatically when you call JSGameEngine.addComponent.&lt;/i>&lt;/p>
+ * 
+ * @method
+ * @name GameObject#__init
+ * @param {JSGameEngine} JSGameEngine A reference to JSGameEngine
+ */</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AudioClip.html">AudioClip</a></li><li><a href="Background.html">Background</a></li><li><a href="Color.html">Color</a></li><li><a href="Component.html">Component</a></li><li><a href="Constructor.html">Constructor</a></li><li><a href="GameObject.html">GameObject</a></li><li><a href="Input.html">Input</a></li><li><a href="JSGameEngine.html">JSGameEngine</a></li><li><a href="Particle.html">Particle</a></li><li><a href="ParticleSystem.html">ParticleSystem</a></li><li><a href="Physics2D.html">Physics2D</a></li><li><a href="Script.html">Script</a></li><li><a href="Shadow.html">Shadow</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Time.html">Time</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2.html">Vector2</a></li></ul><h3>Namespaces</h3><ul><li><a href="options.html">options</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jul 07 2016 22:43:28 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
