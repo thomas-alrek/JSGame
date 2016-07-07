@@ -59,6 +59,7 @@ global.Background = require("./lib/GameObjects/Background.js");
 function Component(options){
     var self = this;
     this.parent = undefined;
+    this.enabled = true;
     this.__construct(this, options);
     this.onUpdate = function(){}
     this.onFixedUpdate = function(){};
@@ -350,6 +351,22 @@ GameObject.prototype.getComponent = function(type){
     return null;
 }
 
+/* work in progress 
+GameObject.prototype.clone = function(obj){
+    if(typeof obj == 'undefined'){
+        obj = this;
+    }
+    var clone, option, _key;
+    clone = Array.isArray(obj) ? [] : {};
+    for (_key in obj) {
+        option = obj[_key];
+        clone[_key] = (typeof option === "object") ? this.clone(option) : option;
+    }
+    clone.__proto__ = obj.__proto__;
+    return clone;
+}
+*/
+
 module.exports = GameObject;
 
 /* additional JSDoc for methods inherited for the prototype */
@@ -457,12 +474,15 @@ function JSGameEngine(options){
                 ctx.rotate((rotation * Math.PI) / 180);
                 ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
                 for(var childComponent in gameObject.components){
-                    gameObject.components[childComponent].__update(self);
+                    if(gameObject.components[childComponent].enabled){
+                        gameObject.components[childComponent].__update(self);
+                    }
                 }
                 gameObject.__update(self);
                 ctx.restore();
             }
         }
+        self.fixedUpdate(delta);
     }
     
     /**
@@ -488,18 +508,21 @@ function JSGameEngine(options){
                 continue;
             }
             for(var childComponent in gameObject.components){
-                gameObject.components[childComponent].__update(self);
+                if(gameObject.components[childComponent].enabled){
+                    gameObject.components[childComponent].__fixedUpdate(self);
+                }
             }
             gameObject.__fixedUpdate(self);
         }
+        /*
         setTimeout(function(){
             self.fixedUpdate(performance.now);
-        }, Time.framerateToTime(50) * 1000);
+        }, Time.framerateToTime(50) * 1000);*/
     }
     
     /* init */
     requestAnimationFrame(this.update);
-    this.fixedUpdate(performance.now);
+    //this.fixedUpdate(performance.now);
 }
 
 JSGameEngine.prototype = new Constructor();
@@ -934,15 +957,47 @@ function Input(options){
     this.onKeyDown = function(){};
     this.onKeyUp = function(){};
     this.keys = {};
+    this.touches = [];
+
+    function keydownHandler(e){
+        self.keys[e.keyCode] = true;
+        self.onKeyDown(e.keyCode);
+    };
+
+    function keyupHandler(e){
+        self.keys[e.keyCode] = false;
+        self.onKeyUp(e.keyCode);
+    };
+
+    /* stubs */
+    function touchstartHandler(){};
+    function touchendHandler(){};
+    function touchcancelHandler(){};
+    function touchmoveHandler(){};
+    function mousedownHandler(){};
+    function mouseupHandler(){};
+    function mouseoverHandler(){};
+    function mouseoutHandler(){};
+    function mousemoveHandler(){};
+    function clickHandler(){};
+    function contextmenuHandler(){};
+    function dblclickHandler(){};
+
     this.__init = function(JSGameEngine){
-        document.addEventListener("keydown", function(e){
-            self.keys[e.keyCode] = true;
-            self.onKeyDown(e.keyCode);
-        }, false);
-        document.addEventListener("keyup", function(e){
-            self.keys[e.keyCode] = false;
-            self.onKeyUp(e.keyCode);
-        }, false);
+        JSGameEngine.canvas.addEventListener("touchstart", touchstartHandler, false);
+        JSGameEngine.canvas.addEventListener("touchend", touchendHandler, false);
+        JSGameEngine.canvas.addEventListener("touchcancel", touchcancelHandler, false);
+        JSGameEngine.canvas.addEventListener("touchmove", touchmoveHandler, false);
+        JSGameEngine.canvas.addEventListener("mousedown", mousedownHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseup", mouseupHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseover", mouseoverHandler, false);
+        JSGameEngine.canvas.addEventListener("mouseout", mouseoutHandler, false);
+        JSGameEngine.canvas.addEventListener("mousemove", mousemoveHandler, false);
+        JSGameEngine.canvas.addEventListener("click", clickHandler, false);
+        JSGameEngine.canvas.addEventListener("contextmenu", contextmenuHandler, false);
+        JSGameEngine.canvas.addEventListener("dblclick", dblclickHandler, false);
+        document.addEventListener("keydown", keydownHandler, false);
+        document.addEventListener("keyup", keyupHandler, false);
     }
 }
 
@@ -954,6 +1009,7 @@ Input.prototype.Enter =     13;
 Input.prototype.Shift =     16;
 Input.prototype.Ctrl =      17;
 Input.prototype.Esc =       27;
+Input.prototype.Space =     32;
 Input.prototype.Left =      37;
 Input.prototype.Up =        38;
 Input.prototype.Right =     39;
@@ -1007,17 +1063,25 @@ module.exports = Input;
 function Physics2D(options){
     var self = this;
     this.__extend(Component, this, options);
-    this.gravity = new Vector2({y: 9.81, parent: this});
+    this.gravity = new Vector2({x: 0, y: 0.981});
     this.velocity = new Vector2({parent: this});
     this.fixedUpdate = function(timestamp){
-        return self.addForce(self.gravity.multiply(timestamp * 10));
+        self.addForce(self.gravity);
     }
     this.addForce = function(force){
         if(!(force instanceof Vector2)){
             throw TypeError("Force must be an instance of Vector2");
         }
-        self.velocity.add(force);
+        self.velocity= self.velocity.add(force);
         return self.velocity;
+    }
+    this.__fixedUpdate = function(JSGameEngine){
+        this.fixedUpdate(JSGameEngine);
+    }
+    this.__update = function(JSGameEngine){
+        this.fixedUpdate(JSGameEngine);
+        //console.log(this.velocity);
+        this.parent.transform.position = this.parent.transform.position.add(this.velocity);
     }
     this.__construct(this, options);
 }
