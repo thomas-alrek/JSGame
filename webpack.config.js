@@ -1,11 +1,10 @@
 var path = require('path');
-var webpack = require('webpack');
 
 module.exports = {
-	entry: ['babel-polyfill', './src/jsgame.js'],
+	entry: ['babel-polyfill', './src/game.js'],
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'jsgame.js'
+		path: path.resolve(__dirname, 'build'),
+		filename: 'game.js'
 	},
 	module: {
 		loaders: [

@@ -1,5 +1,5 @@
-const Component = require('./Component');
-const Vector2 = require('./Vector2');
+import Component from './Component';
+import Vector2 from './Vector2';
 
 class Transform extends Component{
 	constructor(){
@@ -10,4 +10,4 @@ class Transform extends Component{
 	}
 }
 
-module.exports = Transform;
+export default Transform;

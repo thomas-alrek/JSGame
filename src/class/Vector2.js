@@ -7,4 +7,4 @@ class Vector2{
 	}
 }
 
-module.exports = Vector2;
+export default Vector2;

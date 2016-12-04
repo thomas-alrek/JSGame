@@ -1,5 +1,4 @@
-const Transform = require('./Transform');
-const Component = require('./Component');
+import Transform from './Transform';
 
 class GameObject{
 	constructor(name, components){
@@ -31,4 +30,4 @@ class GameObject{
 
 }
 
-module.exports = GameObject;
+export default GameObject;
