@@ -15,4 +15,4 @@ Create new branch, modify your files then run:
 
     npm run build
 
-Push your brach to GitHub and [submit a pull request][pr].
+Push your brach to GitHub and submit a pull request.
