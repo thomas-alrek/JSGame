@@ -1268,6 +1268,22 @@ module.exports = Transform;
 
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Component2 = require('../Class/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 /**
  * @class Vector2
  * Creates a new instance of Vector2.
@@ -1278,271 +1294,304 @@ module.exports = Transform;
  * @property {number} x A number representing horizontal position within the game area
  * @property {number} y A number representing vertical position within the game area
  */
+var Vector2 = function (_Component) {
+    _inherits(Vector2, _Component);
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+    function Vector2() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref$x = _ref.x,
+            x = _ref$x === undefined ? 0 : _ref$x,
+            _ref$y = _ref.y,
+            y = _ref$y === undefined ? 0 : _ref$y;
 
-function Vector2(options) {
-    this.__extend(Component, this, options);
-    this.x = 0;
-    this.y = 0;
-    this.__construct(this, options);
-}
+        _classCallCheck(this, Vector2);
 
-Vector2.prototype = new Component();
-Vector2.prototype.constructor = Vector2;
+        var _this = _possibleConstructorReturn(this, (Vector2.__proto__ || Object.getPrototypeOf(Vector2)).call(this));
 
-/**
- * Returns a new Vector2 representing upwards movement
- * 
- * @method
- * @name Vector2#up
- * @returns {Vector2}
- */
-Vector2.prototype.up = function () {
-    return new Vector2({
-        x: 0,
-        y: -1
-    });
-};
+        _this.x = x;
+        _this.y = y;
+        return _this;
+    }
 
-/**
- * Returns a new Vector2 representing movement to the left
- * 
- * @method
- * @name Vector2#left
- * @returns {Vector2}
- */
-Vector2.prototype.left = function () {
-    return new Vector2({
-        x: -1,
-        y: 0
-    });
-};
+    /**
+     * Returns a new Vector2 representing upwards movement
+     *
+     * @method
+     * @name Vector2#up
+     * @returns {Vector2}
+     */
 
-/**
- * Returns a new Vector2 representing x and y incremented by 1
- * 
- * @method
- * @name Vector2#one
- * @returns {Vector2}
- */
-Vector2.prototype.one = function () {
-    return new Vector2({
-        x: 1,
-        y: 1
-    });
-};
 
-/**
- * Returns a new Vector2 representing movement to the right
- * 
- * @method
- * @name Vector2#right
- * @returns {Vector2}
- */
-Vector2.prototype.right = function () {
-    return new Vector2({
-        x: 1,
-        y: 0
-    });
-};
+    _createClass(Vector2, [{
+        key: 'up',
+        value: function up() {
+            return new Vector2({
+                x: 0,
+                y: -1
+            });
+        }
 
-/**
- * Returns a new Vector2 representing downwards movement
- * 
- * @method
- * @name Vector2#down
- * @returns {Vector2}
- */
-Vector2.prototype.down = function () {
-    return new Vector2({
-        x: 0,
-        y: 1
-    });
-};
+        /**
+         * Returns a new Vector2 representing movement to the left
+         *
+         * @method
+         * @name Vector2#left
+         * @returns {Vector2}
+         */
 
-/**
- * Returns a new Vector2 representing zero movement
- * 
- * @method
- * @name Vector2#zero
- * @returns {Vector2}
- */
-Vector2.prototype.zero = function () {
-    return new Vector2({
-        x: 0,
-        y: 0
-    });
-};
+    }, {
+        key: 'left',
+        value: function left() {
+            return new Vector2({
+                x: -1,
+                y: 0
+            });
+        }
 
-/**
- * Returns a new Vector2 with the values of this Vector2 added with another Vector2 or a number
- * 
- * @method
- * @name Vector2#add
- * @prop {Vector2|number} vector The Vector2 or number to add with this Vector2
- * @returns {Vector2}
- * @throws {TypeError} If vector is not an instance of Vector2 or a number
- */
-Vector2.prototype.add = function (vector) {
-    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
-        case 'object':
-            if (!(vector instanceof Vector2)) {
-                throw TypeError("Object not an instance of Vector2");
+        /**
+         * Returns a new Vector2 representing x and y incremented by 1
+         *
+         * @method
+         * @name Vector2#one
+         * @returns {Vector2}
+         */
+
+    }, {
+        key: 'one',
+        value: function one() {
+            return new Vector2({
+                x: 1,
+                y: 1
+            });
+        }
+
+        /**
+         * Returns a new Vector2 representing movement to the right
+         *
+         * @method
+         * @name Vector2#right
+         * @returns {Vector2}
+         */
+
+    }, {
+        key: 'right',
+        value: function right() {
+            return new Vector2({
+                x: 1,
+                y: 0
+            });
+        }
+
+        /**
+         * Returns a new Vector2 representing downwards movement
+         *
+         * @method
+         * @name Vector2#down
+         * @returns {Vector2}
+         */
+
+    }, {
+        key: 'down',
+        value: function down() {
+            return new Vector2({
+                x: 0,
+                y: 1
+            });
+        }
+
+        /**
+         * Returns a new Vector2 representing zero movement
+         *
+         * @method
+         * @name Vector2#zero
+         * @returns {Vector2}
+         */
+
+    }, {
+        key: 'zero',
+        value: function zero() {
+            return new Vector2({
+                x: 0,
+                y: 0
+            });
+        }
+
+        /**
+         * Returns a new Vector2 with the values of this Vector2 added with another Vector2 or a number
+         *
+         * @method
+         * @name Vector2#add
+         * @prop {Vector2|number} vector The Vector2 or number to add with this Vector2
+         * @returns {Vector2}
+         * @throws {TypeError} If vector is not an instance of Vector2 or a number
+         */
+
+    }, {
+        key: 'add',
+        value: function add(vector) {
+            var type = typeof vector === 'undefined' ? 'undefined' : _typeof(vector);
+            if (type === 'object') {
+                if (!(vector instanceof Vector2)) {
+                    throw new TypeError('Object not an instance of Vector2');
+                }
+                return new Vector2({
+                    x: this.x + vector.x,
+                    y: this.y + vector.y
+                });
+            } else if (type === 'number') {
+                return new Vector2({
+                    x: this.x + vector,
+                    y: this.y + vector
+                });
             }
-            return new Vector2({
-                x: this.x + vector.x,
-                y: this.y + vector.y
-            });
-            break;
-        case 'number':
-            return new Vector2({
-                x: this.x + vector,
-                y: this.y + vector
-            });
-            break;
-        default:
-            throw TypeError("Argument not a object or a number");
-    }
-};
+            throw new TypeError('Argument not a object or a number');
+        }
 
-/**
- * Returns a new Vector2 with the values of this Vector2 multiplied with another Vector2 or a number
- * 
- * @method
- * @name Vector2#multiply
- * @prop {Vector2|number} vector The Vector2 or number to multiply with this Vector2
- * @returns {Vector2}
- * @throws {TypeError} If vector is not an instance of Vector2 or a number
- */
-Vector2.prototype.multiply = function (vector) {
-    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
-        case 'object':
-            if (!(vector instanceof Vector2)) {
-                throw TypeError("Object not an instance of Vector2");
+        /**
+         * Returns a new Vector2 with the values of this Vector2 multiplied with another Vector2 or a number
+         *
+         * @method
+         * @name Vector2#multiply
+         * @prop {Vector2|number} vector The Vector2 or number to multiply with this Vector2
+         * @returns {Vector2}
+         * @throws {TypeError} If vector is not an instance of Vector2 or a number
+         */
+
+    }, {
+        key: 'multiply',
+        value: function multiply(vector) {
+            var type = typeof vector === 'undefined' ? 'undefined' : _typeof(vector);
+            if (type === 'object') {
+                if (!(vector instanceof Vector2)) {
+                    throw new TypeError('Object not an instance of Vector2');
+                }
+                return new Vector2({
+                    x: this.x * vector.x,
+                    y: this.y * vector.y
+                });
+            } else if (type === 'number') {
+                return new Vector2({
+                    x: this.x * vector,
+                    y: this.y * vector
+                });
             }
-            return new Vector2({
-                x: this.x * vector.x,
-                y: this.y * vector.y
-            });
-            break;
-        case 'number':
-            return new Vector2({
-                x: this.x * vector,
-                y: this.y * vector
-            });
-            break;
-        default:
-            throw TypeError("Argument not a object or a number");
-    }
-};
+            throw new TypeError('Argument not a object or a number');
+        }
 
-/**
- * Returns a new Vector2 with the values of this Vector2 divided by another Vector2 or a number
- * 
- * @method
- * @name Vector2#divide
- * @prop {Vector2|number} vector The Vector2 or number to divide this Vector2 by
- * @returns {Vector2}
- * @throws {TypeError} If vector is not an instance of Vector2 or a number
- */
-Vector2.prototype.divide = function (vector) {
-    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
-        case 'object':
-            if (!(vector instanceof Vector2)) {
-                throw TypeError("Object not an instance of Vector2");
+        /**
+         * Returns a new Vector2 with the values of this Vector2 divided by another Vector2 or a number
+         *
+         * @method
+         * @name Vector2#divide
+         * @prop {Vector2|number} vector The Vector2 or number to divide this Vector2 by
+         * @returns {Vector2}
+         * @throws {TypeError} If vector is not an instance of Vector2 or a number
+         */
+
+    }, {
+        key: 'divide',
+        value: function divide(vector) {
+            var type = typeof vector === 'undefined' ? 'undefined' : _typeof(vector);
+            if (type === 'object') {
+                if (!(vector instanceof Vector2)) {
+                    throw new TypeError('Object not an instance of Vector2');
+                }
+                return new Vector2({
+                    x: this.x / vector.x,
+                    y: this.y / vector.y
+                });
+            } else if (type === 'number') {
+                return new Vector2({
+                    x: this.x / vector,
+                    y: this.y / vector
+                });
             }
-            return new Vector2({
-                x: this.x / vector.x,
-                y: this.y / vector.y
-            });
-            break;
-        case 'number':
-            return new Vector2({
-                x: this.x / vector,
-                y: this.y / vector
-            });
-            break;
-        default:
-            throw TypeError("Argument not a object or a number");
-    }
-};
+            throw new TypeError('Argument not a object or a number');
+        }
 
-/**
- * Returns a new Vector2 with the values of this Vector2 subtracted from another Vector2 or a number
- * 
- * @method
- * @name Vector2#subtract
- * @prop {Vector2|number} vector The Vector2 or number to subtract from this Vector2
- * @returns {Vector2}
- * @throws {TypeError} If vector is not an instance of Vector2 or a number
- */
-Vector2.prototype.subtract = function (vector) {
-    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
-        case 'object':
-            if (!(vector instanceof Vector2)) {
-                throw TypeError("Object not an instance of Vector2");
+        /**
+         * Returns a new Vector2 with the values of this Vector2 subtracted from another Vector2 or a number
+         *
+         * @method
+         * @name Vector2#subtract
+         * @prop {Vector2|number} vector The Vector2 or number to subtract from this Vector2
+         * @returns {Vector2}
+         * @throws {TypeError} If vector is not an instance of Vector2 or a number
+         */
+
+    }, {
+        key: 'subtract',
+        value: function subtract(vector) {
+            var type = typeof vector === 'undefined' ? 'undefined' : _typeof(vector);
+            if (type === 'object') {
+                if (!(vector instanceof Vector2)) {
+                    throw new TypeError('Object not an instance of Vector2');
+                }
+                return new Vector2({
+                    x: this.x - vector.x,
+                    y: this.y - vector.y
+                });
+            } else if (type === 'number') {
+                return new Vector2({
+                    x: this.x - vector,
+                    y: this.y - vector
+                });
             }
-            return new Vector2({
-                x: this.x - vector.x,
-                y: this.y - vector.y
-            });
-            break;
-        case 'number':
-            return new Vector2({
-                x: this.x - vector,
-                y: this.y - vector
-            });
-            break;
-        default:
-            throw TypeError("Argument not a object or a number");
-    }
-};
+            throw new TypeError('Argument not a object or a number');
+        }
 
-/**
- * Compares another Vector2 with this Vector2
- * 
- * @method
- * @name Vector2#equal
- * @prop {Vector2} vector The Vector2 to compare to this Vector2
- * @returns {boolean}
- * @throws {TypeError} If vector is not an instance of Vector2
- */
-Vector2.prototype.equal = function (vector) {
-    if (!(vector instanceof Vector2)) {
-        throw TypeError("Argument not an instance of Vector2");
-    }
-    if (this.x === vector.r && this.y === vector.y) {
-        return true;
-    }
-    return false;
-};
+        /**
+         * Compares another Vector2 with this Vector2
+         *
+         * @method
+         * @name Vector2#equal
+         * @prop {Vector2} vector The Vector2 to compare to this Vector2
+         * @returns {boolean}
+         * @throws {TypeError} If vector is not an instance of Vector2
+         */
 
-/**
- * Return a new Vector2 that is linear interpolated between two instances of Vector2 over a specified interval
- * 
- * @method
- * @name Vector2#lerp
- * @param {Vector2} a The Vector2 instance to interpolate from
- * @param {Vector2} b The Vector2 instance to interpolate to
- * @param {number} t The interval to interpolate over
- * @returns {Vector2}
- * @throws TypeError If a or b is not an instance of Vector2, or t is not a number
- */
-Vector2.prototype.lerp = function (a, b, t) {
-    if (!(a instanceof Vector2) || !(b instanceof Vector2)) {
-        throw TypeError("Argument not an instance of Vector2");
-    }
-    if (typeof t !== 'number') {
-        throw TypeError("Argument must be a number");
-    }
-    t = Math.ceil(t * 1000) / 1000;
-    return new Vector2(b).subtract(a).multiply(t);
-};
+    }, {
+        key: 'equal',
+        value: function equal(vector) {
+            if (!(vector instanceof Vector2)) {
+                throw TypeError("Argument not an instance of Vector2");
+            }
+
+            return this.x === vector.r && this.y === vector.y;
+        }
+
+        /**
+         * Return a new Vector2 that is linear interpolated between two instances of Vector2 over a specified interval
+         *
+         * @method
+         * @name Vector2#lerp
+         * @param {Vector2} a The Vector2 instance to interpolate from
+         * @param {Vector2} b The Vector2 instance to interpolate to
+         * @param {number} t The interval to interpolate over
+         * @returns {Vector2}
+         * @throws TypeError If a or b is not an instance of Vector2, or t is not a number
+         */
+
+    }, {
+        key: 'lerp',
+        value: function lerp(a, b, t) {
+            if (!(a instanceof Vector2) || !(b instanceof Vector2)) {
+                throw TypeError("Argument not an instance of Vector2");
+            }
+            if (typeof t !== 'number') {
+                throw TypeError("Argument must be a number");
+            }
+            t = Math.ceil(t * 1000) / 1000;
+            return new Vector2(b).subtract(a).multiply(t);
+        }
+    }]);
+
+    return Vector2;
+}(_Component3.default);
 
 module.exports = Vector2;
 
-},{}],12:[function(require,module,exports){
+},{"../Class/Component":2}],12:[function(require,module,exports){
 /**
  * @file JSGame AudioClip GameObject.
  * @package jsgame
