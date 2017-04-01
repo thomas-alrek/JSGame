@@ -7,6 +7,8 @@
 
 "use strict";
 
+import { clamp, flip } from '../Util/Math';
+
 /**
  * @class Color
  * Creates a new instance of Color.
@@ -36,10 +38,10 @@ function Color(options){
      */
     this.clamp = function(){
         return new Color({
-            r: Math.round(Math.clamp(self.r, 0, 255)),
-            g: Math.round(Math.clamp(self.g, 0, 255)),
-            b: Math.round(Math.clamp(self.b, 0, 255)),
-            alpha: Math.clamp(self.alpha, 0, 1)
+            r: Math.round(clamp(self.r, 0, 255)),
+            g: Math.round(clamp(self.g, 0, 255)),
+            b: Math.round(clamp(self.b, 0, 255)),
+            alpha: clamp(self.alpha, 0, 1)
         });
     }
     
@@ -71,12 +73,12 @@ Color.prototype.constructor = Color;
 Color.prototype.invert = function(invertAlpha){
     var alpha = this.alpha;
     if(invertAlpha){
-        alpha = Math.flip(this.alpha, 1);
+        alpha = flip(this.alpha, 1);
     }
     return new Color({
-        r: Math.flip(this.r, 255),
-        g: Math.flip(this.g, 255),
-        b: Math.flip(this.b, 255),
+        r: flip(this.r, 255),
+        g: flip(this.g, 255),
+        b: flip(this.b, 255),
         alpha: alpha
     })
 }
