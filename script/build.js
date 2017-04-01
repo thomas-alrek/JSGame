@@ -44,6 +44,6 @@ console.log('Building ' + buildpath + bundlename);
 
 bundler
 	.add('./' + buildpackage.main)
-   .transform('babelify', { presets: ['es2015'] })
+   .transform('babelify', { presets: ['es2015', 'stage-3'] })
 	.bundle()
 	.pipe(stream);
