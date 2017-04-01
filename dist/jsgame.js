@@ -34,6 +34,7 @@ global.Background = require("./lib/GameObjects/Background.js");
  * @namespace
  * @name options
  */
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2.js":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Math.js":18,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
 /**
@@ -56,23 +57,24 @@ global.Background = require("./lib/GameObjects/Background.js");
  * @property {function} onFixedUpdate A callback function to be called after the fixedUpdate of GameObject
  * @property {function} onUpdate A callback function to called after rendering the GameObject
  */
-function Component(options){
-    var self = this;
-    this.parent = undefined;
-    this.__construct(this, options);
-    this.onUpdate = function(){}
-    this.onFixedUpdate = function(){};
-    this.__update = function(JSGameEngine){
-        this.onUpdate(JSGameEngine);
-    };
-    this.__fixedUpdate = function(JSGameEngine){
-        this.onFixedUpdate(JSGameEngine);
-    };
+
+function Component(options) {
+  var self = this;
+  this.parent = undefined;
+  this.__construct(this, options);
+  this.onUpdate = function () {};
+  this.onFixedUpdate = function () {};
+  this.__update = function (JSGameEngine) {
+    this.onUpdate(JSGameEngine);
+  };
+  this.__fixedUpdate = function (JSGameEngine) {
+    this.onFixedUpdate(JSGameEngine);
+  };
 }
 
-Component.prototype.toString = function(){
-    return JSON.stringify(this);
-}
+Component.prototype.toString = function () {
+  return JSON.stringify(this);
+};
 
 Component.prototype = new Constructor();
 Component.prototype.constructor = Component;
@@ -126,6 +128,7 @@ module.exports = Component;
  * @name Component#toString
  * @returns {JSON}
  */
+
 },{}],3:[function(require,module,exports){
 /**
  * @file JSGame Constructor class.
@@ -144,8 +147,11 @@ module.exports = Component;
  * @constructor
  * @param {bool} onlyConstruct If true, only the __extend and __construct methods will be exposed
  */
-function Constructor(onlyConstruct){
-    if(onlyConstruct){
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function Constructor(onlyConstruct) {
+    if (onlyConstruct) {
         delete this.createUUID;
         delete this.addComponent;
     }
@@ -161,12 +167,12 @@ function Constructor(onlyConstruct){
  * @param {Object} to The instance that should be extended
  * @param {options} options Options to pass on to the base class' constructor
  */
-Constructor.prototype.__extend = function(from, to, options){
+Constructor.prototype.__extend = function (from, to, options) {
     var proto = new from(options || undefined);
-    Object.keys(proto).forEach(function(key){
+    Object.keys(proto).forEach(function (key) {
         to[key] = proto[key];
     });
-}
+};
 
 /**
  * Constructs the class with the parameters passed
@@ -178,18 +184,18 @@ Constructor.prototype.__extend = function(from, to, options){
  * @param {options} options Options to construct from
  * @throws {TypeError} If the passed parameters is not Objects.
  */
-Constructor.prototype.__construct = function(obj, options){
-    if(typeof options === 'undefined'){
+Constructor.prototype.__construct = function (obj, options) {
+    if (typeof options === 'undefined') {
         return;
     }
-    if(typeof options === 'object'){
-        Object.keys(options).forEach(function(key){
+    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+        Object.keys(options).forEach(function (key) {
             obj[key] = options[key];
         });
-    }else{
+    } else {
         throw TypeError("Options must be an Object literal");
     }
-}
+};
 
 /**
  * Creates an UUID
@@ -202,9 +208,9 @@ Constructor.prototype.__construct = function(obj, options){
 Constructor.prototype.createUUID = function (delim) {
     var delim = delim || "-";
     function rnd() {
-        return (((1 + Math.random() * new Date().getTime()) * 0x10000) | 0).toString(16).substring(1);
+        return ((1 + Math.random() * new Date().getTime()) * 0x10000 | 0).toString(16).substring(1);
     }
-    return (rnd() + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + rnd() + rnd());
+    return rnd() + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + delim + rnd() + rnd() + rnd();
 };
 
 /**
@@ -217,37 +223,38 @@ Constructor.prototype.createUUID = function (delim) {
  * @throws Error If id already exists in another Object
  * @throws TypeError if Object is not an instance of GameObject or Component
  */
-Constructor.prototype.addComponent = function(obj, id){
+Constructor.prototype.addComponent = function (obj, id) {
     var id = id || this.createUUID();
     obj.parent = this;
-    if(this instanceof JSGameEngine){
+    if (this instanceof JSGameEngine) {
         //JSGameEngine
-        if(!(obj instanceof GameObject)){
+        if (!(obj instanceof GameObject)) {
             throw TypeError("Object not an instance of GameObject");
         }
-        if(typeof this.components[id] !== 'undefined'){
+        if (typeof this.components[id] !== 'undefined') {
             throw Error("GameObject already has component with id " + id);
         }
         this.components[id] = obj;
-        if(obj.__init){
+        if (obj.__init) {
             obj.__init(this);
         }
-    }else{
-        if(!(obj instanceof Component)){
+    } else {
+        if (!(obj instanceof Component)) {
             throw TypeError("Object not an instance of Component");
         }
-        if(typeof this.components[id] !== 'undefined'){
+        if (typeof this.components[id] !== 'undefined') {
             throw Error("GameObject already has component with id " + id);
         }
-        this.components[id] = obj;  
-        if(obj.__init){
+        this.components[id] = obj;
+        if (obj.__init) {
             obj.__init(this.parent);
         }
-    }   
+    }
     return this.components[id];
-}
+};
 
 module.exports = Constructor;
+
 },{}],4:[function(require,module,exports){
 /**
  * @file JSGame GameObject class.
@@ -275,16 +282,17 @@ module.exports = Constructor;
  * @property {boolean} visible Enables or disables rendering on the GameObject
  * @property {number} width The width of the GameObject (optional)
  */
-function GameObject(options){
+
+function GameObject(options) {
     var self = this;
     this.components = new Object();
     this.enabled = true;
     this.width = 0;
     this.height = 0;
     this.visible = true;
-    this.onUpdate = function(){}
-    this.onFixedUpdate = function(){};
-    
+    this.onUpdate = function () {};
+    this.onFixedUpdate = function () {};
+
     /**
      * The GameObjects update method.
      * <p><i>This method only calls the GameObjects onUpdate callback. Classes that extends from GameObject will put their own rendering code here.</i></p>
@@ -293,10 +301,10 @@ function GameObject(options){
      * @name GameObject#__update
      * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
      */
-    this.__update = function(JSGameEngine){
+    this.__update = function (JSGameEngine) {
         this.onUpdate(JSGameEngine);
     };
-        
+
     /**
      * The GameObjects fixedUpdate method.
      * <p><i>This method only calls the GameObjects onFixedUpdate callback. Classes that extends from GameObject will put their own fixed update code here.</i></p>
@@ -305,12 +313,12 @@ function GameObject(options){
      * @name GameObject#__fixedUpdate
      * @param {JSGameEngine} JSGameEngine A reference to the JSGameEngine class, with access to the rendering context.
      */
-    this.__fixedUpdate = function(JSGameEngine){
+    this.__fixedUpdate = function (JSGameEngine) {
         this.onFixedUpdate(JSGameEngine);
     };
-    this.__init = function(){};
+    this.__init = function () {};
     this.parent = undefined;
-    this.transform = new Transform({parent: this});
+    this.transform = new Transform({ parent: this });
     this.__construct(this, options);
 }
 
@@ -324,9 +332,9 @@ GameObject.prototype.constructor = GameObject;
  * @name GameObject#toString
  * @returns {JSON}
  */
-GameObject.prototype.toString = function(){
+GameObject.prototype.toString = function () {
     return JSON.stringify(this);
-}
+};
 
 /**
  * Returns the Component of type if the GameObject has one attached, null if it doesn't.
@@ -336,19 +344,19 @@ GameObject.prototype.toString = function(){
  * @param {Type} type The Type of Component to get
  * @returns {Component|null}
  */
-GameObject.prototype.getComponent = function(type){
-    for(var prop in this){
-        if(this[prop] instanceof type){
+GameObject.prototype.getComponent = function (type) {
+    for (var prop in this) {
+        if (this[prop] instanceof type) {
             return this[prop];
         }
     }
-    for(var prop in this.components){
-        if(this.components[prop] instanceof type){
+    for (var prop in this.components) {
+        if (this.components[prop] instanceof type) {
             return this.components[prop];
         }
     }
     return null;
-}
+};
 
 module.exports = GameObject;
 
@@ -384,6 +392,7 @@ module.exports = GameObject;
  * @name GameObject#__init
  * @param {JSGameEngine} JSGameEngine A reference to JSGameEngine
  */
+
 },{}],5:[function(require,module,exports){
 /**
  * @file JSGameEngine class.
@@ -408,7 +417,8 @@ module.exports = GameObject;
  * @property {Time} time The globally shared instance of Time
  * @property {CanvasRenderingContext2D} ctx The rendering context
  */
-function JSGameEngine(options){
+
+function JSGameEngine(options) {
     var self = this;
     this.components = {};
     this.canvas = document.createElement("canvas");
@@ -421,9 +431,9 @@ function JSGameEngine(options){
     this.canvas.height = this.height || window.innerHeight;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
-    
+
     Time = this.time;
-    
+
     /**
      * Renders all enabled GameObjects in the components property.
      * <p><i>This method is called automatically every frame. It automatically calls each attached GameObjects __update method</i></p>
@@ -432,39 +442,39 @@ function JSGameEngine(options){
      * @name JSGameEngine#update
      * @param {number} delta The timestamp at the start of the frame
      */
-    this.update = function(delta){
+    this.update = function (delta) {
         requestAnimationFrame(self.update);
         self.time.update(delta);
         var canvas = self.canvas;
         var ctx = self.ctx;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var Time = self.time;
-        for(var index in self.components){
+        for (var index in self.components) {
             var gameObject = self.components[index];
-            for(var component in gameObject.components){
-                if(!gameObject.components[component].parent){
+            for (var component in gameObject.components) {
+                if (!gameObject.components[component].parent) {
                     gameObject.components[component].parent = gameObject;
                 }
             }
-            if(!gameObject.enabled){
+            if (!gameObject.enabled) {
                 continue;
             }
-            if(gameObject.visible){
+            if (gameObject.visible) {
                 ctx.save();
                 var rotation = gameObject.transform.rotation;
                 var position = gameObject.transform.position;
                 ctx.translate(position.x + gameObject.width / 2, position.y + gameObject.height / 2);
-                ctx.rotate((rotation * Math.PI) / 180);
+                ctx.rotate(rotation * Math.PI / 180);
                 ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
-                for(var childComponent in gameObject.components){
+                for (var childComponent in gameObject.components) {
                     gameObject.components[childComponent].__update(self);
                 }
                 gameObject.__update(self);
                 ctx.restore();
             }
         }
-    }
-    
+    };
+
     /**
      * Calls __fixedUpdate on each enabled GameObject in the components property.
      * <p><i>This method is called automatically every fixedUpdate tick which runs at a fixed rate of ~50 fps.</i></p>
@@ -474,29 +484,29 @@ function JSGameEngine(options){
      * @name JSGameEngine#fixedUpdate
      * @param {number} delta The timestamp at the start of the frame
      */
-    this.fixedUpdate = function(delta){
+    this.fixedUpdate = function (delta) {
         self.time.fixedUpdate(delta);
         var Time = self.time;
-        for(var index in self.components){
+        for (var index in self.components) {
             var gameObject = self.components[index];
-            for(var component in gameObject.components){
-                if(!gameObject.components[component].parent){
+            for (var component in gameObject.components) {
+                if (!gameObject.components[component].parent) {
                     gameObject.components[component].parent = gameObject;
                 }
             }
-            if(!gameObject.enabled){
+            if (!gameObject.enabled) {
                 continue;
             }
-            for(var childComponent in gameObject.components){
+            for (var childComponent in gameObject.components) {
                 gameObject.components[childComponent].__update(self);
             }
             gameObject.__fixedUpdate(self);
         }
-        setTimeout(function(){
+        setTimeout(function () {
             self.fixedUpdate(performance.now);
         }, Time.framerateToTime(50) * 1000);
-    }
-    
+    };
+
     /* init */
     requestAnimationFrame(this.update);
     this.fixedUpdate(performance.now);
@@ -517,6 +527,7 @@ module.exports = JSGameEngine;
  * @param {String} [id] An id to assign to the object. Must be unique. If none is specified, an UUID is generated
  * @throws {TypeError} If obj not is an instance of GameObject
  */
+
 },{}],6:[function(require,module,exports){
 /**
  * @file JSGame Color Component.
@@ -539,14 +550,17 @@ module.exports = JSGameEngine;
  * @property {number} g A number between 0 and 255 representing the colors green channel
  * @property {number} b A number between 0 and 255 representing the colors blue channel
  */
-function Color(options){
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function Color(options) {
     var self = this;
     this.__extend(Component, this, options);
     this.alpha = 1;
     this.r = 0;
     this.g = 0;
     this.b = 0;
-    
+
     /**
      * Clamps r,g,b, and alpha in the range 0-255
      * 
@@ -554,17 +568,17 @@ function Color(options){
      * @name Color#clamp
      * @returns {Color}
      */
-    this.clamp = function(){
+    this.clamp = function () {
         return new Color({
             r: Math.round(Math.clamp(self.r, 0, 255)),
             g: Math.round(Math.clamp(self.g, 0, 255)),
             b: Math.round(Math.clamp(self.b, 0, 255)),
             alpha: Math.clamp(self.alpha, 0, 1)
         });
-    }
-    
+    };
+
     this.__construct(this, options);
-    
+
     /**
      * Outputs the color value as an CSS rgba() string
      * 
@@ -572,10 +586,10 @@ function Color(options){
      * @name Color#toString
      * @returns {String}
      */
-    this.toString = function(){
+    this.toString = function () {
         var stringColor = new Color(this).clamp();
         return "rgba(" + stringColor.r + "," + stringColor.g + "," + stringColor.b + "," + stringColor.alpha + ")";
-    }
+    };
 }
 
 Color.prototype = new Component();
@@ -588,9 +602,9 @@ Color.prototype.constructor = Color;
  * @name Color#invert
  * @returns {Color}
  */
-Color.prototype.invert = function(invertAlpha){
+Color.prototype.invert = function (invertAlpha) {
     var alpha = this.alpha;
-    if(invertAlpha){
+    if (invertAlpha) {
         alpha = Math.flip(this.alpha, 1);
     }
     return new Color({
@@ -598,8 +612,8 @@ Color.prototype.invert = function(invertAlpha){
         g: Math.flip(this.g, 255),
         b: Math.flip(this.b, 255),
         alpha: alpha
-    })
-}
+    });
+};
 
 /**
  * Returns a new red Color
@@ -608,13 +622,13 @@ Color.prototype.invert = function(invertAlpha){
  * @name Color#red
  * @returns {Color}
  */
-Color.prototype.red = function(){
+Color.prototype.red = function () {
     return new Color({
         r: 255,
         g: 0,
         b: 0
     });
-}
+};
 
 /**
  * Returns a new green Color
@@ -623,13 +637,13 @@ Color.prototype.red = function(){
  * @name Color#green
  * @returns {Color}
  */
-Color.prototype.green = function(){
+Color.prototype.green = function () {
     return new Color({
         r: 0,
         g: 255,
         b: 0
     });
-}
+};
 
 /**
  * Returns a new blue Color
@@ -638,13 +652,13 @@ Color.prototype.green = function(){
  * @name Color#blue
  * @returns {Color}
  */
-Color.prototype.blue = function(){
+Color.prototype.blue = function () {
     return new Color({
         r: 0,
         g: 0,
         b: 255
     });
-}
+};
 
 /**
  * Returns a new black Color
@@ -653,13 +667,13 @@ Color.prototype.blue = function(){
  * @name Color#black
  * @returns {Color}
  */
-Color.prototype.black = function(){
+Color.prototype.black = function () {
     return new Color({
         r: 0,
         g: 0,
         b: 0
     });
-}
+};
 
 /**
  * Returns a new white Color
@@ -668,13 +682,13 @@ Color.prototype.black = function(){
  * @name Color#white
  * @returns {Color}
  */
-Color.prototype.white = function(){
+Color.prototype.white = function () {
     return new Color({
         r: 255,
         g: 255,
         b: 255
     });
-}
+};
 
 /**
  * Returns a new cyan Color
@@ -683,13 +697,13 @@ Color.prototype.white = function(){
  * @name Color#cyan
  * @returns {Color}
  */
-Color.prototype.cyan = function(){
+Color.prototype.cyan = function () {
     return new Color({
         r: 0,
         g: 255,
         b: 255
     });
-}
+};
 
 /**
  * Returns a new magenta Color
@@ -698,13 +712,13 @@ Color.prototype.cyan = function(){
  * @name Color#magenta
  * @returns {Color}
  */
-Color.prototype.magenta = function(){
+Color.prototype.magenta = function () {
     return new Color({
         r: 255,
         g: 0,
         b: 255
     });
-}
+};
 
 /**
  * Returns a new yellow Color
@@ -713,13 +727,13 @@ Color.prototype.magenta = function(){
  * @name Color#yellow
  * @returns {Color}
  */
-Color.prototype.yellow = function(){
+Color.prototype.yellow = function () {
     return new Color({
         r: 255,
         g: 255,
         b: 0
     });
-}
+};
 
 /**
  * Returns a new grey Color
@@ -728,13 +742,13 @@ Color.prototype.yellow = function(){
  * @name Color#grey
  * @returns {Color}
  */
-Color.prototype.grey = function(){
+Color.prototype.grey = function () {
     return new Color({
         r: 128,
         g: 128,
         b: 128
     });
-}
+};
 
 /**
  * Returns a new color that is the Color added with another Color, or the Color values added with a number
@@ -745,10 +759,10 @@ Color.prototype.grey = function(){
  * @returns {Color}
  * @throws TypeError If color is not an instance of Color or a number
  */
-Color.prototype.add = function(color){
-    switch(typeof color){
+Color.prototype.add = function (color) {
+    switch (typeof color === "undefined" ? "undefined" : _typeof(color)) {
         case 'object':
-            if(!(color instanceof Color)){
+            if (!(color instanceof Color)) {
                 throw TypeError("Object not an instance of Color");
             }
             return new Color({
@@ -765,9 +779,9 @@ Color.prototype.add = function(color){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new color that is the Color multiplied with another Color, or the Color values multiplied with a number
@@ -778,10 +792,10 @@ Color.prototype.add = function(color){
  * @returns {Color}
  * @throws TypeError If color is not an instance of Color or a number
  */
-Color.prototype.multiply = function(color){
-    switch(typeof color){
+Color.prototype.multiply = function (color) {
+    switch (typeof color === "undefined" ? "undefined" : _typeof(color)) {
         case 'object':
-            if(!(color instanceof Color)){
+            if (!(color instanceof Color)) {
                 throw TypeError("Object not an instance of Color");
             }
             return new Color({
@@ -798,9 +812,9 @@ Color.prototype.multiply = function(color){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new color that is the Color divided by another Color, or the Color values divided by a number
@@ -811,10 +825,10 @@ Color.prototype.multiply = function(color){
  * @returns {Color}
  * @throws TypeError If color is not an instance of Color or a number
  */
-Color.prototype.divide = function(color){
-    switch(typeof color){
+Color.prototype.divide = function (color) {
+    switch (typeof color === "undefined" ? "undefined" : _typeof(color)) {
         case 'object':
-            if(!(color instanceof Color)){
+            if (!(color instanceof Color)) {
                 throw TypeError("Object not an instance of Color");
             }
             return new Color({
@@ -831,9 +845,9 @@ Color.prototype.divide = function(color){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new color that is the Color subtracted from another Color, or the Color values subtract from a number
@@ -844,10 +858,10 @@ Color.prototype.divide = function(color){
  * @returns {Color}
  * @throws TypeError If color is not an instance of Color or a number
  */
-Color.prototype.subtract = function(color){
-    switch(typeof color){
+Color.prototype.subtract = function (color) {
+    switch (typeof color === "undefined" ? "undefined" : _typeof(color)) {
         case 'object':
-            if(!(color instanceof Color)){
+            if (!(color instanceof Color)) {
                 throw TypeError("Object not an instance of Color");
             }
             return new Color({
@@ -864,9 +878,9 @@ Color.prototype.subtract = function(color){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Compare the Color with another instance of Color
@@ -877,15 +891,15 @@ Color.prototype.subtract = function(color){
  * @returns {boolean}
  * @throws TypeError If color is not an instance of Color
  */
-Color.prototype.equal = function(color){
-    if(!(color instanceof Color)){
+Color.prototype.equal = function (color) {
+    if (!(color instanceof Color)) {
         throw TypeError("Argument not an instance of Color");
     }
-    if(this.r === color.r && this.g === color.g && this.b === color.b){
+    if (this.r === color.r && this.g === color.g && this.b === color.b) {
         return true;
     }
     return false;
-}
+};
 
 /**
  * Return a new Color that is linear interpolated between two instances of Color over a specified interval
@@ -898,17 +912,18 @@ Color.prototype.equal = function(color){
  * @returns {Color}
  * @throws TypeError If a or b is not an instance of Color, or t is not a number
  */
-Color.prototype.lerp = function(a, b, t){
-    if(!(a instanceof Color) || !(b instanceof Color)){
+Color.prototype.lerp = function (a, b, t) {
+    if (!(a instanceof Color) || !(b instanceof Color)) {
         throw TypeError("Argument not an instance of Color");
     }
-    if(typeof t !== 'number'){
+    if (typeof t !== 'number') {
         throw TypeError("Argument must be a number");
     }
-    return (new Color(b).subtract(a)).multiply(t);
-}
+    return new Color(b).subtract(a).multiply(t);
+};
 
 module.exports = Color;
+
 },{}],7:[function(require,module,exports){
 /**
  * @file JSGame Input Component.
@@ -927,65 +942,67 @@ module.exports = Color;
  * @constructor
  * @param {options} options An object containing construct options
  */
-function Input(options){
+
+function Input(options) {
     var self = this;
     this.__extend(Component, this, options);
     this.__construct(this, options);
-    this.onKeyDown = function(){};
-    this.onKeyUp = function(){};
+    this.onKeyDown = function () {};
+    this.onKeyUp = function () {};
     this.keys = {};
-    this.__init = function(JSGameEngine){
-        document.addEventListener("keydown", function(e){
+    this.__init = function (JSGameEngine) {
+        document.addEventListener("keydown", function (e) {
             self.keys[e.keyCode] = true;
             self.onKeyDown(e.keyCode);
         }, false);
-        document.addEventListener("keyup", function(e){
+        document.addEventListener("keyup", function (e) {
             self.keys[e.keyCode] = false;
             self.onKeyUp(e.keyCode);
         }, false);
-    }
+    };
 }
 
 Input.prototype = new Component();
 Input.prototype.constructor = Input;
 
 /* key definitions */
-Input.prototype.Enter =     13;
-Input.prototype.Shift =     16;
-Input.prototype.Ctrl =      17;
-Input.prototype.Esc =       27;
-Input.prototype.Left =      37;
-Input.prototype.Up =        38;
-Input.prototype.Right =     39;
-Input.prototype.Down =      40;
-Input.prototype.A =         65;
-Input.prototype.B =         66;
-Input.prototype.C =         67;
-Input.prototype.D =         68;
-Input.prototype.E =         69;
-Input.prototype.F =         70;
-Input.prototype.G =         71;
-Input.prototype.H =         72;
-Input.prototype.I =         73;
-Input.prototype.J =         74;
-Input.prototype.K =         75;
-Input.prototype.L =         76;
-Input.prototype.M =         77;
-Input.prototype.N =         78;
-Input.prototype.O =         79;
-Input.prototype.P =         80;
-Input.prototype.Q =         81;
-Input.prototype.R =         82;
-Input.prototype.S =         83;
-Input.prototype.T =         84;
-Input.prototype.U =         85;
-Input.prototype.V =         86;
-Input.prototype.W =         87;
-Input.prototype.X =         88;
-Input.prototype.Y =         89;
-Input.prototype.Z =         90;
+Input.prototype.Enter = 13;
+Input.prototype.Shift = 16;
+Input.prototype.Ctrl = 17;
+Input.prototype.Esc = 27;
+Input.prototype.Left = 37;
+Input.prototype.Up = 38;
+Input.prototype.Right = 39;
+Input.prototype.Down = 40;
+Input.prototype.A = 65;
+Input.prototype.B = 66;
+Input.prototype.C = 67;
+Input.prototype.D = 68;
+Input.prototype.E = 69;
+Input.prototype.F = 70;
+Input.prototype.G = 71;
+Input.prototype.H = 72;
+Input.prototype.I = 73;
+Input.prototype.J = 74;
+Input.prototype.K = 75;
+Input.prototype.L = 76;
+Input.prototype.M = 77;
+Input.prototype.N = 78;
+Input.prototype.O = 79;
+Input.prototype.P = 80;
+Input.prototype.Q = 81;
+Input.prototype.R = 82;
+Input.prototype.S = 83;
+Input.prototype.T = 84;
+Input.prototype.U = 85;
+Input.prototype.V = 86;
+Input.prototype.W = 87;
+Input.prototype.X = 88;
+Input.prototype.Y = 89;
+Input.prototype.Z = 90;
 
 module.exports = Input;
+
 },{}],8:[function(require,module,exports){
 /**
  * @file JSGame Physics2D Component.
@@ -1004,21 +1021,22 @@ module.exports = Input;
  * @constructor
  * @param {options} options An object containing construct options
  */
-function Physics2D(options){
+
+function Physics2D(options) {
     var self = this;
     this.__extend(Component, this, options);
-    this.gravity = new Vector2({y: 9.81, parent: this});
-    this.velocity = new Vector2({parent: this});
-    this.fixedUpdate = function(timestamp){
+    this.gravity = new Vector2({ y: 9.81, parent: this });
+    this.velocity = new Vector2({ parent: this });
+    this.fixedUpdate = function (timestamp) {
         return self.addForce(self.gravity.multiply(timestamp * 10));
-    }
-    this.addForce = function(force){
-        if(!(force instanceof Vector2)){
+    };
+    this.addForce = function (force) {
+        if (!(force instanceof Vector2)) {
             throw TypeError("Force must be an instance of Vector2");
         }
         self.velocity.add(force);
         return self.velocity;
-    }
+    };
     this.__construct(this, options);
 }
 
@@ -1026,6 +1044,7 @@ Physics2D.prototype = new Component();
 Physics2D.prototype.constructor = Physics2D;
 
 module.exports = Physics2D;
+
 },{}],9:[function(require,module,exports){
 /**
  * @file JSGame Shadow Component. Adds a shadow to the parent GameObject
@@ -1047,23 +1066,25 @@ module.exports = Physics2D;
  * @property {number} blur A number representing the Shadows blur radius
  * @property {GameObject} parent A reference to the Shadows parent
  */
-function Shadow(options){
-    var self = this;
-    this.__extend(Component, this, options);
-    this.color = new Color();
-    this.blur = 10;
-    this.__update = function(JSGameEngine){
-        var ctx = JSGameEngine.ctx;
-        ctx.shadowBlur = self.blur;
-        ctx.shadowColor = self.color.toString();
-    }
-    this.__construct(this, options);
+
+function Shadow(options) {
+  var self = this;
+  this.__extend(Component, this, options);
+  this.color = new Color();
+  this.blur = 10;
+  this.__update = function (JSGameEngine) {
+    var ctx = JSGameEngine.ctx;
+    ctx.shadowBlur = self.blur;
+    ctx.shadowColor = self.color.toString();
+  };
+  this.__construct(this, options);
 }
 
 Shadow.prototype = new Component();
 Shadow.prototype.constructor = Shadow;
 
 module.exports = Shadow;
+
 },{}],10:[function(require,module,exports){
 /**
  * @file JSGame Transform Component.
@@ -1084,10 +1105,11 @@ module.exports = Shadow;
  * @property {number} rotation A number representing the Transforms rotation in degrees
  * @property {Vector2} position A Vector2 instance, representing the Transforms position
  */
-function Transform(options){
+
+function Transform(options) {
     this.rotation = 0;
     this.__extend(Component, this, options);
-    this.position = new Vector2({parent: this});
+    this.position = new Vector2({ parent: this });
     this.__construct(this, options);
     this.rotation = this.rotation % 360;
 }
@@ -1103,20 +1125,20 @@ Transform.prototype.constructor = Transform;
  * @prop {Transform|Vector2} vector The Transform or Vector2 to Translate with
  * @throws {TypeError} If vector is not an instance of Transform or Vector2
  */
-Transform.prototype.translate = function(vector){
-    if(!(vector instanceof Vector2) && !(vector instanceof Transform)){
+Transform.prototype.translate = function (vector) {
+    if (!(vector instanceof Vector2) && !(vector instanceof Transform)) {
         throw TypeError("Vector must be an instance of Vector2 or Transform");
     }
-    if(vector instanceof Vector2){
+    if (vector instanceof Vector2) {
         this.position.x += vector.x;
         this.position.y += vector.y;
-        return this.position;  
-    }else{
+        return this.position;
+    } else {
         this.position.x += vector.position.x;
         this.position.y += vector.position.y;
         this.rotation = (this.rotation + vector.rotation) % 360;
     }
-}
+};
 
 /**
  * Returns a new Transform that is this Transforms added together with another Transform
@@ -1127,15 +1149,15 @@ Transform.prototype.translate = function(vector){
  * @returns {Transform}
  * @throws {TypeError} If transform is not an instance of Transform
  */
-Transform.prototype.add = function(transform){
-    if(!(transform instanceof Transform)){
+Transform.prototype.add = function (transform) {
+    if (!(transform instanceof Transform)) {
         throw TypeError("Object not an instance of Transform");
     }
     return new Transform({
         position: this.position.add(transform.position),
         rotation: this.rotation + transform.rotation
     });
-}
+};
 
 /**
  * Returns a new Transform that is this Transforms multiplied with with another Transform
@@ -1146,15 +1168,15 @@ Transform.prototype.add = function(transform){
  * @returns {Transform}
  * @throws {TypeError} If transform is not an instance of Transform
  */
-Transform.prototype.multiply = function(transform){
-    if(!(transform instanceof Transform)){
+Transform.prototype.multiply = function (transform) {
+    if (!(transform instanceof Transform)) {
         throw TypeError("Object not an instance of Transform");
     }
     return new Transform({
         position: this.position.multiply(transform.position),
         rotation: this.rotation * transform.rotation
     });
-}
+};
 
 /**
  * Returns a new Transform that is this Transforms divided by another Transform
@@ -1165,15 +1187,15 @@ Transform.prototype.multiply = function(transform){
  * @returns {Transform}
  * @throws {TypeError} If transform is not an instance of Transform
  */
-Transform.prototype.divide = function(transform){
-    if(!(transform instanceof Transform)){
+Transform.prototype.divide = function (transform) {
+    if (!(transform instanceof Transform)) {
         throw TypeError("Object not an instance of Transform");
     }
     return new Transform({
         position: this.position.divide(transform.position),
         rotation: this.rotation / transform.rotation
     });
-}
+};
 
 /**
  * Returns a new Transform that is this Transforms subtracted from another Transform
@@ -1184,15 +1206,15 @@ Transform.prototype.divide = function(transform){
  * @returns {Transform}
  * @throws {TypeError} If transform is not an instance of Transform
  */
-Transform.prototype.subtract = function(transform){
-    if(!(transform instanceof Transform)){
+Transform.prototype.subtract = function (transform) {
+    if (!(transform instanceof Transform)) {
         throw TypeError("Object not an instance of Transform");
     }
     return new Transform({
         position: this.position.subtract(transform.position),
         rotation: this.rotation - transform.rotation
     });
-}
+};
 
 /**
  * Comapres this Transform with another Transform
@@ -1203,15 +1225,15 @@ Transform.prototype.subtract = function(transform){
  * @returns {boolean}
  * @throws {TypeError} If transform is not an instance of Transform
  */
-Transform.prototype.equal = function(transform){
-    if(!(transform instanceof Transform)){
+Transform.prototype.equal = function (transform) {
+    if (!(transform instanceof Transform)) {
         throw TypeError("Argument not an instance of Transform");
     }
-    if(this.position.equal(transform.position) && this.rotation === transform.rotation){
+    if (this.position.equal(transform.position) && this.rotation === transform.rotation) {
         return true;
     }
     return false;
-}
+};
 
 /**
  * Return a new Transform that is linear interpolated between two instances of Transform over a specified interval
@@ -1224,17 +1246,18 @@ Transform.prototype.equal = function(transform){
  * @returns {Transform}
  * @throws TypeError If a or b is not an instance of Transform, or t is not a number
  */
-Transform.prototype.lerp = function(a, b, t){
-    if(!(a instanceof Transform) || !(b instanceof Transform)){
+Transform.prototype.lerp = function (a, b, t) {
+    if (!(a instanceof Transform) || !(b instanceof Transform)) {
         throw TypeError("Argument not an instance of Transform");
     }
-    if(typeof t !== 'number'){
+    if (typeof t !== 'number') {
         throw TypeError("Argument must be a number");
     }
-    return (new Transform(b).subtract(a)).multiply(t);
-}
+    return new Transform(b).subtract(a).multiply(t);
+};
 
 module.exports = Transform;
+
 },{}],11:[function(require,module,exports){
 /**
  * @file JSGame Vector2 Component.
@@ -1255,7 +1278,10 @@ module.exports = Transform;
  * @property {number} x A number representing horizontal position within the game area
  * @property {number} y A number representing vertical position within the game area
  */
-function Vector2(options){
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function Vector2(options) {
     this.__extend(Component, this, options);
     this.x = 0;
     this.y = 0;
@@ -1272,12 +1298,12 @@ Vector2.prototype.constructor = Vector2;
  * @name Vector2#up
  * @returns {Vector2}
  */
-Vector2.prototype.up = function(){
+Vector2.prototype.up = function () {
     return new Vector2({
         x: 0,
         y: -1
     });
-}
+};
 
 /**
  * Returns a new Vector2 representing movement to the left
@@ -1286,12 +1312,12 @@ Vector2.prototype.up = function(){
  * @name Vector2#left
  * @returns {Vector2}
  */
-Vector2.prototype.left = function(){
+Vector2.prototype.left = function () {
     return new Vector2({
         x: -1,
         y: 0
     });
-}
+};
 
 /**
  * Returns a new Vector2 representing x and y incremented by 1
@@ -1300,12 +1326,12 @@ Vector2.prototype.left = function(){
  * @name Vector2#one
  * @returns {Vector2}
  */
-Vector2.prototype.one = function(){
+Vector2.prototype.one = function () {
     return new Vector2({
         x: 1,
         y: 1
     });
-}
+};
 
 /**
  * Returns a new Vector2 representing movement to the right
@@ -1314,12 +1340,12 @@ Vector2.prototype.one = function(){
  * @name Vector2#right
  * @returns {Vector2}
  */
-Vector2.prototype.right = function(){
+Vector2.prototype.right = function () {
     return new Vector2({
         x: 1,
         y: 0
     });
-}
+};
 
 /**
  * Returns a new Vector2 representing downwards movement
@@ -1328,12 +1354,12 @@ Vector2.prototype.right = function(){
  * @name Vector2#down
  * @returns {Vector2}
  */
-Vector2.prototype.down = function(){
+Vector2.prototype.down = function () {
     return new Vector2({
         x: 0,
         y: 1
     });
-}
+};
 
 /**
  * Returns a new Vector2 representing zero movement
@@ -1342,12 +1368,12 @@ Vector2.prototype.down = function(){
  * @name Vector2#zero
  * @returns {Vector2}
  */
-Vector2.prototype.zero = function(){
+Vector2.prototype.zero = function () {
     return new Vector2({
         x: 0,
         y: 0
     });
-}
+};
 
 /**
  * Returns a new Vector2 with the values of this Vector2 added with another Vector2 or a number
@@ -1358,10 +1384,10 @@ Vector2.prototype.zero = function(){
  * @returns {Vector2}
  * @throws {TypeError} If vector is not an instance of Vector2 or a number
  */
-Vector2.prototype.add = function(vector){
-    switch(typeof vector){
+Vector2.prototype.add = function (vector) {
+    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
         case 'object':
-            if(!(vector instanceof Vector2)){
+            if (!(vector instanceof Vector2)) {
                 throw TypeError("Object not an instance of Vector2");
             }
             return new Vector2({
@@ -1376,9 +1402,9 @@ Vector2.prototype.add = function(vector){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new Vector2 with the values of this Vector2 multiplied with another Vector2 or a number
@@ -1389,10 +1415,10 @@ Vector2.prototype.add = function(vector){
  * @returns {Vector2}
  * @throws {TypeError} If vector is not an instance of Vector2 or a number
  */
-Vector2.prototype.multiply = function(vector){
-    switch(typeof vector){
+Vector2.prototype.multiply = function (vector) {
+    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
         case 'object':
-            if(!(vector instanceof Vector2)){
+            if (!(vector instanceof Vector2)) {
                 throw TypeError("Object not an instance of Vector2");
             }
             return new Vector2({
@@ -1407,9 +1433,9 @@ Vector2.prototype.multiply = function(vector){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new Vector2 with the values of this Vector2 divided by another Vector2 or a number
@@ -1420,10 +1446,10 @@ Vector2.prototype.multiply = function(vector){
  * @returns {Vector2}
  * @throws {TypeError} If vector is not an instance of Vector2 or a number
  */
-Vector2.prototype.divide = function(vector){
-    switch(typeof vector){
+Vector2.prototype.divide = function (vector) {
+    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
         case 'object':
-            if(!(vector instanceof Vector2)){
+            if (!(vector instanceof Vector2)) {
                 throw TypeError("Object not an instance of Vector2");
             }
             return new Vector2({
@@ -1438,9 +1464,9 @@ Vector2.prototype.divide = function(vector){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Returns a new Vector2 with the values of this Vector2 subtracted from another Vector2 or a number
@@ -1451,10 +1477,10 @@ Vector2.prototype.divide = function(vector){
  * @returns {Vector2}
  * @throws {TypeError} If vector is not an instance of Vector2 or a number
  */
-Vector2.prototype.subtract = function(vector){
-    switch(typeof vector){
+Vector2.prototype.subtract = function (vector) {
+    switch (typeof vector === "undefined" ? "undefined" : _typeof(vector)) {
         case 'object':
-            if(!(vector instanceof Vector2)){
+            if (!(vector instanceof Vector2)) {
                 throw TypeError("Object not an instance of Vector2");
             }
             return new Vector2({
@@ -1469,9 +1495,9 @@ Vector2.prototype.subtract = function(vector){
             });
             break;
         default:
-            throw TypeError("Argument not a object or a number");        
+            throw TypeError("Argument not a object or a number");
     }
-}
+};
 
 /**
  * Compares another Vector2 with this Vector2
@@ -1482,15 +1508,15 @@ Vector2.prototype.subtract = function(vector){
  * @returns {boolean}
  * @throws {TypeError} If vector is not an instance of Vector2
  */
-Vector2.prototype.equal = function(vector){
-    if(!(vector instanceof Vector2)){
+Vector2.prototype.equal = function (vector) {
+    if (!(vector instanceof Vector2)) {
         throw TypeError("Argument not an instance of Vector2");
     }
-    if(this.x === vector.r && this.y === vector.y){
+    if (this.x === vector.r && this.y === vector.y) {
         return true;
     }
     return false;
-}
+};
 
 /**
  * Return a new Vector2 that is linear interpolated between two instances of Vector2 over a specified interval
@@ -1503,18 +1529,19 @@ Vector2.prototype.equal = function(vector){
  * @returns {Vector2}
  * @throws TypeError If a or b is not an instance of Vector2, or t is not a number
  */
-Vector2.prototype.lerp = function(a, b, t){
-    if(!(a instanceof Vector2) || !(b instanceof Vector2)){
+Vector2.prototype.lerp = function (a, b, t) {
+    if (!(a instanceof Vector2) || !(b instanceof Vector2)) {
         throw TypeError("Argument not an instance of Vector2");
     }
-    if(typeof t !== 'number'){
+    if (typeof t !== 'number') {
         throw TypeError("Argument must be a number");
     }
     t = Math.ceil(t * 1000) / 1000;
-    return (new Vector2(b).subtract(a)).multiply(t);
-}
+    return new Vector2(b).subtract(a).multiply(t);
+};
 
 module.exports = Vector2;
+
 },{}],12:[function(require,module,exports){
 /**
  * @file JSGame AudioClip GameObject.
@@ -1538,56 +1565,57 @@ module.exports = Vector2;
  * @property {number} time The current playback position of the audio
  * @property {number} duration The total playback length of the audio
  */
-function AudioClip(options){
+
+function AudioClip(options) {
     var self = this;
     this.__extend(GameObject, this, options);
     this.file = "";
     this.volume = 1.0;
     this.__construct(this, options);
     this.audio = new Audio(this.file);
-    
+
     /**
      * Starts playback
      * 
      * @method
      * @name AudioClip#play
      */
-    this.play = function(){
-        if(self.enabled){
+    this.play = function () {
+        if (self.enabled) {
             self.audio.play();
         }
-    }
-    
+    };
+
     /**
      * Pause or unpause playback
      * 
      * @method
      * @name AudioClip#pause
      */
-    this.pause = function(){
-        if(self.enabled){
+    this.pause = function () {
+        if (self.enabled) {
             self.audio.pause();
         }
-    }
-    
+    };
+
     this.time = 0;
     this.duration = 0;
-    this.__init = function(){
+    this.__init = function () {
         self.duration = self.audio.duration;
         self.audio.load();
         self.audio.fastSeek(0);
-    }
-    this.__update = function(JSGameEngine){
-        if(self.audio.src !== self.file){
+    };
+    this.__update = function (JSGameEngine) {
+        if (self.audio.src !== self.file) {
             self.audio.src = self.file;
         }
         self.time = self.audio.currentTime;
         self.duration = self.audio.duration;
         self.onFixedUpdate(JSGameEngine);
-    }
-    this.__fixedUpdate = function(JSGameEngine){
+    };
+    this.__fixedUpdate = function (JSGameEngine) {
         self.onFixedUpdate(JSGameEngine);
-    }
+    };
     delete this.transform;
     delete this.components;
     delete this.width;
@@ -1599,6 +1627,7 @@ AudioClip.prototype = new GameObject();
 AudioClip.prototype.constructor = AudioClip;
 
 module.exports = AudioClip;
+
 },{}],13:[function(require,module,exports){
 /**
  * @file JSGame Background GameObject.
@@ -1617,7 +1646,8 @@ module.exports = AudioClip;
  * @constructor
  * @param {options} options An object containing construct options
  */
-function Background(options){
+
+function Background(options) {
     var self = this;
     this.__extend(GameObject, this, options);
     this.color = new Color({
@@ -1634,24 +1664,24 @@ function Background(options){
     var image = new Image();
     var loaded = false;
     var pattern;
-    this.__update = function(JSGameEngine){
+    this.__update = function (JSGameEngine) {
         var ctx = JSGameEngine.ctx;
-        if(self.image !== image.src){
+        if (self.image !== image.src) {
             loaded = false;
             pattern = undefined;
-            image.onload = function(){
+            image.onload = function () {
                 self.imageWidth = image.width;
                 self.imageHeight = image.height;
                 loaded = true;
-            }
+            };
             image.src = self.image;
         }
-        if(!loaded){
-            if(self.color.alpha > 0){
+        if (!loaded) {
+            if (self.color.alpha > 0) {
                 ctx.fillStyle = self.color.toString();
             }
-        }else{
-            if(pattern === undefined){
+        } else {
+            if (pattern === undefined) {
                 pattern = ctx.createPattern(image, 'repeat');
             }
             ctx.fillStyle = pattern;
@@ -1659,13 +1689,13 @@ function Background(options){
         ctx.fillRect(Math.round(self.transform.position.x), Math.round(self.transform.position.y), Math.round(self.width), Math.round(self.height));
         self.onUpdate(JSGameEngine);
     };
-    this.__init = function(JSGameEngine){
-        image.onload = function(){
+    this.__init = function (JSGameEngine) {
+        image.onload = function () {
             self.imageWidth = image.width;
             self.imageHeight = image.height;
             console.log("loaded");
             loaded = true;
-        }
+        };
         image.src = self.image;
         self.width = self.width || JSGameEngine.width;
         self.height = self.height || JSGameEngine.height;
@@ -1676,6 +1706,7 @@ Background.prototype = new GameObject();
 Background.prototype.constructor = Background;
 
 module.exports = Background;
+
 },{}],14:[function(require,module,exports){
 /**
  * @file JSGame Particle GameObject.
@@ -1694,26 +1725,28 @@ module.exports = Background;
  * @constructor
  * @param {options} options An object containing construct options
  */
-function Particle(options){
-    this.__extend(GameObject, this, options);
-    this.speed = new Vector2();
-    this.radius = 1;
-    this.life = 1;
-    this.remainingLife = 1;
-    this.color = new Color({
-        r: 255,
-        g: 255,
-        b: 255,
-        alpha: 1
-    });
-    this.__construct(this, options);
-    this.remainingLife = this.life;
+
+function Particle(options) {
+  this.__extend(GameObject, this, options);
+  this.speed = new Vector2();
+  this.radius = 1;
+  this.life = 1;
+  this.remainingLife = 1;
+  this.color = new Color({
+    r: 255,
+    g: 255,
+    b: 255,
+    alpha: 1
+  });
+  this.__construct(this, options);
+  this.remainingLife = this.life;
 }
 
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
 module.exports = Particle;
+
 },{}],15:[function(require,module,exports){
 /**
  * @file JSGame ParticleSystem GameObject.
@@ -1742,20 +1775,21 @@ module.exports = Particle;
  * @property {boolean} radial If true the particles will be emitted spherical
  * @property {Particle[]} particles An array containing all Particles
  */
-function ParticleSystem(options){
-    var self = this;
-    this.__extend(GameObject, this, options);
-    this.count = 50;
-    this.speed = new Vector2({
-        x: 2,
-        y: 2,
-        parent: self
-    });
+
+function ParticleSystem(options) {
+	var self = this;
+	this.__extend(GameObject, this, options);
+	this.count = 50;
+	this.speed = new Vector2({
+		x: 2,
+		y: 2,
+		parent: self
+	});
 	this.color = new Color({
 		r: 255,
 		g: 255,
 		b: 255,
-        parent: self
+		parent: self
 	});
 	this.loop = false;
 	this.blendMode = "lighter";
@@ -1763,71 +1797,71 @@ function ParticleSystem(options){
 	this.life = 100;
 	this.radius = 10;
 	this.radial = true;
-    this.particles = [];
-    var speed = new Vector2(this.speed);
-    var width = this.width;
-    var height = this.height;
-    this.__construct(this, options);
-	function addParticle(index){
-        var particle = new Particle({
-            transform: new Transform(self.transform),
-            speed: new Vector2({
-				x: speed.x + Math.random() * speed.x, 
+	this.particles = [];
+	var speed = new Vector2(this.speed);
+	var width = this.width;
+	var height = this.height;
+	this.__construct(this, options);
+	function addParticle(index) {
+		var particle = new Particle({
+			transform: new Transform(self.transform),
+			speed: new Vector2({
+				x: speed.x + Math.random() * speed.x,
 				y: speed.y + Math.random() * speed.y
-            }),
-            radius: self.radius + Math.random() * self.radius,
-            life: self.life + Math.random() * self.life,
-            color: new Color({
-                r: Math.round(Math.random() * self.color.r),
-                g: Math.round(Math.random() * self.color.g),
-                b: Math.round(Math.random() * self.color.b)
-            }),
-            parent: self
-        });
-		if(typeof index !== 'undefined'){
+			}),
+			radius: self.radius + Math.random() * self.radius,
+			life: self.life + Math.random() * self.life,
+			color: new Color({
+				r: Math.round(Math.random() * self.color.r),
+				g: Math.round(Math.random() * self.color.g),
+				b: Math.round(Math.random() * self.color.b)
+			}),
+			parent: self
+		});
+		if (typeof index !== 'undefined') {
 			self.particles[index] = particle;
-		}else{
+		} else {
 			self.particles.push(particle);
 		}
 	}
-    this.__update = function(JSGameEngine){
-		if(self.radial){
-			speed.x = (Math.random() * (self.speed.x * 2)) - self.speed.x;
-			speed.y = (Math.random() * (self.speed.y * 2)) - self.speed.y;
-		}else{
+	this.__update = function (JSGameEngine) {
+		if (self.radial) {
+			speed.x = Math.random() * (self.speed.x * 2) - self.speed.x;
+			speed.y = Math.random() * (self.speed.y * 2) - self.speed.y;
+		} else {
 			speed.x = self.speed.x;
 			speed.y = self.speed.y;
 		}
-		if(self.particles.length < self.count){
-			for(var i = 0; i < self.count - self.particles.length; i++){
+		if (self.particles.length < self.count) {
+			for (var i = 0; i < self.count - self.particles.length; i++) {
 				addParticle();
 			}
 		}
-		if(self.particles.length > self.count){
-			for(var i = 0; i < self.particles.length - self.count; i++){
+		if (self.particles.length > self.count) {
+			for (var i = 0; i < self.particles.length - self.count; i++) {
 				self.particles.pop();
 			}
 		}
 		var ctx = JSGameEngine.ctx;
-		if(self.blendMode){
+		if (self.blendMode) {
 			ctx.globalCompositeOperation = self.blendMode;
 		}
-		for(var i = 0; i < self.particles.length; i++){
+		for (var i = 0; i < self.particles.length; i++) {
 			var p = self.particles[i];
 			ctx.beginPath();
 			p.color.alpha = Math.round(p.remainingLife / p.life * self.count) / self.count;
-			if(typeof p.color.alpha !== 'number' || isNaN(p.color.alpha)){
+			if (typeof p.color.alpha !== 'number' || isNaN(p.color.alpha)) {
 				addParticle(i);
 				continue;
 			}
 			var gradient = ctx.createRadialGradient(p.transform.position.x, p.transform.position.y, 0, p.transform.position.x, p.transform.position.y, p.radius);
 			gradient.addColorStop(0, "rgba(" + p.color.r + ", " + p.color.g + ", " + p.color.b + ", " + p.color.alpha + ")");
 			gradient.addColorStop(0.5, "rgba(" + p.color.r + ", " + p.color.g + ", " + p.color.b + ", " + p.color.alpha + ")");
-			if(self.glow){
+			if (self.glow) {
 				gradient.addColorStop(1, "rgba(" + p.color.r + ", " + p.color.g + ", " + p.color.b + ", " + 0 + ")");
-			}else{
+			} else {
 				gradient.addColorStop(1, "rgba(" + p.color.r + ", " + p.color.g + ", " + p.color.b + ", " + p.color.alpha + ")");
-			}				
+			}
 			ctx.fillStyle = gradient;
 			ctx.arc(Math.round(p.transform.position.x), Math.round(p.transform.position.y), Math.round(p.radius), Math.PI * 2, false);
 			ctx.fill();
@@ -1835,36 +1869,37 @@ function ParticleSystem(options){
 			p.radius--;
 			p.transform.position = p.transform.position.add(p.speed);
 
-			if(p.remainingLife < 0 || p.radius < 0){
-				if(self.loop){
+			if (p.remainingLife < 0 || p.radius < 0) {
+				if (self.loop) {
 					addParticle(i);
-				}else{
+				} else {
 					self.particles.splice(i, 1);
 				}
 			}
 		}
-        self.onUpdate(JSGameEngine);
-    };
-    this.__init = function(JSGameEngine){};
-    this.__fixedUpdate = function(JSGameEngine){
-        if(self.width !== width){
-            self.radius = self.width / 2;
-            width = self.width;
-        }
-        if(self.height !== height){
-            self.radius = self.height / 2;
-            height = self.height;
-        }
+		self.onUpdate(JSGameEngine);
+	};
+	this.__init = function (JSGameEngine) {};
+	this.__fixedUpdate = function (JSGameEngine) {
+		if (self.width !== width) {
+			self.radius = self.width / 2;
+			width = self.width;
+		}
+		if (self.height !== height) {
+			self.radius = self.height / 2;
+			height = self.height;
+		}
 		self.width = self.radius * 2;
 		self.height = self.radius * 2;
-        self.onFixedUpdate(JSGameEngine);
-    }
+		self.onFixedUpdate(JSGameEngine);
+	};
 }
 
 ParticleSystem.prototype = new GameObject();
 ParticleSystem.prototype.constructor = ParticleSystem;
 
 module.exports = ParticleSystem;
+
 },{}],16:[function(require,module,exports){
 /**
  * @file JSGame Sprite GameObject.
@@ -1889,7 +1924,8 @@ module.exports = ParticleSystem;
  * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
  * @property {Image[]} sprites An array containing an array of all pre calculated sprites
  */
-function Sprite(options){
+
+function Sprite(options) {
     var self = this;
     this.__extend(GameObject, this, options);
     this.image = "";
@@ -1902,16 +1938,16 @@ function Sprite(options){
     var lastPosition = this.transform.position;
     this.sprites = [];
     var srcImage = new Image();
-    srcImage.setAttribute('crossOrigin','anonymous');
+    srcImage.setAttribute('crossOrigin', 'anonymous');
     var loaded = false;
-    function createSprites(){ 
-        function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
+    function createSprites() {
+        function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale) {
             ctx.save();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.scale(xScale, yScale);
             ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
             var img = new Image();
-            img.setAttribute('crossOrigin','anonymous');
+            img.setAttribute('crossOrigin', 'anonymous');
             img.src = canvas.toDataURL();
             ctx.restore();
             return img;
@@ -1921,8 +1957,8 @@ function Sprite(options){
         canvas.width = self.width;
         canvas.height = self.height;
         var ctx = canvas.getContext('2d');
-        for(var x = 0; x < srcImage.width; x += self.size.x){
-            for(var y = 0; y < srcImage.height; y += self.size.y){
+        for (var x = 0; x < srcImage.width; x += self.size.x) {
+            for (var y = 0; y < srcImage.height; y += self.size.y) {
                 ctx.save();
                 self.sprites[index] = [];
                 self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
@@ -1935,45 +1971,45 @@ function Sprite(options){
         }
         console.log(index + " sprites generated");
     };
-    this.__update = function(JSGameEngine){
-        if(loaded){
-            if(self.index > self.sprites.length - 1){
+    this.__update = function (JSGameEngine) {
+        if (loaded) {
+            if (self.index > self.sprites.length - 1) {
                 self.index = 0;
             }
-            if(self.index < 0){
+            if (self.index < 0) {
                 self.index = self.sprites.length - 1;
             }
             var flipIndex = 0;
-            if(self.flipHorizontal && self.flipVertical){
+            if (self.flipHorizontal && self.flipVertical) {
                 flipIndex = 3;
-            }else{
-                if(self.flipHorizontal){
+            } else {
+                if (self.flipHorizontal) {
                     flipIndex = 1;
                 }
-                if(self.flipVertical){
+                if (self.flipVertical) {
                     flipIndex = 2;
                 }
             }
-            if(self.sprites.length > 0){
+            if (self.sprites.length > 0) {
                 JSGameEngine.ctx.drawImage(self.sprites[self.index][flipIndex], self.transform.position.x, self.transform.position.y);
             }
         }
         var velocityX = (this.transform.position.x - lastPosition.x) / Time.deltaTime;
-        if(velocityX < 0){
+        if (velocityX < 0) {
             velocityX = Math.invert(velocityX);
         }
         this.velocity.x = Math.round(velocityX);
         var velocityY = (this.transform.position.y - lastPosition.y) / Time.deltaTime;
-        if(velocityY < 0){
+        if (velocityY < 0) {
             velocityY = Math.invert(velocityY);
         }
         this.velocity.y = Math.round(velocityY);
         lastPosition = this.transform.position;
         self.onUpdate(JSGameEngine);
     };
-    this.__init = function(JSGameEngine){
-        srcImage.onload = function(){
-            if(self.size.x === 0 && self.size.y === 0){
+    this.__init = function (JSGameEngine) {
+        srcImage.onload = function () {
+            if (self.size.x === 0 && self.size.y === 0) {
                 self.size.x = srcImage.width;
                 self.size.y = srcImage.height;
             }
@@ -1981,7 +2017,7 @@ function Sprite(options){
             self.height = self.size.y;
             createSprites();
             loaded = true;
-        }
+        };
         srcImage.src = self.image;
     };
 }
@@ -1990,6 +2026,7 @@ Sprite.prototype = new GameObject();
 Sprite.prototype.constructor = Sprite;
 
 module.exports = Sprite;
+
 },{}],17:[function(require,module,exports){
 /**
  * @file JSGame Text GameObject.
@@ -2015,7 +2052,8 @@ module.exports = Sprite;
  * @property {boolean} italic If true this Text will be rendered italic
  * @property {boolean} underline If true this Text will be rendered with an underline 
  */
-function Text(options){
+
+function Text(options) {
     var self = this;
     this.__extend(GameObject, this, options);
     this.color = new Color();
@@ -2026,46 +2064,47 @@ function Text(options){
     this.italic = false;
     this.underline = false;
     this.__construct(this, options);
-    function setStyle(ctx){
+    function setStyle(ctx) {
         var bold = "";
         var italic = "";
         var underline = "";
-        if(self.bold){
+        if (self.bold) {
             bold = "bold ";
         }
-        if(self.italic){
+        if (self.italic) {
             italic = "italic ";
         }
-        if(self.underline){
+        if (self.underline) {
             underline = "underline ";
         }
         ctx.fillStyle = self.color.toString();
         ctx.font = bold + italic + Math.round(self.size) + "px " + self.font;
     }
-    this.__update = function(JSGameEngine){
+    this.__update = function (JSGameEngine) {
         var ctx = JSGameEngine.ctx;
         setStyle(ctx);
         ctx.fillText(self.text, Math.round(self.transform.position.x), Math.round(self.transform.position.y));
         self.onUpdate(JSGameEngine);
     };
-    this.__init = function(JSGameEngine){
+    this.__init = function (JSGameEngine) {
         self.transform.parent = self;
         self.transform.position.parent = self.transform;
         self.color.parent = self;
     };
-    this.__fixedUpdate = function(JSGameEngine){
+    this.__fixedUpdate = function (JSGameEngine) {
         var ctx = JSGameEngine.ctx;
         setStyle(ctx);
         self.height = self.size;
         self.width = Math.round(ctx.measureText(self.text).width);
         self.onFixedUpdate(JSGameEngine);
-    }
+    };
 }
 
 Text.prototype = new GameObject();
 Text.prototype.constructor = Text;
 
 module.exports = Text;
+
 },{}],18:[function(require,module,exports){
 /**
  * @file JSGame extended Math library
@@ -2086,12 +2125,13 @@ module.exports = Text;
  * @param {number} max The maximum value
  * @return {number}
  */
-Math.flip = function(value, max){
-    if(typeof value !== 'number' && typeof max !== 'number'){
+
+Math.flip = function (value, max) {
+    if (typeof value !== 'number' && typeof max !== 'number') {
         return NaN;
     }
     return Math.abs(max - parseInt(value));
-}
+};
 
 /**
  * Generates a random number in range
@@ -2103,15 +2143,15 @@ Math.flip = function(value, max){
  * @param {boolean} integer Only return integer
  * @return {number}
  */
-Math.randomRange = function(min, max, integer){
-    if(typeof min !== 'number' && typeof max !== 'number'){
+Math.randomRange = function (min, max, integer) {
+    if (typeof min !== 'number' && typeof max !== 'number') {
         return NaN;
     }
-    if(integer === true){
-        return Math.floor(Math.random() * (max - min) + min);        
+    if (integer === true) {
+        return Math.floor(Math.random() * (max - min) + min);
     }
     return Math.random() * (max - min) + min;
-}
+};
 
 /**
  * Inverts the sign of a number
@@ -2122,9 +2162,9 @@ Math.randomRange = function(min, max, integer){
  * @param {number} num Number to invert
  * @return {number}
  */
-Math.invert = function(num){
+Math.invert = function (num) {
     return num * -1;
-}
+};
 
 /**
  * Clamps a number into a range
@@ -2140,9 +2180,9 @@ Math.invert = function(num){
  * @param {number} max Maximum range value
  * @return {number}
  */
-Math.clamp = function(value, min, max){
+Math.clamp = function (value, min, max) {
     return Math.min(Math.max(value, min), max);
-}
+};
 
 /**
  * Linear interpolation (lerp) between two numbers over interval
@@ -2155,11 +2195,12 @@ Math.clamp = function(value, min, max){
  * @param {number} t Interval to interpolate over
  * @return {number}
  */
-Math.lerp = function(a, b, t){
+Math.lerp = function (a, b, t) {
     return (b - a) * t;
-}
+};
 
 module.exports = Math;
+
 },{}],19:[function(require,module,exports){
 /**
  * @file JSGame Time class.
@@ -2193,8 +2234,9 @@ module.exports = Math;
  * @property {number} startupTime Timestamp of game startup
  * @property {number} time Timestamp of current game time
  */
-function Time(options){
-    /** @private */ this.__construct(options);
+
+function Time(options) {
+    /** @private */this.__construct(options);
     this.startupTime = 0;
     this.frameCount = 0;
     this.deltaTime = 0;
@@ -2219,24 +2261,24 @@ Time.prototype = new Constructor(true);
  * 
  * @param {number} timestamp A timestamp to update to
  */
-Time.prototype.update = function(timestamp){
+Time.prototype.update = function (timestamp) {
     var self = this;
     var timestamp = timestamp || 0;
     timestamp = timestamp / 1000;
     self.time = timestamp;
-    if(self.startupTime === 0){
+    if (self.startupTime === 0) {
         self.startupTime = self.time;
         self.lastUpdateTime = self.startupTime;
     }
-    self.deltaTime = (self.time - self.lastUpdateTime);
-    if(self.deltaTime > self.maximumDeltaTime){
+    self.deltaTime = self.time - self.lastUpdateTime;
+    if (self.deltaTime > self.maximumDeltaTime) {
         self.maximumDeltaTime = self.deltaTime;
     }
     self.smoothDeltaTime = parseFloat(self.deltaTime.toFixed(2));
     self.lastUpdateTime = self.time;
     self.fps = (1.0 / self.deltaTime).toFixed(1);
     self.frameCount++;
-}
+};
 
 /**
  * Updates the interal fixed clock.
@@ -2244,22 +2286,22 @@ Time.prototype.update = function(timestamp){
  * 
  * @param {number} timestamp A timestamp to update to
  */
-Time.prototype.fixedUpdate = function(timestamp){
+Time.prototype.fixedUpdate = function (timestamp) {
     var self = this;
     var timestamp = timestamp || 0;
     timestamp = timestamp / 1000;
     self.fixedTime = timestamp;
-    if(self.startupTime === 0){
+    if (self.startupTime === 0) {
         self.startupTime = self.fixedTime;
         self.lastFixedUpdateTime = self.startupTime;
     }
-    self.fixedDeltaTime = (self.fixedTime - self.lastFixedUpdateTime);
-    if(self.fixedDeltaTime > self.maximumFixedDeltaTime){
+    self.fixedDeltaTime = self.fixedTime - self.lastFixedUpdateTime;
+    if (self.fixedDeltaTime > self.maximumFixedDeltaTime) {
         self.maximumFixedDeltaTime = self.fixedDeltaTime;
     }
     self.smoothFixedDeltaTime = parseFloat(self.fixedDeltaTime.toFixed(2));
     self.lastFixedUpdateTime = self.fixedTime;
-}
+};
 
 /**
  * Returns the given framerate as time
@@ -2267,9 +2309,10 @@ Time.prototype.fixedUpdate = function(timestamp){
  * @param {number} fps The framerate to convert, E.g 60
  * @return {number} time
  */
-Time.prototype.framerateToTime = function(fps){
-    return ((1 / fps));
-}
+Time.prototype.framerateToTime = function (fps) {
+    return 1 / fps;
+};
 
 module.exports = Time;
+
 },{}]},{},[1]);
