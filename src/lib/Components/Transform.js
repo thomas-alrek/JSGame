@@ -21,6 +21,7 @@ import Vector2 from './Vector2';
  */
 export class Transform extends Vector2 {
     constructor(options) {
+        super();
         this.rotation = 0;
         this.position = new Vector2({parent: this});
         super(options);

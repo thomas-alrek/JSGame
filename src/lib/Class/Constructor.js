@@ -72,7 +72,7 @@ export class Constructor {
      * @returns {string} UUID
      */
     createUUID(delim) {
-        let delim = delim || "-";
+        delim = delim || "-";
         function rnd() {
             return (((1 + Math.random() * new Date().getTime()) * 0x10000) | 0).toString(16).substring(1);
         }
@@ -90,7 +90,7 @@ export class Constructor {
      * @throws TypeError if Object is not an instance of GameObject or Component
      */
     addComponent(obj, id) {
-        let id = id || this.createUUID();
+        id = id || this.createUUID();
         obj.parent = this;
         if(this instanceof JSGameEngine){
             //JSGameEngine

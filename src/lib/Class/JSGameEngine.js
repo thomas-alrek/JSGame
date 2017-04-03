@@ -7,6 +7,8 @@
 
 "use strict";
 
+import { invert } from '../Util/Math';
+
 /**
  * @class JSGameEngine
  * Creates a new instance of JSGameEngine.
@@ -68,7 +70,7 @@ function JSGameEngine(options){
                 var position = gameObject.transform.position;
                 ctx.translate(position.x + gameObject.width / 2, position.y + gameObject.height / 2);
                 ctx.rotate((rotation * Math.PI) / 180);
-                ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
+                ctx.translate(invert(position.x + gameObject.width / 2), invert(position.y + gameObject.height / 2));
                 for(var childComponent in gameObject.components){
                     gameObject.components[childComponent].__update(self);
                 }

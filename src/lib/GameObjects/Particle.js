@@ -7,6 +7,8 @@
 
 "use strict";
 
+import { Vector2 } from '../Components/Vector2';
+
 /**
  * @class Particle
  * Creates a new instance of Particle.
