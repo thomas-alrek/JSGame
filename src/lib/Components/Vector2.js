@@ -262,4 +262,4 @@ class Vector2 extends Component{
     }
 }
 
-export default Vector2;
+export { Vector2 };

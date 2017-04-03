@@ -7,6 +7,8 @@
 
 "use strict";
 
+import { Vector2 } from './Vector2';
+
 /**
  * @class Transform
  * Creates a new instance of Transform.

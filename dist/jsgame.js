@@ -9,13 +9,16 @@
 
 "use strict";
 
+var _Vector = require("./lib/Components/Vector2");
+
 global.Constructor = require("./lib/Class/Constructor.js");
 global.JSGameEngine = require("./lib/Class/JSGameEngine");
-global.Math = require("./lib/Util/Math.js");
+// global.Math = require("./lib/Util/Math.js");
 global.Component = require("./lib/Class/Component.js");
 global.Time = require("./lib/Util/Time.js");
 global.Physics2D = require("./lib/Components/Physics2D.js");
-global.Vector2 = require("./lib/Components/Vector2.js");
+
+// global.Vector2 = require("./lib/Components/Vector2.js");
 global.Transform = require("./lib/Components/Transform.js");
 global.Shadow = require("./lib/Components/Shadow.js");
 global.Input = require("./lib/Components/Input.js");
@@ -36,7 +39,7 @@ global.Background = require("./lib/GameObjects/Background.js");
  */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2.js":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Math.js":18,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
+},{"./lib/Class/Component.js":2,"./lib/Class/Constructor.js":3,"./lib/Class/GameObject.js":4,"./lib/Class/JSGameEngine":5,"./lib/Components/Color.js":6,"./lib/Components/Input.js":7,"./lib/Components/Physics2D.js":8,"./lib/Components/Shadow.js":9,"./lib/Components/Transform.js":10,"./lib/Components/Vector2":11,"./lib/GameObjects/AudioClip.js":12,"./lib/GameObjects/Background.js":13,"./lib/GameObjects/Particle.js":14,"./lib/GameObjects/ParticleSystem.js":15,"./lib/GameObjects/Sprite.js":16,"./lib/GameObjects/Text.js":17,"./lib/Util/Time.js":19}],2:[function(require,module,exports){
 /**
  * @file JSGame Component class.
  * @package jsgame
@@ -403,6 +406,8 @@ module.exports = GameObject;
 
 "use strict";
 
+var _Math = require("../Util/Math");
+
 /**
  * @class JSGameEngine
  * Creates a new instance of JSGameEngine.
@@ -417,7 +422,6 @@ module.exports = GameObject;
  * @property {Time} time The globally shared instance of Time
  * @property {CanvasRenderingContext2D} ctx The rendering context
  */
-
 function JSGameEngine(options) {
     var self = this;
     this.components = {};
@@ -465,7 +469,7 @@ function JSGameEngine(options) {
                 var position = gameObject.transform.position;
                 ctx.translate(position.x + gameObject.width / 2, position.y + gameObject.height / 2);
                 ctx.rotate(rotation * Math.PI / 180);
-                ctx.translate(Math.invert(position.x + gameObject.width / 2), Math.invert(position.y + gameObject.height / 2));
+                ctx.translate((0, _Math.invert)(position.x + gameObject.width / 2), (0, _Math.invert)(position.y + gameObject.height / 2));
                 for (var childComponent in gameObject.components) {
                     gameObject.components[childComponent].__update(self);
                 }
@@ -528,7 +532,7 @@ module.exports = JSGameEngine;
  * @throws {TypeError} If obj not is an instance of GameObject
  */
 
-},{}],6:[function(require,module,exports){
+},{"../Util/Math":18}],6:[function(require,module,exports){
 /**
  * @file JSGame Color Component.
  * @package jsgame
@@ -537,6 +541,10 @@ module.exports = JSGameEngine;
  */
 
 "use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _Math = require("../Util/Math");
 
 /**
  * @class Color
@@ -550,9 +558,6 @@ module.exports = JSGameEngine;
  * @property {number} g A number between 0 and 255 representing the colors green channel
  * @property {number} b A number between 0 and 255 representing the colors blue channel
  */
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 function Color(options) {
     var self = this;
     this.__extend(Component, this, options);
@@ -570,10 +575,10 @@ function Color(options) {
      */
     this.clamp = function () {
         return new Color({
-            r: Math.round(Math.clamp(self.r, 0, 255)),
-            g: Math.round(Math.clamp(self.g, 0, 255)),
-            b: Math.round(Math.clamp(self.b, 0, 255)),
-            alpha: Math.clamp(self.alpha, 0, 1)
+            r: Math.round((0, _Math.clamp)(self.r, 0, 255)),
+            g: Math.round((0, _Math.clamp)(self.g, 0, 255)),
+            b: Math.round((0, _Math.clamp)(self.b, 0, 255)),
+            alpha: (0, _Math.clamp)(self.alpha, 0, 1)
         });
     };
 
@@ -605,12 +610,12 @@ Color.prototype.constructor = Color;
 Color.prototype.invert = function (invertAlpha) {
     var alpha = this.alpha;
     if (invertAlpha) {
-        alpha = Math.flip(this.alpha, 1);
+        alpha = (0, _Math.flip)(this.alpha, 1);
     }
     return new Color({
-        r: Math.flip(this.r, 255),
-        g: Math.flip(this.g, 255),
-        b: Math.flip(this.b, 255),
+        r: (0, _Math.flip)(this.r, 255),
+        g: (0, _Math.flip)(this.g, 255),
+        b: (0, _Math.flip)(this.b, 255),
         alpha: alpha
     });
 };
@@ -924,7 +929,7 @@ Color.prototype.lerp = function (a, b, t) {
 
 module.exports = Color;
 
-},{}],7:[function(require,module,exports){
+},{"../Util/Math":18}],7:[function(require,module,exports){
 /**
  * @file JSGame Input Component.
  * @package jsgame
@@ -1013,6 +1018,8 @@ module.exports = Input;
 
 "use strict";
 
+var _Vector = require("./Vector2");
+
 /**
  * @class Physics2D
  * Creates a new instance of Physics2D.
@@ -1021,17 +1028,16 @@ module.exports = Input;
  * @constructor
  * @param {options} options An object containing construct options
  */
-
 function Physics2D(options) {
     var self = this;
     this.__extend(Component, this, options);
-    this.gravity = new Vector2({ y: 9.81, parent: this });
-    this.velocity = new Vector2({ parent: this });
+    this.gravity = new _Vector.Vector2({ y: 9.81, parent: this });
+    this.velocity = new _Vector.Vector2({ parent: this });
     this.fixedUpdate = function (timestamp) {
         return self.addForce(self.gravity.multiply(timestamp * 10));
     };
     this.addForce = function (force) {
-        if (!(force instanceof Vector2)) {
+        if (!(force instanceof _Vector.Vector2)) {
             throw TypeError("Force must be an instance of Vector2");
         }
         self.velocity.add(force);
@@ -1045,7 +1051,7 @@ Physics2D.prototype.constructor = Physics2D;
 
 module.exports = Physics2D;
 
-},{}],9:[function(require,module,exports){
+},{"./Vector2":11}],9:[function(require,module,exports){
 /**
  * @file JSGame Shadow Component. Adds a shadow to the parent GameObject
  * @package jsgame
@@ -1095,6 +1101,8 @@ module.exports = Shadow;
 
 "use strict";
 
+var _Vector = require("./Vector2");
+
 /**
  * @class Transform
  * Creates a new instance of Transform.
@@ -1105,11 +1113,10 @@ module.exports = Shadow;
  * @property {number} rotation A number representing the Transforms rotation in degrees
  * @property {Vector2} position A Vector2 instance, representing the Transforms position
  */
-
 function Transform(options) {
     this.rotation = 0;
     this.__extend(Component, this, options);
-    this.position = new Vector2({ parent: this });
+    this.position = new _Vector.Vector2({ parent: this });
     this.__construct(this, options);
     this.rotation = this.rotation % 360;
 }
@@ -1126,10 +1133,10 @@ Transform.prototype.constructor = Transform;
  * @throws {TypeError} If vector is not an instance of Transform or Vector2
  */
 Transform.prototype.translate = function (vector) {
-    if (!(vector instanceof Vector2) && !(vector instanceof Transform)) {
+    if (!(vector instanceof _Vector.Vector2) && !(vector instanceof Transform)) {
         throw TypeError("Vector must be an instance of Vector2 or Transform");
     }
-    if (vector instanceof Vector2) {
+    if (vector instanceof _Vector.Vector2) {
         this.position.x += vector.x;
         this.position.y += vector.y;
         return this.position;
@@ -1258,7 +1265,7 @@ Transform.prototype.lerp = function (a, b, t) {
 
 module.exports = Transform;
 
-},{}],11:[function(require,module,exports){
+},{"./Vector2":11}],11:[function(require,module,exports){
 /**
  * @file JSGame Vector2 Component.
  * @package jsgame
@@ -1267,6 +1274,11 @@ module.exports = Transform;
  */
 
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Vector2 = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1589,7 +1601,7 @@ var Vector2 = function (_Component) {
     return Vector2;
 }(_Component3.default);
 
-module.exports = Vector2;
+exports.Vector2 = Vector2;
 
 },{"../Class/Component":2}],12:[function(require,module,exports){
 /**
@@ -1766,6 +1778,8 @@ module.exports = Background;
 
 "use strict";
 
+var _Vector = require("../Components/Vector2");
+
 /**
  * @class Particle
  * Creates a new instance of Particle.
@@ -1774,10 +1788,9 @@ module.exports = Background;
  * @constructor
  * @param {options} options An object containing construct options
  */
-
 function Particle(options) {
   this.__extend(GameObject, this, options);
-  this.speed = new Vector2();
+  this.speed = new _Vector.Vector2();
   this.radius = 1;
   this.life = 1;
   this.remainingLife = 1;
@@ -1796,7 +1809,7 @@ Particle.prototype.constructor = Particle;
 
 module.exports = Particle;
 
-},{}],15:[function(require,module,exports){
+},{"../Components/Vector2":11}],15:[function(require,module,exports){
 /**
  * @file JSGame ParticleSystem GameObject.
  * @package jsgame
@@ -1805,6 +1818,8 @@ module.exports = Particle;
  */
 
 "use strict";
+
+var _Vector = require("../Components/Vector2");
 
 /**
  * @class ParticleSystem
@@ -1824,12 +1839,11 @@ module.exports = Particle;
  * @property {boolean} radial If true the particles will be emitted spherical
  * @property {Particle[]} particles An array containing all Particles
  */
-
 function ParticleSystem(options) {
 	var self = this;
 	this.__extend(GameObject, this, options);
 	this.count = 50;
-	this.speed = new Vector2({
+	this.speed = new _Vector.Vector2({
 		x: 2,
 		y: 2,
 		parent: self
@@ -1847,14 +1861,14 @@ function ParticleSystem(options) {
 	this.radius = 10;
 	this.radial = true;
 	this.particles = [];
-	var speed = new Vector2(this.speed);
+	var speed = new _Vector.Vector2(this.speed);
 	var width = this.width;
 	var height = this.height;
 	this.__construct(this, options);
 	function addParticle(index) {
 		var particle = new Particle({
 			transform: new Transform(self.transform),
-			speed: new Vector2({
+			speed: new _Vector.Vector2({
 				x: speed.x + Math.random() * speed.x,
 				y: speed.y + Math.random() * speed.y
 			}),
@@ -1949,7 +1963,7 @@ ParticleSystem.prototype.constructor = ParticleSystem;
 
 module.exports = ParticleSystem;
 
-},{}],16:[function(require,module,exports){
+},{"../Components/Vector2":11}],16:[function(require,module,exports){
 /**
  * @file JSGame Sprite GameObject.
  * @package jsgame
@@ -1958,6 +1972,33 @@ module.exports = ParticleSystem;
  */
 
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Sprite = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _GameObject2 = require('../Class/GameObject');
+
+var _GameObject3 = _interopRequireDefault(_GameObject2);
+
+var _Vector = require('../Components/Vector2');
+
+var _Time = require('../Util/Time');
+
+var _Time2 = _interopRequireDefault(_Time);
+
+var _Math = require('../Util/Math');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
  * @class Sprite
@@ -1973,110 +2014,142 @@ module.exports = ParticleSystem;
  * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
  * @property {Image[]} sprites An array containing an array of all pre calculated sprites
  */
+var Sprite = function (_GameObject) {
+    _inherits(Sprite, _GameObject);
 
-function Sprite(options) {
-    var self = this;
-    this.__extend(GameObject, this, options);
-    this.image = "";
-    this.flipHorizontal = false;
-    this.flipVertical = false;
-    this.index = 0;
-    this.size = new Vector2();
-    this.__construct(this, options);
-    this.velocity = new Vector2();
-    var lastPosition = this.transform.position;
-    this.sprites = [];
-    var srcImage = new Image();
-    srcImage.setAttribute('crossOrigin', 'anonymous');
-    var loaded = false;
-    function createSprites() {
-        function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale) {
-            ctx.save();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.scale(xScale, yScale);
-            ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
-            var img = new Image();
-            img.setAttribute('crossOrigin', 'anonymous');
-            img.src = canvas.toDataURL();
-            ctx.restore();
-            return img;
-        }
-        var index = 0;
-        var canvas = document.createElement("canvas");
-        canvas.width = self.width;
-        canvas.height = self.height;
-        var ctx = canvas.getContext('2d');
-        for (var x = 0; x < srcImage.width; x += self.size.x) {
-            for (var y = 0; y < srcImage.height; y += self.size.y) {
+    function Sprite(options) {
+        _classCallCheck(this, Sprite);
+
+        var _this = _possibleConstructorReturn(this, (Sprite.__proto__ || Object.getPrototypeOf(Sprite)).call(this, options));
+
+        _this.image = '';
+        _this.flipHorizontal = false;
+        _this.flipVertical = false;
+        _this.index = 0;
+        _this.size = new _Vector.Vector2();
+        _this.velocity = new _Vector.Vector2();
+        _this.sprites = [];
+        _this.srcImage = new Image();
+        _this.srcImage.setAttribute('crossOrigin', 'anonymous');
+        _this.loadedStatus = false;
+        return _this;
+    }
+
+    _createClass(Sprite, [{
+        key: 'createSprites',
+        value: function createSprites() {
+            var _this2 = this;
+
+            var preCalc = function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale) {
                 ctx.save();
-                self.sprites[index] = [];
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, 1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, -1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, -1));
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.scale(xScale, yScale);
+                ctx.drawImage(_this2.srcImage, offsetX, offsetY, _this2.size.x, _this2.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
+                var img = new Image();
+                img.setAttribute('crossOrigin', 'anonymous');
+                img.src = canvas.toDataURL();
                 ctx.restore();
-                index++;
-            }
-        }
-        console.log(index + " sprites generated");
-    };
-    this.__update = function (JSGameEngine) {
-        if (loaded) {
-            if (self.index > self.sprites.length - 1) {
-                self.index = 0;
-            }
-            if (self.index < 0) {
-                self.index = self.sprites.length - 1;
-            }
-            var flipIndex = 0;
-            if (self.flipHorizontal && self.flipVertical) {
-                flipIndex = 3;
-            } else {
-                if (self.flipHorizontal) {
-                    flipIndex = 1;
-                }
-                if (self.flipVertical) {
-                    flipIndex = 2;
+                return img;
+            };
+            var index = 0;
+            var canvas = document.createElement("canvas");
+            canvas.width = this.width;
+            canvas.height = this.height;
+            var ctx = canvas.getContext('2d');
+            for (var x = 0; x < this.srcImage.width; x += this.size.x) {
+                for (var y = 0; y < this.srcImage.height; y += this.size.y) {
+                    ctx.save();
+                    this.sprites[index] = [];
+                    this.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
+                    this.sprites[index].push(preCalc(x, y, ctx, canvas, -1, 1));
+                    this.sprites[index].push(preCalc(x, y, ctx, canvas, 1, -1));
+                    this.sprites[index].push(preCalc(x, y, ctx, canvas, -1, -1));
+                    ctx.restore();
+                    index++;
                 }
             }
-            if (self.sprites.length > 0) {
-                JSGameEngine.ctx.drawImage(self.sprites[self.index][flipIndex], self.transform.position.x, self.transform.position.y);
+            console.log(index + ' sprites generated');
+        }
+    }, {
+        key: '__update',
+        value: function __update(JSGameEngine) {
+            var loaded = this.loadedStatus;
+            if (loaded) {
+                if (this.index > this.sprites.length - 1) {
+                    this.index = 0;
+                }
+                if (this.index < 0) {
+                    this.index = this.sprites.length - 1;
+                }
+                var flipIndex = 0;
+                if (this.flipHorizontal && this.flipVertical) {
+                    flipIndex = 3;
+                } else {
+                    if (this.flipHorizontal) {
+                        flipIndex = 1;
+                    }
+                    if (this.flipVertical) {
+                        flipIndex = 2;
+                    }
+                }
+                if (this.sprites.length > 0) {
+                    JSGameEngine.ctx.drawImage(this.sprites[this.index][flipIndex], this.transform.position.x, this.transform.position.y);
+                }
             }
-        }
-        var velocityX = (this.transform.position.x - lastPosition.x) / Time.deltaTime;
-        if (velocityX < 0) {
-            velocityX = Math.invert(velocityX);
-        }
-        this.velocity.x = Math.round(velocityX);
-        var velocityY = (this.transform.position.y - lastPosition.y) / Time.deltaTime;
-        if (velocityY < 0) {
-            velocityY = Math.invert(velocityY);
-        }
-        this.velocity.y = Math.round(velocityY);
-        lastPosition = this.transform.position;
-        self.onUpdate(JSGameEngine);
-    };
-    this.__init = function (JSGameEngine) {
-        srcImage.onload = function () {
-            if (self.size.x === 0 && self.size.y === 0) {
-                self.size.x = srcImage.width;
-                self.size.y = srcImage.height;
+            var velocityX = (this.transform.position.x - this.lastPosition.x) / _Time2.default.deltaTime;
+            if (velocityX < 0) {
+                velocityX = (0, _Math.invert)(velocityX);
             }
-            self.width = self.size.x;
-            self.height = self.size.y;
-            createSprites();
-            loaded = true;
-        };
-        srcImage.src = self.image;
-    };
-}
+            this.velocity.x = Math.round(velocityX);
+            var velocityY = (this.transform.position.y - this.lastPosition.y) / _Time2.default.deltaTime;
+            if (velocityY < 0) {
+                velocityY = (0, _Math.invert)(velocityY);
+            }
+            this.velocity.y = Math.round(velocityY);
+            this.lastPosition = this.transform.position;
+            this.onUpdate(JSGameEngine);
+        }
+    }, {
+        key: '__init',
+        value: function __init(JSGameEngine) {
+            var _this3 = this;
 
-Sprite.prototype = new GameObject();
-Sprite.prototype.constructor = Sprite;
+            this.srcImage.onload = function () {
+                if (_this3.size.x === 0 && _this3.size.y === 0) {
+                    _this3.size.x = _this3.srcImage.width;
+                    _this3.size.y = _this3.srcImage.height;
+                }
+                _this3.width = _this3.size.x;
+                _this3.height = _this3.size.y;
+                _this3.createSprites();
+                _this3.loadedStatus = true;
+            };
+            this.srcImage.src = this.image;
+        }
+    }, {
+        key: 'lastPosition',
+        get: function get() {
+            return this.transform.position;
+        },
+        set: function set(position) {
+            this.transform.position = position;
+        }
+    }, {
+        key: 'loadedStatus',
+        get: function get() {
+            return this.loaded;
+        },
+        set: function set(value) {
+            this.loaded = value;
+        }
+    }]);
 
-module.exports = Sprite;
+    return Sprite;
+}(_GameObject3.default);
 
-},{}],17:[function(require,module,exports){
+exports.Sprite = Sprite;
+
+},{"../Class/GameObject":4,"../Components/Vector2":11,"../Util/Math":18,"../Util/Time":19}],17:[function(require,module,exports){
 /**
  * @file JSGame Text GameObject.
  * @package jsgame
@@ -2166,7 +2239,7 @@ module.exports = Text;
 
 /**
  * Flips a number, given a value and a max value.
- * E.g Math.flip(10, 255) === 245
+ * E.g flip(10, 255) === 245
  *
  * @function
  * @static
@@ -2175,7 +2248,10 @@ module.exports = Text;
  * @return {number}
  */
 
-Math.flip = function (value, max) {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var flip = function flip(value, max) {
     if (typeof value !== 'number' && typeof max !== 'number') {
         return NaN;
     }
@@ -2192,7 +2268,7 @@ Math.flip = function (value, max) {
  * @param {boolean} integer Only return integer
  * @return {number}
  */
-Math.randomRange = function (min, max, integer) {
+var randomRange = function randomRange(min, max, integer) {
     if (typeof min !== 'number' && typeof max !== 'number') {
         return NaN;
     }
@@ -2204,14 +2280,14 @@ Math.randomRange = function (min, max, integer) {
 
 /**
  * Inverts the sign of a number
- * E.g Math.invert(99.5) === -99.5;
+ * E.g invert(99.5) === -99.5;
  *
  * @function
  * @static
  * @param {number} num Number to invert
  * @return {number}
  */
-Math.invert = function (num) {
+var invert = function invert(num) {
     return num * -1;
 };
 
@@ -2220,7 +2296,7 @@ Math.invert = function (num) {
  * If the input value is bigger than max, the number is truncated to max.
  * If the input value is smaller than min, the number is truncated to min.
  * 
- * E.g Math.clamp(370, 0, 360) === 360;
+ * E.g clamp(370, 0, 360) === 360;
  *
  * @function
  * @static
@@ -2229,13 +2305,13 @@ Math.invert = function (num) {
  * @param {number} max Maximum range value
  * @return {number}
  */
-Math.clamp = function (value, min, max) {
+var clamp = function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 };
 
 /**
  * Linear interpolation (lerp) between two numbers over interval
- * E.g Math.lerp(2.5, 20, Time.deltaTime) === 0.28; (in this example, deltaTime === 0.016)
+ * E.g lerp(2.5, 20, Time.deltaTime) === 0.28; (in this example, deltaTime === 0.016)
  *
  * @function
  * @static
@@ -2244,11 +2320,15 @@ Math.clamp = function (value, min, max) {
  * @param {number} t Interval to interpolate over
  * @return {number}
  */
-Math.lerp = function (a, b, t) {
+var lerp = function lerp(a, b, t) {
     return (b - a) * t;
 };
 
-module.exports = Math;
+exports.flip = flip;
+exports.randomRange = randomRange;
+exports.invert = invert;
+exports.clamp = clamp;
+exports.lerp = lerp;
 
 },{}],19:[function(require,module,exports){
 /**
