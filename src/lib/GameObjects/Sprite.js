@@ -146,4 +146,4 @@ class Sprite extends GameObject {
     }
 }
 
-export { Sprite };
+export default Sprite;
