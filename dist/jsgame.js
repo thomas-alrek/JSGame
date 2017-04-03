@@ -58,6 +58,17 @@ global.Background = require("./lib/GameObjects/Background.js");
  * @property {function} onUpdate A callback function to called after rendering the GameObject
  */
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Test = function Test() {
+  _classCallCheck(this, Test);
+};
+
+Test.A = 5;
+
+
+console.log(Test.A);
+
 function Component(options) {
   var self = this;
   this.parent = undefined;
