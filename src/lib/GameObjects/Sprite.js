@@ -8,7 +8,7 @@
 "use strict";
 
 import GameObject from '../Class/GameObject';
-import { Vector2 } from '../Components/Vector2';
+import Vector2 from '../Components/Vector2';
 import Time from '../Util/Time';
 import { invert } from '../Util/Math';
 
