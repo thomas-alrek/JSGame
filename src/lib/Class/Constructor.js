@@ -34,7 +34,7 @@ export class Constructor {
      * @param {options} options Options to pass on to the base class' constructor
      */
     __extend(from, to, options) {
-        var proto = new from(options || undefined);
+        let proto = new from(options || undefined);
         Object.keys(proto).forEach(function(key){
             to[key] = proto[key];
         });
@@ -72,7 +72,7 @@ export class Constructor {
      * @returns {string} UUID
      */
     createUUID(delim) {
-        var delim = delim || "-";
+        let delim = delim || "-";
         function rnd() {
             return (((1 + Math.random() * new Date().getTime()) * 0x10000) | 0).toString(16).substring(1);
         }
@@ -90,18 +90,18 @@ export class Constructor {
      * @throws TypeError if Object is not an instance of GameObject or Component
      */
     addComponent(obj, id) {
-        var id = id || this.createUUID();
+        let id = id || this.createUUID();
         obj.parent = this;
         if(this instanceof JSGameEngine){
             //JSGameEngine
-            if(!(obj instanceof GameObject)){
+            if(!(obj instanceof GameObject)) {
                 throw TypeError("Object not an instance of GameObject");
             }
-            if(typeof this.components[id] !== 'undefined'){
+            if(typeof this.components[id] !== 'undefined') {
                 throw Error("GameObject already has component with id " + id);
             }
             this.components[id] = obj;
-            if(obj.__init){
+            if(obj.__init) {
                 obj.__init(this);
             }
         } else {
