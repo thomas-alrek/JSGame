@@ -7,6 +7,11 @@
 
 "use strict";
 
+import GameObject from '../Class/GameObject';
+import Vector2 from '../Components/Vector2';
+import Time from '../Util/Time';
+import { invert } from '../Util/Math';
+
 /**
  * @class Sprite
  * Creates a new instance of Sprite.
@@ -21,104 +26,124 @@
  * @property {Vector2} size The size of each sprite in the spritesheet. If undefined, the entire image is used as a single Sprite
  * @property {Image[]} sprites An array containing an array of all pre calculated sprites
  */
-function Sprite(options){
-    var self = this;
-    this.__extend(GameObject, this, options);
-    this.image = "";
-    this.flipHorizontal = false;
-    this.flipVertical = false;
-    this.index = 0;
-    this.size = new Vector2();
-    this.__construct(this, options);
-    this.velocity = new Vector2();
-    var lastPosition = this.transform.position;
-    this.sprites = [];
-    var srcImage = new Image();
-    srcImage.setAttribute('crossOrigin','anonymous');
-    var loaded = false;
-    function createSprites(){ 
-        function preCalc(offsetX, offsetY, ctx, canvas, xScale, yScale){
+class Sprite extends GameObject {
+    constructor(options) {
+        super(options);
+        this.image = '';
+        this.flipHorizontal = false;
+        this.flipVertical = false;
+        this.index = 0;
+        this.size = new Vector2();
+        this.velocity = new Vector2();
+        this.sprites = [];
+        this.srcImage = new Image();
+        this.srcImage.setAttribute('crossOrigin','anonymous');
+        this.loadedStatus = false;
+    }
+
+    get lastPosition() {
+        return this.transform.position;
+    }
+
+    set lastPosition(position) {
+        this.transform.position = position;
+    }
+
+    get loadedStatus() {
+        return this.loaded;
+    }
+
+    set loadedStatus(value) {
+        this.loaded = value;
+    }
+
+    createSprites() {
+        const preCalc = (offsetX, offsetY, ctx, canvas, xScale, yScale) =>  {
             ctx.save();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.scale(xScale, yScale);
-            ctx.drawImage(srcImage, offsetX, offsetY, self.size.x, self.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
-            var img = new Image();
+            ctx.drawImage(this.srcImage, offsetX, offsetY, this.size.x, this.size.y, 0, 0, canvas.width * xScale, canvas.height * yScale);
+            const img = new Image();
             img.setAttribute('crossOrigin','anonymous');
             img.src = canvas.toDataURL();
             ctx.restore();
             return img;
-        }
-        var index = 0;
-        var canvas = document.createElement("canvas");
-        canvas.width = self.width;
-        canvas.height = self.height;
-        var ctx = canvas.getContext('2d');
-        for(var x = 0; x < srcImage.width; x += self.size.x){
-            for(var y = 0; y < srcImage.height; y += self.size.y){
+        };
+        let index = 0;
+        const canvas = document.createElement("canvas");
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        for(let x = 0; x < this.srcImage.width; x += this.size.x){
+            for(let y = 0; y < this.srcImage.height; y += this.size.y){
                 ctx.save();
-                self.sprites[index] = [];
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, 1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, 1, -1));
-                self.sprites[index].push(preCalc(x, y, ctx, canvas, -1, -1));
+                this.sprites[index] = [];
+                this.sprites[index].push(preCalc(x, y, ctx, canvas, 1, 1));
+                this.sprites[index].push(preCalc(x, y, ctx, canvas, -1, 1));
+                this.sprites[index].push(preCalc(x, y, ctx, canvas, 1, -1));
+                this.sprites[index].push(preCalc(x, y, ctx, canvas, -1, -1));
                 ctx.restore();
                 index++;
             }
         }
-        console.log(index + " sprites generated");
-    };
-    this.__update = function(JSGameEngine){
-        if(loaded){
-            if(self.index > self.sprites.length - 1){
-                self.index = 0;
+        console.log(`${index} sprites generated`);
+    }
+
+    __update(JSGameEngine) {
+        const loaded = this.loadedStatus;
+        if(loaded) {
+            if(this.index > this.sprites.length - 1){
+                this.index = 0;
             }
-            if(self.index < 0){
-                self.index = self.sprites.length - 1;
+            if(this.index < 0){
+                this.index = this.sprites.length - 1;
             }
-            var flipIndex = 0;
-            if(self.flipHorizontal && self.flipVertical){
+            let flipIndex = 0;
+            if(this.flipHorizontal && this.flipVertical){
                 flipIndex = 3;
-            }else{
-                if(self.flipHorizontal){
+            } else {
+                if(this.flipHorizontal){
                     flipIndex = 1;
                 }
-                if(self.flipVertical){
+                if(this.flipVertical){
                     flipIndex = 2;
                 }
             }
-            if(self.sprites.length > 0){
-                JSGameEngine.ctx.drawImage(self.sprites[self.index][flipIndex], self.transform.position.x, self.transform.position.y);
+            if(this.sprites.length > 0){
+                JSGameEngine.ctx.drawImage(
+                    this.sprites[this.index][flipIndex],
+                    this.transform.position.x,
+                    this.transform.position.y
+                );
             }
         }
-        var velocityX = (this.transform.position.x - lastPosition.x) / Time.deltaTime;
+        let velocityX = (this.transform.position.x - this.lastPosition.x) / Time.deltaTime;
         if(velocityX < 0){
-            velocityX = Math.invert(velocityX);
+            velocityX = invert(velocityX);
         }
         this.velocity.x = Math.round(velocityX);
-        var velocityY = (this.transform.position.y - lastPosition.y) / Time.deltaTime;
+        let velocityY = (this.transform.position.y - this.lastPosition.y) / Time.deltaTime;
         if(velocityY < 0){
-            velocityY = Math.invert(velocityY);
+            velocityY = invert(velocityY);
         }
         this.velocity.y = Math.round(velocityY);
-        lastPosition = this.transform.position;
-        self.onUpdate(JSGameEngine);
-    };
-    this.__init = function(JSGameEngine){
-        srcImage.onload = function(){
-            if(self.size.x === 0 && self.size.y === 0){
-                self.size.x = srcImage.width;
-                self.size.y = srcImage.height;
+        this.lastPosition = this.transform.position;
+        this.onUpdate(JSGameEngine);
+    }
+
+    __init(JSGameEngine) {
+        this.srcImage.onload = () => {
+            if(this.size.x === 0 && this.size.y === 0){
+                this.size.x = this.srcImage.width;
+                this.size.y = this.srcImage.height;
             }
-            self.width = self.size.x;
-            self.height = self.size.y;
-            createSprites();
-            loaded = true;
-        }
-        srcImage.src = self.image;
-    };
+            this.width = this.size.x;
+            this.height = this.size.y;
+            this.createSprites();
+            this.loadedStatus = true;
+        };
+        this.srcImage.src = this.image;
+    }
 }
 
-Sprite.prototype = new GameObject();
-Sprite.prototype.constructor = Sprite;
-
-module.exports = Sprite;
+export default Sprite;

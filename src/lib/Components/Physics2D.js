@@ -7,6 +7,8 @@
 
 "use strict";
 
+import { Vector2 }  from './Vector2';
+
 /**
  * @class Physics2D
  * Creates a new instance of Physics2D.
