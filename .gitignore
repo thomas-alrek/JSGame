@@ -2,5 +2,5 @@
 .idea
 .DS_STORE
 node_modules
-doc
+#doc
 npm-debug.log
